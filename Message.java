@@ -3,8 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package message;
-import java.util.ArrayList;
 import java.util.Date;
 /**
  *
@@ -26,7 +24,7 @@ public class Message {
         this.message = message;
         this.date = date;
     }
-    
+
     public String getUsername()
     {
         return username;
@@ -39,7 +37,7 @@ public class Message {
     {
         return date;
     }
-    
+
     public void setUsername(String username)
     {
         this.username = username;
@@ -52,8 +50,8 @@ public class Message {
     {
         this.date = date;
     }
-    
-    
+
+
     @Override
     public String toString() {
         return "USERNAME: " + getUsername() + "\nMESSAGE: " + getMessage()+ "\nDATE: " + getDate() +"\n";
