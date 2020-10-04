@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class ChatManager {
-    public ArrayList<Message> messages;
+    private ArrayList<Message> messages;
 
     public ChatManager() {
         messages = new ArrayList<Message>();
