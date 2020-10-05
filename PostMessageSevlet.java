@@ -10,17 +10,15 @@ import java.util.Date;
 
 @WebServlet(name = "PostMessageSevlet")
 public class PostMessageSevlet extends HttpServlet {
-    ArrayList<Message> msg = new ArrayList<Message>();
+    ChatManager cm = new ChatManager();
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String username = request.getParameter("username");
         String message = request.getParameter("message");
-        request.getSession().setAttribute("username", username);
+        //request.getSession().setAttribute("username", username);
 
         Date date = new Date();
 
-        msg.add(new Message(username, message, date));
-
-        System.out.println(msg.toString());
+        cm.postMessage(username, message, date);
 
         RequestDispatcher req = request.getRequestDispatcher("index.jsp");
         req.forward(request, response);
