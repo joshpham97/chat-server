@@ -5,7 +5,7 @@
     <title>Post Message</title>
 </head>
 <body>
-<form action="post_message" method="GET">
+<form action="PostMessageSevlet" method="POST">
     <table style="with: 50%">
 
         <tr>
