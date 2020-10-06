@@ -37,4 +37,40 @@ class ChatManagerTest {
 //
 //        assertEquals(0, cm.ListMessages(tomorrow, yesterday).size());
     }
+
+    @Test
+    void clearChat() {
+//        assertEquals(0, cm.messages.size());
+
+//        // Clear all
+//        cm.messages.add(new Message("content 1", today));
+//        cm.messages.add(new Message("content 2", today));
+//        cm.messages.add(new Message("content 3", today));
+//        assertEquals(3, cm.messages.size());
+//        cm.ClearChat();
+//        assertEquals(0, cm.messages.size());
+//
+//        // Clear within date range
+//        cm.messages.add(new Message("content 4", yesterday));
+//        cm.messages.add(new Message("content 5", yesterday));
+//        cm.messages.add(new Message("content 6", yesterday));
+//        cm.messages.add(new Message("content 7", today));
+//        cm.messages.add(new Message("content 8", today));
+//        cm.messages.add(new Message("content 9", today));
+//        cm.messages.add(new Message("content 10", tomorrow));
+//        cm.messages.add(new Message("content 11", tomorrow));
+//        cm.messages.add(new Message("content 12", tomorrow));
+//        assertEquals(9, cm.messages.size());
+//        cm.ClearChat(today, today);
+//        assertEquals(6, cm.messages.size());
+//
+//        cm.ClearChat(yesterday, today);
+//        assertEquals(3, cm.messages.size());
+//
+//        cm.ClearChat(yesterday, today);
+//        assertEquals(3, cm.messages.size());
+//
+//        cm.ClearChat(today, tomorrow);
+//        assertEquals(0, cm.messages.size());
+    }
 }
