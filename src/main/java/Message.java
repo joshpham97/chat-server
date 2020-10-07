@@ -5,19 +5,11 @@ public class Message implements java.io.Serializable {
     private String message;
     private Date date;
 
-    public Message()
-    {
-        username = "";
-        message = "";
-        date = new Date();
-    }
-
     public Message(String username, String message, Date date) {
         this.username = username;
         this.message = message;
         this.date = date;
     }
-
     public Message(String username, String message) {
         this.username = username;
         this.message = message;
@@ -59,6 +51,6 @@ public class Message implements java.io.Serializable {
 
     @Override
     public String toString() {
-        return this.username + ": " + this.message;
+        return this.username + ": " + this.message + " Date: " + this.date;
     }
 }
