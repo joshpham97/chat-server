@@ -1,3 +1,5 @@
+import org.graalvm.compiler.lir.sparc.SPARCMove;
+
 import java.io.File;
 import java.time.LocalDateTime;
 import java.time.chrono.ChronoLocalDateTime;
@@ -22,7 +24,7 @@ public class ChatManager {
         return messages;
     }
 
-    public ArrayList<Message> ListMessages(ChronoLocalDateTime<?> from, ChronoLocalDateTime<?> to) {
+    public ArrayList<Message> ListMessages(LocalDateTime from, LocalDateTime to) {
         ArrayList<Message> messagesInRange = new ArrayList<Message>();
 
         for(Message m: messages) {
@@ -33,6 +35,21 @@ public class ChatManager {
         }
 
         return messagesInRange;
+    }
+
+    public void ClearChat() {
+        messages.clear();
+    }
+
+    public void ClearChat(LocalDateTime from, LocalDateTime to) {
+        for(int i = 0; i < messages.size(); i++) {
+            LocalDateTime messageDate = messages.get(i).getDate();
+
+            if(messageDate.compareTo(from) >= 0 && messageDate.compareTo(to) <= 0) {
+                messages.remove(i);
+                i--;
+            }
+        }
     }
 
     String getMessages(LocalDateTime from, LocalDateTime to, FileFormat fileFormat){
@@ -54,25 +71,12 @@ public class ChatManager {
         return fileContent.toString();
     }
 
-    private Stream<Message> filterAndGetMessageStream(LocalDateTime from, LocalDateTime to){
+    private Stream<Message> filterAndGetMessageStream(LocalDateTime from, LocalDateTime to) {
         //Variables in lambda function must be final
-        final LocalDateTime finalFrom =  (from == null) ? LocalDateTime.MIN : from;
-        final LocalDateTime finalTo =  (to == null) ? LocalDateTime.MAX : to;
+        final LocalDateTime finalFrom = (from == null) ? LocalDateTime.MIN : from;
+        final LocalDateTime finalTo = (to == null) ? LocalDateTime.MAX : to;
 
         return messages.stream()
                        .filter(m -> (m.getDate().compareTo(finalFrom) >= 0 && m.getDate().compareTo(finalTo) <= 0));
-    public void ClearChat() {
-        messages.clear();
-    }
-
-    public void ClearChat(Date from, Date to) {
-        for(int i = 0; i < messages.size(); i++) {
-            Date messageDate = messages.get(i).getDate();
-
-            if(messageDate.compareTo(from) >= 0 && messageDate.compareTo(to) <= 0) {
-                messages.remove(i);
-                i--;
-            }
-        }
     }
 }
