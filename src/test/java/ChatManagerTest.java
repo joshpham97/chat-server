@@ -41,7 +41,7 @@ class ChatManagerTest {
     @Test
     void clearChat() {
 //        assertEquals(0, cm.messages.size());
-
+//
 //        // Clear all
 //        cm.messages.add(new Message("content 1", today));
 //        cm.messages.add(new Message("content 2", today));

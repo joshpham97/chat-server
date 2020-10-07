@@ -26,19 +26,17 @@ public class ChatManager {
     }
 
     public void ClearChat() {
-        messages = new ArrayList<Message>();
+        messages.clear();
     }
 
     public void ClearChat(Date from, Date to) {
-        ArrayList<Message> messagesInRange = new ArrayList<Message>();
+        for(int i = 0; i < messages.size(); i++) {
+            Date messageDate = messages.get(i).getDate();
 
-        for(Message m: messages) {
-            Date messageDate = m.getDate();
-
-            if(messageDate.compareTo(from) < 0 || messageDate.compareTo(to) > 0)
-                messagesInRange.add(m);
+            if(messageDate.compareTo(from) >= 0 && messageDate.compareTo(to) <= 0) {
+                messages.remove(i);
+                i--;
+            }
         }
-
-        messages = messagesInRange;
     }
 }
