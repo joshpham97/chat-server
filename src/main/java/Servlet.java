@@ -6,6 +6,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 import java.util.stream.Stream;
 
 @WebServlet(name = "Servlet")
@@ -27,7 +30,10 @@ public class Servlet extends HttpServlet {
     }
 
 
-    ChatManager chatManager;
+    private ChatManager chatManager;
+    private final String TIME_ZONE_ID = "EDT";
+    private final Locale LOCALE = Locale.ENGLISH;
+    private final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("EEE, dd MMM yyyy HH:mm:ss z", LOCALE).withZone(ZoneId.of(TIME_ZONE_ID));
 
     @Override
     public void init() throws ServletException {
@@ -41,29 +47,39 @@ public class Servlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String strFrom = request.getParameter(Parameters.FROM.toString());
-        String strTo = request.getParameter(Parameters.TO.toString());
-        String strFileFormat = request.getParameter(Parameters.FILE_FORMAT.toString());
+        PrintWriter responseWriter = response.getWriter();
 
-        LocalDateTime from = LocalDateTime.parse(strFrom);
-        LocalDateTime to = LocalDateTime.parse(strTo);
-        FileFormat fileFormat = FileFormat.valueOf(strFileFormat);
+        if(request.getHeader("referrer") != null){
+            String strFrom = request.getParameter(Parameters.FROM.toString());
+            String strTo = request.getParameter(Parameters.TO.toString());
+            String strFileFormat = request.getParameter(Parameters.FILE_FORMAT.toString());
 
-        Stream<Message> filteredMessagesStream = chatManager.ListMessages(from, to).stream();
+            LocalDateTime from = LocalDateTime.parse(strFrom);
+            LocalDateTime to = LocalDateTime.parse(strTo);
+            FileFormat fileFormat = FileFormat.valueOf(strFileFormat);
 
-        StringBuilder fileContent = new StringBuilder();
+            Stream<Message> filteredMessagesStream = chatManager.ListMessages(from, to).stream();
 
-        if(fileFormat == FileFormat.XML){
-            fileContent.append("<Messages>\n");
-            filteredMessagesStream.forEach((Message m) -> fileContent.append(m.toXML()));
-            fileContent.append("</Messages>");
+            StringBuilder fileContent = new StringBuilder();
+
+            if(fileFormat == FileFormat.XML){
+                fileContent.append("<Messages>\n");
+                filteredMessagesStream.forEach((Message m) -> fileContent.append(m.toXML()));
+                fileContent.append("</Messages>");
+                response.setHeader("content-disposition", "attachment; filename=\"messages.xml\"");
+            }else{
+                filteredMessagesStream.forEach((Message m) -> fileContent.append(m.toString()));
+                response.setHeader("content-disposition", "attachment; filename=\"messages.txt\"");
+            }
+
+            response.setContentType("text/plain");
+            response.setHeader("expires", FORMATTER.format(LocalDateTime.now()));
+            responseWriter.append(fileContent.toString());
+
         }else{
-            filteredMessagesStream.forEach((Message m) -> fileContent.append(m.toString()));
+            responseWriter.append("Invalid request. No Referrer found.");
         }
 
-        response.setContentType("text/plain");
-        PrintWriter out = response.getWriter();
-        out.append(fileContent.toString());
-        out.close();
+        responseWriter.close();
     }
 }
