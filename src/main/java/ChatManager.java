@@ -1,10 +1,5 @@
-import org.graalvm.compiler.lir.sparc.SPARCMove;
-
-import java.io.File;
 import java.time.LocalDateTime;
-import java.time.chrono.ChronoLocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -49,14 +44,10 @@ public class ChatManager {
 
         if(fileFormat == FileFormat.XML){
             fileContent.append("<Messages>\n");
-            stream.forEach((Message m) -> {
-                fileContent.append(m.toXML());
-            });
+            stream.forEach((Message m) -> fileContent.append(m.toXML()));
             fileContent.append("</Messages>");
         }else{
-            stream.forEach((Message m) -> {
-                fileContent.append(m.toString());
-            });
+            stream.forEach((Message m) -> fileContent.append(m.toString()));
         }
 
         return fileContent.toString();
