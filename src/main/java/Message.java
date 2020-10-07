@@ -1,17 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 import java.util.Date;
-/**
- *
- * @author Stefan JB
- */
-public class Message {
+
+public class Message implements java.io.Serializable {
     private String username;
     private String message;
     private Date date;
+
     public Message()
     {
         username = "";
@@ -23,9 +16,19 @@ public class Message {
         this.message = message;
         this.date = date;
     }
+    public Message(String username, String message) {
+        this.username = username;
+        this.message = message;
+        date = new Date();
+    }
 
     public Message(String message, Date date) {
         this("Anonymous", message, date);
+    }
+
+    public Message(String message) {
+        this("Anonymous", message);
+        date = new Date();
     }
 
     public String getUsername() {
