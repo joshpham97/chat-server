@@ -41,6 +41,15 @@ public class Message implements java.io.Serializable {
 
     @Override
     public String toString() {
-        return this.username + ": " + this.message;
+        return this.date + "::" + this.username + "::" + this.message;
+    }
+
+    public String toXML(){
+        StringBuilder messageXML = new StringBuilder();
+        return  " <Message>\n" +
+                "  <Date>" + this.getDate() + "</Date>\n" +
+                "  <Username>" + this.getUsername() + "</Username>\n" +
+                "  <Content>" + this.getMessage() + "</Content>\n" +
+                " </Message>\n";
     }
 }
