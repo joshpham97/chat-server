@@ -25,16 +25,7 @@ public class ChatManager {
     }
 
     public ArrayList<Message> ListMessages(LocalDateTime from, LocalDateTime to) {
-        ArrayList<Message> messagesInRange = new ArrayList<Message>();
-
-        for(Message m: messages) {
-            LocalDateTime mDate = m.getDate();
-
-            if(mDate.compareTo(from) >= 0 && mDate.compareTo(to) <= 0)
-                messagesInRange.add(m);
-        }
-
-        return messagesInRange;
+        return filterAndGetMessageStream(from, to).collect(Collectors.toCollection(ArrayList::new));
     }
 
     public void ClearChat() {
