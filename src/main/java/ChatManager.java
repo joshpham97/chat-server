@@ -61,5 +61,18 @@ public class ChatManager {
 
         return messages.stream()
                        .filter(m -> (m.getDate().compareTo(finalFrom) >= 0 && m.getDate().compareTo(finalTo) <= 0));
+    public void ClearChat() {
+        messages.clear();
+    }
+
+    public void ClearChat(Date from, Date to) {
+        for(int i = 0; i < messages.size(); i++) {
+            Date messageDate = messages.get(i).getDate();
+
+            if(messageDate.compareTo(from) >= 0 && messageDate.compareTo(to) <= 0) {
+                messages.remove(i);
+                i--;
+            }
+        }
     }
 }
