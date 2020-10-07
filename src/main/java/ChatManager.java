@@ -38,7 +38,7 @@ public class ChatManager {
         }
     }
 
-    String getMessages(LocalDateTime from, LocalDateTime to, FileFormat fileFormat){
+    public String getMessages(LocalDateTime from, LocalDateTime to, FileFormat fileFormat){
         Stream<Message> stream = filterAndGetMessageStream(from, to);
         StringBuilder fileContent = new StringBuilder();
 
