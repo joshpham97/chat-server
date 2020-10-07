@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
+import java.util.TimeZone;
 import java.util.stream.Stream;
 
 @WebServlet(name = "Servlet")
@@ -31,9 +32,9 @@ public class Servlet extends HttpServlet {
 
 
     private ChatManager chatManager;
-    private final String TIME_ZONE_ID = "EDT";
+    private final String TIME_ZONE_ID = TimeZone.getDefault().toString();
     private final Locale LOCALE = Locale.ENGLISH;
-    private final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("EEE, dd MMM yyyy HH:mm:ss z", LOCALE).withZone(ZoneId.of(TIME_ZONE_ID));
+    private final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("EEE, dd MMM yyyy HH:mm:ss z", LOCALE);
 
     @Override
     public void init() throws ServletException {

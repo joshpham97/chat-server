@@ -18,5 +18,6 @@
         </tr>
     </table>
     <input type="submit" value="Post Message" /></form>
+    <a id="btnDownloadMessages" href="Servlet">Download Messages</a>
 </body>
 </html>
