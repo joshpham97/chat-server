@@ -10,6 +10,7 @@ public class Message implements java.io.Serializable {
         this.message = message;
         this.date = date;
     }
+    //Constructor that we're most likely to use
     public Message(String username, String message) {
         this.username = username;
         this.message = message;
