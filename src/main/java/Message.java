@@ -1,17 +1,18 @@
+import java.time.LocalDateTime;
 import java.util.Date;
 
 public class Message implements java.io.Serializable {
     private String username;
     private String message;
-    private Date date;
+    private LocalDateTime date;
 
-    public Message(String username, String message, Date date) {
+    public Message(String username, String message, LocalDateTime date) {
         this.username = username;
         this.message = message;
         this.date = date;
     }
 
-    public Message(String message, Date date) {
+    public Message(String message, LocalDateTime date) {
         this("Anonymous", message, date);
     }
 
@@ -23,7 +24,7 @@ public class Message implements java.io.Serializable {
         return message;
     }
 
-    public Date getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 
@@ -35,7 +36,7 @@ public class Message implements java.io.Serializable {
         this.message = message;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
     }
 
