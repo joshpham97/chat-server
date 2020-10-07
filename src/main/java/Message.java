@@ -18,7 +18,6 @@ public class Message implements java.io.Serializable {
 
     public Message(String message) {
         this("Anonymous", message);
-        date = new Date();
     }
 
     public String getUsername() {
