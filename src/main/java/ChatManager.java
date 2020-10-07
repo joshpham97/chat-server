@@ -10,7 +10,7 @@ public class ChatManager {
 
     public void postMessage(String username, String message)
     {
-        if(username.isEmpty())
+        if(username.isEmpty()) //If username is empty, they post as Anonymous.
         {
             messages.add(new Message(message));
         }
