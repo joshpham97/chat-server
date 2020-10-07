@@ -10,6 +10,7 @@ public class Message implements java.io.Serializable {
         this.message = message;
         this.date = date;
     }
+
     //Constructor that we're most likely to use
     public Message(String username, String message) {
         this.username = username;
@@ -19,11 +20,6 @@ public class Message implements java.io.Serializable {
 
     public Message(String message, Date date) {
         this("Anonymous", message, date);
-    }
-
-    public Message(String message) {
-        this("Anonymous", message);
-        date = new Date();
     }
 
     public String getUsername() {
@@ -52,6 +48,6 @@ public class Message implements java.io.Serializable {
 
     @Override
     public String toString() {
-        return this.username + ": " + this.message + " Date: " + this.date;
+        return this.username + ": " + this.message;
     }
 }

@@ -7,7 +7,7 @@ public class ChatManager {
     public ChatManager() {
         messages = new ArrayList<Message>();
     }
-
+  
     public void postMessage(String username, String message)
     {
         if(username.isEmpty()) //If username is empty, they post as Anonymous.
@@ -36,5 +36,20 @@ public class ChatManager {
         }
 
         return messagesInRange;
+    }
+
+    public void ClearChat() {
+        messages.clear();
+    }
+
+    public void ClearChat(Date from, Date to) {
+        for(int i = 0; i < messages.size(); i++) {
+            Date messageDate = messages.get(i).getDate();
+
+            if(messageDate.compareTo(from) >= 0 && messageDate.compareTo(to) <= 0) {
+                messages.remove(i);
+                i--;
+            }
+        }
     }
 }
