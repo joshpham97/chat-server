@@ -10,9 +10,14 @@ public class Message implements java.io.Serializable {
         this.message = message;
         this.date = date;
     }
+    public Message(String username, String message) {
+        this.username = username;
+        this.message = message;
+        date = new Date();
+    }
 
-    public Message(String message, Date date) {
-        this("Anonymous", message, date);
+    public Message(String message) {
+        this("Anonymous", message);
     }
 
     public String getUsername() {
@@ -41,6 +46,6 @@ public class Message implements java.io.Serializable {
 
     @Override
     public String toString() {
-        return this.username + ": " + this.message;
+        return this.username + ": " + this.message + " Date: " + this.date;
     }
 }

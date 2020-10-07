@@ -1,4 +1,13 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%--
+  Created by IntelliJ IDEA.
+  User: Stefan JB
+  Date: 2020-09-28
+  Time: 9:06 a.m.
+  To change this template use File | Settings | File Templates.
+--%>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+         pageEncoding="ISO-8859-1"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
@@ -18,5 +27,19 @@
         </tr>
     </table>
     <input type="submit" value="Post Message" /></form>
+
+<br>
+
+Delete Message:
+
+<br>
+
+<form id="deleteMessage">
+    <input type="text" name = "StartDate" placeholder = "dd/mm/year"/>
+    <br />
+    <input type="text" class = "datepicker" name = "EndDate" placeholder = "dd/mm/yyyy"/>
+    <br />
+    <input type = "submit" name = "submit" value = "Delete"/>
+</form>
 </body>
 </html>
