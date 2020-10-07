@@ -1,5 +1,4 @@
 import java.time.LocalDateTime;
-import java.util.Date;
 
 public class Message implements java.io.Serializable {
     private String username;
@@ -11,9 +10,15 @@ public class Message implements java.io.Serializable {
         this.message = message;
         this.date = date;
     }
+  
+    public Message(String username, String message) {
+        this.username = username;
+        this.message = message;
+        date = LocalDateTime.now();
+    }
 
-    public Message(String message, LocalDateTime date) {
-        this("Anonymous", message, date);
+    public Message(String message) {
+        this("Anonymous", message);
     }
 
     public String getUsername() {
