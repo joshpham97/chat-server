@@ -37,6 +37,7 @@ class ChatManagerTest {
 //
 //        assertEquals(0, cm.ListMessages(tomorrow, yesterday).size());
     }
+
     @Test
     void clearChat() {
 //        assertEquals(0, cm.messages.size());
