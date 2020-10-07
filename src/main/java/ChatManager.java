@@ -4,11 +4,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class ChatManager {
-    public enum FileFormat{
-        XML,
-        TEXT
-    }
-
     private ArrayList<Message> messages;
 
     public ChatManager() {
@@ -36,21 +31,6 @@ public class ChatManager {
                 i--;
             }
         }
-    }
-
-    public String getMessages(LocalDateTime from, LocalDateTime to, FileFormat fileFormat){
-        Stream<Message> stream = filterAndGetMessageStream(from, to);
-        StringBuilder fileContent = new StringBuilder();
-
-        if(fileFormat == FileFormat.XML){
-            fileContent.append("<Messages>\n");
-            stream.forEach((Message m) -> fileContent.append(m.toXML()));
-            fileContent.append("</Messages>");
-        }else{
-            stream.forEach((Message m) -> fileContent.append(m.toString()));
-        }
-
-        return fileContent.toString();
     }
 
     private Stream<Message> filterAndGetMessageStream(LocalDateTime from, LocalDateTime to) {
