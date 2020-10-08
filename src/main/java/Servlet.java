@@ -6,9 +6,12 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.ParseException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Locale;
 import java.util.TimeZone;
 import java.util.stream.Stream;
@@ -74,10 +77,17 @@ public class Servlet extends HttpServlet {
                     chatManager.ClearChat();
                 }
                 else {
-                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
-                    LocalDateTime fromParam = LocalDateTime.parse(strFromParam, formatter);
-                    LocalDateTime toParam = LocalDateTime.parse(strToParam, formatter);
-                    chatManager.ClearChat(fromParam, toParam);
+                    try {
+                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
+                        LocalDateTime fromParam = LocalDateTime.parse(strFromParam, formatter);
+                        LocalDateTime toParam = LocalDateTime.parse(strToParam, formatter);
+                        chatManager.ClearChat(fromParam, toParam);
+                    }
+                    catch(DateTimeParseException e) {
+                        PrintWriter responseWriter = response.getWriter();
+                        responseWriter.append("Invalid request. Unexpected date/time format.");
+                        responseWriter.close();
+                    }
                 }
             }
         }
@@ -85,12 +95,10 @@ public class Servlet extends HttpServlet {
             PrintWriter responseWriter = response.getWriter();
             responseWriter.append("Invalid request. No Referrer found.");
             responseWriter.close();
-            // TODO: error.jsp
-//            request.setAttribute("error", "Invalid request. No Referrer found.");
         }
 
 //        request.setAttribute("messages", chatManager.ListMessages());
-//        request.getRequestDispatcher("/").forward(request, response);
+        request.getRequestDispatcher("/").forward(request, response);
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
