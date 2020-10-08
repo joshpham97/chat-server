@@ -76,19 +76,18 @@ public class Servlet extends HttpServlet {
                     chatManager.ClearChat();
                 }
                 else {
-                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("[yyyy-MM-dd'T'HH:mm][yyyy-MM-dd]");
                     LocalDateTime fromParam;
                     LocalDateTime toParam;
 
                     try {
-                        fromParam = LocalDateTime.parse(strFromParam, formatter);
-                        toParam = LocalDateTime.parse(strToParam, formatter);
+                        fromParam = LocalDateTime.parse(strFromParam);
+                        toParam = LocalDateTime.parse(strToParam);
                         chatManager.ClearChat(fromParam, toParam);
                     }
                     catch(DateTimeParseException e) {
                         try {
-                            fromParam = LocalDate.parse(strFromParam, formatter).atStartOfDay();
-                            toParam = LocalDate.parse(strToParam, formatter).atStartOfDay();
+                            fromParam = LocalDate.parse(strFromParam).atStartOfDay();
+                            toParam = LocalDate.parse(strToParam).plusDays(1).atStartOfDay();
                             chatManager.ClearChat(fromParam, toParam);
                         }
                         catch(DateTimeParseException exp) {
