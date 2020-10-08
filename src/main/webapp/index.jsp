@@ -12,35 +12,48 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
     <title>Post Message</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 </head>
-<body>
-<form action="PostMessageSevlet" method="POST">
-    <table style="with: 50%">
+    <body>
+        <form action="PostMessageSevlet" method="POST">
+            <table style="with: 50%">
 
-        <tr>
-            <td>UserName</td>
-            <td><input type="text" name="username" /></td>
-        </tr>
-        <tr>
-            <td>Message</td>
-            <td><textarea name="message" cols="30" rows="10" ></textarea></td>
-        </tr>
-    </table>
-    <input type="submit" value="Post Message" /></form>
-    <a id="btnDownloadMessages" href="Servlet">Download Messages</a>
+                <tr>
+                    <td>UserName</td>
+                    <td><input type="text" name="username" /></td>
+                </tr>
+                <tr>
+                    <td>Message</td>
+                    <td><textarea name="message" cols="30" rows="10" ></textarea></td>
+                </tr>
+            </table>
+            <input type="submit" value="Post Message" /></form>
+            <a id="btnDownloadMessages" href="Servlet">Download Messages</a>
+        <br>
+        Delete Message:
 
-<br>
+        <br>
 
-Delete Message:
+        <form id="deleteMessage">
+            <input type="text" name = "StartDate" placeholder = "dd/mm/year"/>
+            <br />
+            <input type="text" class = "datepicker" name = "EndDate" placeholder = "dd/mm/yyyy"/>
+            <br />
+            <input type = "submit" name = "submit" value = "Delete"/>
+        </form>
 
-<br>
+        <form class="form-inline">
+            <div>
+                <span>Archive Messages</span>
+            </div>
 
-<form id="deleteMessage">
-    <input type="text" name = "StartDate" placeholder = "dd/mm/year"/>
-    <br />
-    <input type="text" class = "datepicker" name = "EndDate" placeholder = "dd/mm/yyyy"/>
-    <br />
-    <input type = "submit" name = "submit" value = "Delete"/>
-</form>
-</body>
+            <label class="sr-only" for="archiveMessage_from">From: </label>
+            <input type="text" class="form-control mb-2 mr-sm-2" id="archiveMessage_from" placeholder="Jane Doe">
+
+            <label class="sr-only" for="archiveMessage_to">To: </label>
+            <input type="text" class="form-control mb-2 mr-sm-2" id="archiveMessage_to" placeholder="Jane Doe">
+
+            <button type="submit" class="btn btn-primary mb-2">Submit</button>
+        </form>
+    </body>
 </html>
