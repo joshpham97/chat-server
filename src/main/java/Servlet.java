@@ -6,7 +6,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -77,16 +76,26 @@ public class Servlet extends HttpServlet {
                     chatManager.ClearChat();
                 }
                 else {
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("[yyyy-MM-dd'T'HH:mm][yyyy-MM-dd]");
+                    LocalDateTime fromParam;
+                    LocalDateTime toParam;
+
                     try {
-                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
-                        LocalDateTime fromParam = LocalDateTime.parse(strFromParam, formatter);
-                        LocalDateTime toParam = LocalDateTime.parse(strToParam, formatter);
+                        fromParam = LocalDateTime.parse(strFromParam, formatter);
+                        toParam = LocalDateTime.parse(strToParam, formatter);
                         chatManager.ClearChat(fromParam, toParam);
                     }
                     catch(DateTimeParseException e) {
-                        PrintWriter responseWriter = response.getWriter();
-                        responseWriter.append("Invalid request. Unexpected date/time format.");
-                        responseWriter.close();
+                        try {
+                            fromParam = LocalDate.parse(strFromParam, formatter).atStartOfDay();
+                            toParam = LocalDate.parse(strToParam, formatter).atStartOfDay();
+                            chatManager.ClearChat(fromParam, toParam);
+                        }
+                        catch(DateTimeParseException exp) {
+                            PrintWriter responseWriter = response.getWriter();
+                            responseWriter.append("Invalid request. Unexpected date/time format.");
+                            responseWriter.close();
+                        }
                     }
                 }
             }
