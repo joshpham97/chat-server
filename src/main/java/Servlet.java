@@ -20,7 +20,9 @@ public class Servlet extends HttpServlet {
     private enum Parameters {
         FROM("from"),
         TO("to"),
-        FILE_FORMAT("fileFormat");
+        FILE_FORMAT("fileFormat"),
+        POST_MESSAGE("postMessage"),
+        CLEAR_CHAT("clearChat");
 
         private final String value;
 
@@ -55,7 +57,40 @@ public class Servlet extends HttpServlet {
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        if(request.getHeader("referer") != null) {
+            String postMessageParam = request.getParameter(Parameters.POST_MESSAGE.toString());
+            String clearChatParam= request.getParameter(Parameters.CLEAR_CHAT.toString());
 
+            // POST MESSAGE
+            if(postMessageParam != null) {
+                // TODO: post message
+            }
+            // CLEAR CHAT
+            else if (clearChatParam != null) {
+                String strFromParam = request.getParameter(Parameters.FROM.toString());
+                String strToParam = request.getParameter(Parameters.TO.toString());
+
+                if (strFromParam.isEmpty() && strToParam.isEmpty()) {
+                    chatManager.ClearChat();
+                }
+                else {
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
+                    LocalDateTime fromParam = LocalDateTime.parse(strFromParam, formatter);
+                    LocalDateTime toParam = LocalDateTime.parse(strToParam, formatter);
+                    chatManager.ClearChat(fromParam, toParam);
+                }
+            }
+        }
+        else {
+            PrintWriter responseWriter = response.getWriter();
+            responseWriter.append("Invalid request. No Referrer found.");
+            responseWriter.close();
+            // TODO: error.jsp
+//            request.setAttribute("error", "Invalid request. No Referrer found.");
+        }
+
+//        request.setAttribute("messages", chatManager.ListMessages());
+//        request.getRequestDispatcher("/").forward(request, response);
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

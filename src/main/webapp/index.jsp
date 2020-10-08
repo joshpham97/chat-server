@@ -17,29 +17,35 @@
     <body>
         <form action="PostMessageSevlet" method="POST">
             <table style="with: 50%">
-
                 <tr>
                     <td>UserName</td>
                     <td><input type="text" name="username" /></td>
                 </tr>
+
                 <tr>
                     <td>Message</td>
                     <td><textarea name="message" cols="30" rows="10" ></textarea></td>
                 </tr>
             </table>
-            <input type="submit" value="Post Message" /></form>
-            <a id="btnDownloadMessages" href="Servlet">Download Messages</a>
-        <br>
-        Delete Message:
+            <input type="submit" value="Post Message" />
+        </form>
+
+        <a id="btnDownloadMessages" href="Servlet">Download Messages</a>
 
         <br>
 
-        <form id="deleteMessage">
-            <input type="text" name = "StartDate" placeholder = "dd/mm/year"/>
-            <br />
-            <input type="text" class = "datepicker" name = "EndDate" placeholder = "dd/mm/yyyy"/>
-            <br />
-            <input type = "submit" name = "submit" value = "Delete"/>
+        <form method="post" action="Servlet" class="form-inline">
+            <div>
+                <span>Clear Chat</span>
+            </div>
+
+            <label class="sr-only" for="clearChat_from">From: </label>
+            <input type="datetime-local" name="from" class="form-control mb-2 mr-sm-2" id="clearChat_from" />
+
+            <label class="sr-only" for="clearChat_to">To: </label>
+            <input type="datetime-local" name="to" class="form-control mb-2 mr-sm-2" id="clearChat_to"  />
+
+            <button type="submit" name="clearChat" class="btn btn-primary mb-2">Clear</button>
         </form>
 
         <form class="form-inline">
