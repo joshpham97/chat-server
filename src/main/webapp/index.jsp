@@ -42,18 +42,7 @@
                                 <td><textarea name="message" cols="30" rows="10" ></textarea></td>
                             </tr>
                         </table>
-                        <input type="submit" value="Post Message" /></form>
-                    <br>
-                    Delete Message:
-
-                    <br>
-
-                    <form id="deleteMessage">
-                        <input type="text" name = "StartDate" placeholder = "dd/mm/year"/>
-                        <br />
-                        <input type="text" class = "datepicker" name = "EndDate" placeholder = "dd/mm/yyyy"/>
-                        <br />
-                        <input type = "submit" name = "submit" value = "Delete"/>
+                        <input type="submit" value="Post Message" />
                     </form>
                 </div>
 
@@ -93,16 +82,31 @@
                             </div>
                         </div>
                     </div>
+
                     <div class="card">
                         <div class="card-header">
-                            Delete Message
+                            <a data-toggle="collapse" data-target="#DeleteCardBody">
+                                Delete Messages
+                            </a>
                         </div>
-                        <div class="card-body">
-                            <input type="text" name = "StartDate" placeholder = "dd/mm/year"/>
-                            <br />
-                            <input type="text" class = "datepicker" name = "EndDate" placeholder = "dd/mm/yyyy"/>
-                            <br />
-                            <input type = "submit" name = "submit" value = "Delete"/>
+                        <div class="collapse show" id="deleteCardBody">
+                            <div class="card-body">
+                                <form action="Servlet" method="post">
+                                    <div class="form-group">
+                                        <label for="deleteMessage_from">From: </label>
+                                        <input id="deleteMessage_from" name="from" type="datetime-local" class="form-control" />
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="deleteMessage_to">To: </label>
+                                        <input id="deleteMessage_to" name="to" type="datetime-local" class="form-control" />
+                                    </div>
+
+                                    <div class="form-group">
+                                        <button type="Submit" name="clearChat" class="btn btn-primary mb-2">Delete</button>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
