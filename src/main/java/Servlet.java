@@ -72,30 +72,15 @@ public class Servlet extends HttpServlet {
                 String strFromParam = request.getParameter(Parameters.FROM.toString());
                 String strToParam = request.getParameter(Parameters.TO.toString());
 
-                if (strFromParam.isEmpty() && strToParam.isEmpty()) {
-                    chatManager.ClearChat();
+                try {
+                    LocalDateTime fromParam = strFromParam.isEmpty() ? null : LocalDateTime.parse(strFromParam);
+                    LocalDateTime toParam = strToParam.isEmpty() ? null : LocalDateTime.parse(strToParam);
+                    chatManager.ClearChat(fromParam, toParam);
                 }
-                else {
-                    LocalDateTime fromParam;
-                    LocalDateTime toParam;
-
-                    try {
-                        fromParam = LocalDateTime.parse(strFromParam);
-                        toParam = LocalDateTime.parse(strToParam);
-                        chatManager.ClearChat(fromParam, toParam);
-                    }
-                    catch(DateTimeParseException e) {
-                        try {
-                            fromParam = LocalDate.parse(strFromParam).atStartOfDay();
-                            toParam = LocalDate.parse(strToParam).plusDays(1).atStartOfDay();
-                            chatManager.ClearChat(fromParam, toParam);
-                        }
-                        catch(DateTimeParseException exp) {
-                            PrintWriter responseWriter = response.getWriter();
-                            responseWriter.append("Invalid request. Unexpected date/time format.");
-                            responseWriter.close();
-                        }
-                    }
+                catch(DateTimeParseException e) {
+                    PrintWriter responseWriter = response.getWriter();
+                    responseWriter.append("Invalid request. Unexpected date/time format.");
+                    responseWriter.close();
                 }
             }
         }

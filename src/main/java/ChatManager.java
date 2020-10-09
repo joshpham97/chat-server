@@ -31,15 +31,14 @@ public class ChatManager {
         return filterAndGetMessageStream(from, to).collect(Collectors.toCollection(ArrayList::new));
     }
 
-    public void ClearChat() {
-        messages.clear();
-    }
-
     public void ClearChat(LocalDateTime from, LocalDateTime to) {
+        LocalDateTime finalFrom = (from == null) ? LocalDateTime.MIN : from;
+        LocalDateTime finalTo = (to == null) ? LocalDateTime.MAX : to;
+
         for(int i = 0; i < messages.size(); i++) {
             LocalDateTime messageDate = messages.get(i).getDate();
 
-            if(messageDate.compareTo(from) >= 0 && messageDate.compareTo(to) <= 0) {
+            if(messageDate.compareTo(finalFrom) >= 0 && messageDate.compareTo(finalTo) <= 0) {
                 messages.remove(i);
                 i--;
             }
