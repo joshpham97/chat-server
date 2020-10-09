@@ -23,6 +23,19 @@ public class ChatManager {
         //System.out.println(messages.toString());
     }
 
+    public void postMessage(String username, String message, LocalDateTime date)
+    {
+        if(username.isEmpty()) //If username is empty, they post as Anonymous.
+        {
+            messages.add(new Message(message));
+        }
+        else
+        {
+            messages.add(new Message(username, message, date));
+        }
+        //System.out.println(messages.toString());
+    }
+
     public ArrayList<Message> ListMessages() {
         return messages;
     }
