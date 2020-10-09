@@ -54,7 +54,7 @@ public class Servlet extends HttpServlet {
             String content = "Content" + i;
             LocalDateTime date = LocalDateTime.of(2020, 10, i, 0, 0, 0);
             //Message message = new Message(username, content, date);
-            chatManager.postMessage(username, content);
+            chatManager.postMessage(username, content, date);
         }
     }
 
@@ -97,35 +97,39 @@ public class Servlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         PrintWriter responseWriter = response.getWriter();
 
-        if(request.getHeader("referer") != null){
-            String strFrom = request.getParameter(Parameters.FROM.toString());
-            String strTo = request.getParameter(Parameters.TO.toString());
-            String strFileFormat = request.getParameter(Parameters.FILE_FORMAT.toString());
+        try{
+            if(request.getHeader("referer") != null){
+                String strFrom = request.getParameter(Parameters.FROM.toString());
+                String strTo = request.getParameter(Parameters.TO.toString());
+                String strFileFormat = request.getParameter(Parameters.FILE_FORMAT.toString());
 
-            LocalDateTime from = ((strFrom != null) ? LocalDateTime.parse(strFrom) : null);
-            LocalDateTime to = ((strTo != null) ? LocalDateTime.parse(strTo) : null);
-            FileFormat fileFormat = ((strFileFormat != null) ? FileFormat.valueOf(strFileFormat) : null);
+                LocalDateTime from = strFrom.isEmpty() ? null : LocalDateTime.parse(strFrom);
+                LocalDateTime to = strTo.isEmpty() ? null : LocalDateTime.parse(strTo);
+                FileFormat fileFormat = strFileFormat.isEmpty() ? FileFormat.TEXT : FileFormat.valueOf(strFileFormat);
 
-            Stream<Message> filteredMessagesStream = chatManager.ListMessages(from, to).stream();
+                Stream<Message> filteredMessagesStream = chatManager.ListMessages(from, to).stream();
 
-            StringBuilder fileContent = new StringBuilder();
+                StringBuilder fileContent = new StringBuilder();
 
-            if(fileFormat == FileFormat.XML){
-                fileContent.append("<Messages>\n");
-                filteredMessagesStream.forEach((Message m) -> fileContent.append(m.toXML()));
-                fileContent.append("</Messages>");
-                response.setHeader("Content-Disposition", "attachment; filename=\"messages.xml\"");
+                if(fileFormat == FileFormat.XML){
+                    fileContent.append("<Messages>\n");
+                    filteredMessagesStream.forEach((Message m) -> fileContent.append(m.toXML()));
+                    fileContent.append("</Messages>");
+                    response.setHeader("Content-Disposition", "attachment; filename=\"messages.xml\"");
+                }else{
+                    filteredMessagesStream.forEach((Message m) -> fileContent.append(m.toString()).append("\n"));
+                    response.setHeader("Content-Disposition", "attachment; filename=\"messages.txt\"");
+                }
+
+                response.setContentType("text/plain");
+                response.setHeader("expires", LocalDateTime.now().format(FORMATTER));
+                responseWriter.append(fileContent.toString());
+
             }else{
-                filteredMessagesStream.forEach((Message m) -> fileContent.append(m.toString()).append("\n"));
-                response.setHeader("Content-Disposition", "attachment; filename=\"messages.txt\"");
+                responseWriter.append("Invalid request. No Referrer found.");
             }
-
-            response.setContentType("text/plain");
-            response.setHeader("expires", LocalDateTime.now().format(FORMATTER));
-            responseWriter.append(fileContent.toString());
-
-        }else{
-            responseWriter.append("Invalid request. No Referrer found.");
+        }catch (Exception ex){
+            responseWriter.append("An error has occurred while generating the Message Archive file.");
         }
 
         responseWriter.close();
