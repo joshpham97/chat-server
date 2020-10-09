@@ -93,7 +93,7 @@ public class Servlet extends HttpServlet {
                 responseWriter.append("Invalid request. No Referrer found.");
             }
         }catch (Exception ex){
-            ex.printStackTrace();
+            responseWriter.append("An error has occurred while generating the Message Archive file.");
         }
 
         responseWriter.close();
