@@ -1,0 +1,61 @@
+#navbar{
+    width: 100%;
+    background-color: #292b2c;
+    color: white;
+}
+
+#appLogo{
+    display: inline-block;
+    font-size: xx-large;
+    margin-left: 10px;
+    margin-bottom: 10px;
+}
+
+#navBarRightItems{
+    float: right;
+    display: block;
+    padding-top: 7px;
+    padding-right: 10px;
+}
+#usernameNavBar{
+    text-align: right;
+    display: block;
+}
+#themeDropdown {
+    text-align: right;
+    display: block;
+}
+
+#chatUI{
+    width: 60%;
+    display: inline-block;
+    padding: 20px;
+    background-color: #f7f7f7;
+    margin: 20px 20px 0px 20px;
+}
+#utilitiesUI{
+    width: 35%;
+    display: inline-block;
+    float: right;
+    padding: 20px;
+    margin: 0px 20px 20px 20px;
+}
+
+#messagesContainer{
+    background-color: white;
+    height: 500px;
+    margin-bottom: 20px;
+}
+
+.message{
+    width: 100%;
+    margin-left: 3px;
+}
+
+.messageContent{
+    width: 100%;
+}
+
+#usernameContainer{
+    float: right;
+}
