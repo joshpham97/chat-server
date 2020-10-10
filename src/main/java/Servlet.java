@@ -73,8 +73,8 @@ public class Servlet extends HttpServlet {
                 String strToParam = request.getParameter(Parameters.TO.toString());
 
                 try {
-                    LocalDateTime fromParam = strFromParam.isEmpty() ? null : LocalDateTime.parse(strFromParam);
-                    LocalDateTime toParam = strToParam.isEmpty() ? null : LocalDateTime.parse(strToParam);
+                    LocalDateTime fromParam = strFromParam.isEmpty() ? null : LocalDate.parse(strFromParam).atStartOfDay();
+                    LocalDateTime toParam = strToParam.isEmpty() ? null : LocalDate.parse(strToParam).plusDays(1).atStartOfDay();
                     chatManager.ClearChat(fromParam, toParam);
                 }
                 catch(DateTimeParseException e) {
@@ -103,8 +103,8 @@ public class Servlet extends HttpServlet {
                 String strTo = request.getParameter(Parameters.TO.toString());
                 String strFileFormat = request.getParameter(Parameters.FILE_FORMAT.toString());
 
-                LocalDateTime from = strFrom.isEmpty() ? null : LocalDateTime.parse(strFrom);
-                LocalDateTime to = strTo.isEmpty() ? null : LocalDateTime.parse(strTo);
+                LocalDateTime from = strFrom.isEmpty() ? null : LocalDate.parse(strFrom).atStartOfDay();
+                LocalDateTime to = strTo.isEmpty() ? null : LocalDate.parse(strTo).plusDays(1).atStartOfDay();
                 FileFormat fileFormat = strFileFormat.isEmpty() ? FileFormat.TEXT : FileFormat.valueOf(strFileFormat);
 
                 Stream<Message> filteredMessagesStream = chatManager.ListMessages(from, to).stream();
