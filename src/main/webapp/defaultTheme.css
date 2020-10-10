@@ -1,0 +1,130 @@
+body{
+    background-color: #e1d4ab;
+}
+
+.btn-primary{
+    background-color: #c3976a;
+    border-color: #c3976a;
+}
+
+.textPrimary{
+    color: white;
+}
+
+.textSecondary{
+    color: #769494;
+}
+#mainUI{
+    width: 80%;
+    margin: auto;
+}
+
+#navbar{
+    width: 100%;
+    background-color: #c3976a;
+    color: white;
+}
+
+#appLogo{
+    display: inline-block;
+    font-size: xx-large;
+    margin-left: 10px;
+    margin-bottom: 10px;
+}
+
+#navBarRightItems{
+    float: right;
+    display: block;
+    padding-top: 7px;
+    padding-right: 10px;
+}
+#usernameNavBar{
+    text-align: right;
+    display: block;
+}
+#themeDropdown {
+    text-align: right;
+    display: block;
+}
+
+#chatUI{
+    width: 60%;
+    display: inline-block;
+    padding: 20px;
+    background-color: #f7f7f7;
+    margin: 20px 0px 20px 20px;
+}
+#utilitiesUI{
+    width: 35%;
+    display: inline-block;
+    float: right;
+    padding: 20px;
+    margin: 0px 20px 20px 0px;
+}
+
+#messagesContainer{
+    background-color: white;
+    height: 500px;
+    margin-bottom: 20px;
+}
+
+.message{
+    width: 100%;
+    margin-left: 3px;
+}
+
+.messageContent{
+    width: 100%;
+}
+
+.senderName {
+    font-weight: bold;
+}
+
+#usernameContainer{
+    float: right;
+}
+
+#usernameChatUI span{
+    font-weight: bold;
+}
+
+#messageChatUI{
+    clear: both;
+}
+
+#btnPostMessageContainer {
+    margin-top: 5px;
+    text-align: center;
+}
+
+.card-header{
+    background-color: #c3976a;
+}
+
+.card-body{
+    background-color: #f7f7f7;
+}
+
+.customForm > div{
+    margin: 0px auto 10px auto;
+    width: 90%;
+}
+
+.customForm > div > label{
+    width: 15%;
+    text-align: right;
+    margin-right: 10px;
+}
+
+.customForm > div > input{
+    width: 75%;
+    display: inline-block;
+}
+
+.utilitiesUIBtnContainer {
+    text-align: center;
+    margin-bottom: 0px !important;
+}
+
+
