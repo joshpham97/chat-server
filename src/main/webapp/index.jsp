@@ -26,84 +26,86 @@
                 scope= "session"
                 class= "Beans.ThemeManager">
         </jsp:useBean>
-        <div class="<%= theme.getBackgroundCSSClass() %>">
-            <div id="navbar">
-                <div id="appLogo">
-                    <i class="fas fa-comments"></i>
-                    <span>Chat Server</span>
-                </div>
-                <div id="navBarRightItems">
-                    <span id="usernameNavBar">Anonymous<i class="fas fa-user ml-1"></i></span>
-                    <a id="themeDropdown">Change theme<i class="fas fa-cog ml-1"></i></a>
-                </div>
+        <div id="navbar">
+            <div id="appLogo">
+                <i class="fas fa-comments"></i>
+                <span>Chat Server</span>
             </div>
+            <div id="navBarRightItems">
+                <span id="usernameNavBar"><i class="fas fa-user mr-1"></i>Anonymous</span>
+                <a id="themeDropdown"><i class="fas fa-cog mr-1"></i>Change theme</a>
+            </div>
+        </div>
+        <div id="mainUI" class="<%= theme.getBackgroundCSSClass() %>">
             <div>
                 <div>
                     <div id="chatUI" class="rounded">
                         <div id="messagesContainer" class="overflow-auto container">
                             <div class="row mb-1 message rounded">
-                                <small class="m-1">Username</small>
+                                <small class="senderName textSecondary m-1">Username</small>
                                 <div class="m-1 messageContent">Here are some content...</div>
                             </div>
-                            <div class="row mb-1">
-                                <div class="rounded">
-                                    <small class="m-1">Username</small>
-                                    <div class="m-1">Here are some content...</div>
-                                </div>
+                            <div class="row mb-1 message rounded">
+                                <small class="senderName textSecondary m-1">Username</small>
+                                <div class="m-1 messageContent">Here are some content...</div>
                             </div>
-                            <div class="row mb-1">
-                                <div class="rounded">
-                                    <small class="m-1">Username</small>
-                                    <div class="m-1">Here are some content...</div>
-                                </div>
+                            <div class="row mb-1 message rounded">
+                                <small class="senderName textSecondary m-1">Username</small>
+                                <div class="m-1 messageContent">Here are some content...</div>
                             </div>
                         </div>
 
-                        <form action="Servlet" method="POST">
+                        <div id="usernameChatUI">
+                            Signed in as <span class="textSecondary">Anonymous</span>
+                        </div>
+                        <form class="form" action="Servlet" method="POST">
                             <input id="username" name="username" type="text" class="form-control" placeholder="Anonymous" hidden/>
                             <div>
-                                <span>Currently sending messages as Anonymous</span>
+                                <textarea id="message" name="message" class="form-control" rows="2" placeholder="Enter your message here..."></textarea>
                             </div>
-                            <div class="form-group">
-                                <textarea id="message" name="message" class="form-control" rows="3" placeholder="Enter your message here..."></textarea>
-                            </div>
-                            <div class="form-group">
-                                <input type="submit" value="Send" class="btn btn-primary mb-2"/>
+                            <div id="btnPostMessageContainer">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-paper-plane mr-1"></i>Send
+                                </button>
                             </div>
                         </form>
                     </div>
 
                     <div id="utilitiesUI">
-                        <div>
-                            <div class="card-header bg-dark text-light">
+                        <div class="card mb-1">
+                            <div class="card-header">
                                 <a data-toggle="collapse" data-target="#archiveCardBody">
-                                    <i class="fas fa-caret-down"></i> Archive Messages
+                                    <i class="fas fa-download mr-1 textPrimary"></i>
+                                    <span class="textPrimary">Archive Messages</span>
                                 </a>
                             </div>
                             <div class="collapse show" id="archiveCardBody">
                                 <div class="card-body">
-                                    <form action="Servlet">
-                                        <div class="form-group">
+                                    <form action="Servlet" class="customForm">
+                                        <div>
                                             <label for="archiveMessage_from">From: </label>
-                                            <input id="archiveMessage_from" name="from" type="datetime-local" class="form-control" />
+                                            <input id="archiveMessage_from" name="from" type="date" class="form-control"/>
                                         </div>
 
-                                        <div class="form-group">
+                                        <div>
                                             <label for="archiveMessage_to">To: </label>
-                                            <input id="archiveMessage_to" name="to" type="datetime-local" class="form-control" />
+                                            <input id="archiveMessage_to" name="to" type="date" class="form-control" />
                                         </div>
 
-                                        <div class="form-group">
-                                            <label class="radio">
+                                        <div>
+                                            <label for="archiveMessage_to">Format: </label>
+                                            <span class="radio">
                                                 <input type="radio" name="fileFormat" value="TEXT" checked/> TEXT
-                                            </label>
-                                            <label class="radio">
+                                            </span>
+                                            <span class="radio">
                                                 <input type="radio" name="fileFormat" value="XML"> XML
-                                            </label>
+                                            </span>
                                         </div>
 
-                                        <div class="form-group">
-                                            <button type="Submit" class="btn btn-dark mb-2">Download</button>
+                                        <div class="utilitiesUIBtnContainer">
+                                            <button type="Submit" class="btn btn-primary">
+                                                <i class="fas fa-download mr-1"></i>Download
+                                            </button>
                                         </div>
                                     </form>
                                 </div>
@@ -111,26 +113,29 @@
                         </div>
 
                         <div class="card">
-                            <div class="card-header bg-dark text-light">
+                            <div class="card-header">
                                 <a data-toggle="collapse" data-target="#DeleteCardBody">
-                                    Delete Messages
+                                    <i class="fas fa-trash-alt mr-1 textPrimary"></i>
+                                    <span class="textPrimary">Delete Messages</span>
                                 </a>
                             </div>
                             <div class="collapse show" id="deleteCardBody">
                                 <div class="card-body">
-                                    <form action="Servlet" method="post">
-                                        <div class="form-group">
+                                    <form action="Servlet" method="post" class="customForm">
+                                        <div>
                                             <label for="deleteMessage_from">From: </label>
-                                            <input id="deleteMessage_from" name="from" type="datetime-local" class="form-control" />
+                                            <input id="deleteMessage_from" name="from" type="date" class="form-control" />
                                         </div>
 
-                                        <div class="form-group">
+                                        <div>
                                             <label for="deleteMessage_to">To: </label>
-                                            <input id="deleteMessage_to" name="to" type="datetime-local" class="form-control" />
+                                            <input id="deleteMessage_to" name="to" type="date" class="form-control" />
                                         </div>
 
-                                        <div class="form-group">
-                                            <button type="Submit" name="clearChat" class="btn btn-primary mb-2">Delete</button>
+                                        <div class="utilitiesUIBtnContainer">
+                                            <button type="Submit" name="clearChat" class="btn btn-primary">
+                                                <i class="fas fa-trash-alt mr-1"></i>Delete
+                                            </button>
                                         </div>
                                     </form>
                                 </div>
