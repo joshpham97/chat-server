@@ -1,5 +1,6 @@
 import org.junit.jupiter.api.Test;
 
+import server.chat.Message;
 import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -47,7 +48,7 @@ class ChatManagerTest {
 //        cm.messages.add(new Message("username 2", "content 2", today));
 //        cm.messages.add(new Message("username 3", "content 3", today));
 //        assertEquals(3, cm.messages.size());
-//        cm.ClearChat();
+//        cm.ClearChat(null, null);
 //        assertEquals(0, cm.messages.size());
 //
 //        // Clear within date range

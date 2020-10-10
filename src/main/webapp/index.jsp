@@ -8,6 +8,9 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
          pageEncoding="ISO-8859-1"%>
 
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="server.chat.Message" %>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
     <head>
@@ -19,6 +22,7 @@
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
         <script src="https://kit.fontawesome.com/15f69f89ed.js" crossorigin="anonymous"></script>
+        <% ArrayList<Message> messages = (ArrayList<Message>)request.getAttribute("messages"); %>
     </head>
     <body>
         <jsp:useBean
@@ -41,18 +45,24 @@
                 <div>
                     <div id="chatUI" class="rounded">
                         <div id="messagesContainer" class="overflow-auto container">
-                            <div class="row mb-1 message rounded">
-                                <small class="senderName textSecondary m-1">Username</small>
-                                <div class="m-1 messageContent">Here are some content...</div>
-                            </div>
-                            <div class="row mb-1 message rounded">
-                                <small class="senderName textSecondary m-1">Username</small>
-                                <div class="m-1 messageContent">Here are some content...</div>
-                            </div>
-                            <div class="row mb-1 message rounded">
-                                <small class="senderName textSecondary m-1">Username</small>
-                                <div class="m-1 messageContent">Here are some content...</div>
-                            </div>
+                            <%
+                                if(messages == null || messages.size() == 0) {
+                            %>
+                                <div class="row mb-1">
+                                    No messages to display
+                                </div>
+                            <%
+                                } else {
+                                    for(Message m: messages) {
+                            %>
+                                        <div class="row mb-1 message rounded">
+                                            <small class="senderName textSecondary m-1"><%= m.getUsername() %></small>
+                                            <div class="m-1 messageContent"><%= m.getMessage() %></div>
+                                        </div>
+                            <%
+                                    }
+                                }
+                            %>
                         </div>
 
                         <div id="usernameChatUI">
@@ -72,6 +82,36 @@
                     </div>
 
                     <div id="utilitiesUI">
+                        <div class="card mb-1">
+                            <div class="card-header">
+                                <a data-toggle="collapse" data-target="#filterCardBody">
+                                    <i class="fas fa-filter mr-1 textPrimary"></i>
+                                    <span class="textPrimary">Filter Messages</span>
+                                </a>
+                            </div>
+                            <div class="collapse show" id="filterCardBody">
+                                <div class="card-body">
+                                    <form action="Servlet" class="customForm">
+                                        <div>
+                                            <label for="filterMessage_from">From: </label>
+                                            <input id="filterMessage_from" name="from" type="date" class="form-control"/>
+                                        </div>
+
+                                        <div>
+                                            <label for="filterMessage_to">To: </label>
+                                            <input id="filterMessage_to" name="to" type="date" class="form-control" />
+                                        </div>
+
+                                        <div class="utilitiesUIBtnContainer">
+                                            <button type="Submit" class="btn btn-primary" >
+                                                <i class="fas fa-filter mr-1"></i>Filter
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="card mb-1">
                             <div class="card-header">
                                 <a data-toggle="collapse" data-target="#archiveCardBody">
@@ -103,7 +143,7 @@
                                         </div>
 
                                         <div class="utilitiesUIBtnContainer">
-                                            <button type="Submit" class="btn btn-primary">
+                                            <button type="Submit" class="btn btn-primary" name="downloadChat">
                                                 <i class="fas fa-download mr-1"></i>Download
                                             </button>
                                         </div>
