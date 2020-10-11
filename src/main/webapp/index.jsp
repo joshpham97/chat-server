@@ -47,15 +47,6 @@
                     document.styleSheets[1].disabled = true;
                 }
             }
-
-            function sendMessage(){
-                $.get("Servlet", function(responseText) {
-                    alert(responseText)         
-                });
-            }
-
-            sendMessage();
-
         </script>
         <% ArrayList<Message> messages = (ArrayList<Message>)request.getAttribute("messages"); %>
     </head>
@@ -97,8 +88,12 @@
                     %>
                                 <div class="row mb-1 message rounded">
                                     <small class="senderName textSecondary m-1"><%= m.getUsername() %></small>
-                                    <div class="m-1 messageContent"><%= m.getMessage() %></div>
+                                    <div class="m-1 messageContent rounded"><%= m.getMessage() %></div>
                                 </div>
+                    <div class="row mb-1 message rounded">
+                        <small class="senderName textSecondary m-1"><%= m.getUsername() %></small>
+                        <div class="m-1 messageContent rounded"><%= m.getMessage() %></div>
+                    </div>
                     <%
                             }
                         }
