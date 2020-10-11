@@ -1,3 +1,5 @@
+package server.chat;
+
 import java.time.LocalDateTime;
 
 public class Message implements java.io.Serializable {
