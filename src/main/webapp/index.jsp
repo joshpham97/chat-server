@@ -54,7 +54,7 @@
                 });
             }
 
-            //sendMessage();
+            sendMessage();
 
         </script>
         <% ArrayList<Message> messages = (ArrayList<Message>)request.getAttribute("messages"); %>
