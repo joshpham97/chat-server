@@ -24,6 +24,7 @@ public class ChatManager {
         }
         //System.out.println(messages.toString());
     }
+    //RETURNS MESSAGE OBJ
     public Message postMessage(String username, String message)
     {
         if(username.isEmpty()) //If username is empty, they post as Anonymous.
