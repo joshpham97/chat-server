@@ -24,7 +24,7 @@
         <script type="text/javascript">
             document.styleSheets[1].disabled = false;
             document.styleSheets[2].disabled = true;
-            
+
             function setUsername(){
                 let person = prompt("Please choose a username", "Anonymous");
                 if (person != null) {

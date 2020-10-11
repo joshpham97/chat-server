@@ -13,18 +13,20 @@
     background-color: #292b2c;
 }
 .bgSecondary{
-    background-color: #f7f7f7;;
+    background-color: #4a4c4f;
 }
 
 /* Main background */
 body{
-    background-color: #e1d4ab;
+    background-color: #4a4c4f;
 }
 
 /* Navbar style*/
 #navbar{
-    width: 100%;
+    width: 20%;
+    height: 100vh;
     color: white;
+    display: inline-block;
 }
 
 #appLogo{
@@ -34,7 +36,7 @@ body{
     margin-bottom: 10px;
 }
 #navBarMenu{
-    float: right;
+    float: bottom;
     display: block;
     padding-top: 7px;
     padding-right: 10px;
