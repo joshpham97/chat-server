@@ -1,9 +1,13 @@
+import server.chat.Message;
+
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class ChatManager {
     private ArrayList<Message> messages;
-
+    private Message msg;
     public ChatManager() {
         messages = new ArrayList<Message>();
     }
@@ -20,36 +24,61 @@ public class ChatManager {
         }
         //System.out.println(messages.toString());
     }
+    public Message postMessage(String username, String message)
+    {
+        if(username.isEmpty()) //If username is empty, they post as Anonymous.
+        {
+            msg = new Message(message);
+        }
+        else
+        {
+            msg = new Message(username, message);
+        }
+        messages.add(msg);
+        return msg;
+    }
+
+    public void postMessage(String username, String message, LocalDateTime date)
+    {
+        if(username.isEmpty()) //If username is empty, they post as Anonymous.
+        {
+            messages.add(new Message(message));
+        }
+        else
+        {
+            messages.add(new Message(username, message, date));
+        }
+        //System.out.println(messages.toString());
+    }
 
     public ArrayList<Message> ListMessages() {
         return messages;
     }
 
-    public ArrayList<Message> ListMessages(Date from, Date to) {
-        ArrayList<Message> messagesInRange = new ArrayList<Message>();
-
-        for(Message m: messages) {
-            Date mDate = m.getDate();
-
-            if(mDate.compareTo(from) >= 0 && mDate.compareTo(to) <= 0)
-                messagesInRange.add(m);
-        }
-
-        return messagesInRange;
+    public ArrayList<Message> ListMessages(LocalDateTime from, LocalDateTime to) {
+        return filterAndGetMessageStream(from, to).collect(Collectors.toCollection(ArrayList::new));
     }
 
-    public void ClearChat() {
-        messages.clear();
-    }
+    public void ClearChat(LocalDateTime from, LocalDateTime to) {
+        LocalDateTime finalFrom = (from == null) ? LocalDateTime.MIN : from;
+        LocalDateTime finalTo = (to == null) ? LocalDateTime.MAX : to;
 
-    public void ClearChat(Date from, Date to) {
         for(int i = 0; i < messages.size(); i++) {
-            Date messageDate = messages.get(i).getDate();
+            LocalDateTime messageDate = messages.get(i).getDate();
 
-            if(messageDate.compareTo(from) >= 0 && messageDate.compareTo(to) <= 0) {
+            if(messageDate.compareTo(finalFrom) >= 0 && messageDate.compareTo(finalTo) <= 0) {
                 messages.remove(i);
                 i--;
             }
         }
+    }
+
+    private Stream<Message> filterAndGetMessageStream(LocalDateTime from, LocalDateTime to) {
+        //Variables in lambda function must be final
+        final LocalDateTime finalFrom = (from == null) ? LocalDateTime.MIN : from;
+        final LocalDateTime finalTo = (to == null) ? LocalDateTime.MAX : to;
+
+        return messages.stream()
+                       .filter(m -> (m.getDate().compareTo(finalFrom) >= 0 && m.getDate().compareTo(finalTo) <= 0));
     }
 }
