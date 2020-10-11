@@ -1,21 +1,17 @@
+import server.chat.Message;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.Locale;
-import java.util.TimeZone;
 import java.util.stream.Stream;
-
-import static java.time.format.DateTimeFormatter.RFC_1123_DATE_TIME;
 
 @WebServlet(name = "Servlet")
 public class Servlet extends HttpServlet {
@@ -25,6 +21,7 @@ public class Servlet extends HttpServlet {
         FILE_FORMAT("fileFormat"),
         POST_MESSAGE("postMessage"),
         CLEAR_CHAT("clearChat"),
+        DOWNLOAD_CHAT("downloadChat"),
         USERNAME("username"),
         MESSAGE("message");
 
@@ -64,12 +61,12 @@ public class Servlet extends HttpServlet {
         if(request.getHeader("referer") != null) {
             String postMessageParam = request.getParameter(Parameters.POST_MESSAGE.toString());
             String clearChatParam= request.getParameter(Parameters.CLEAR_CHAT.toString());
-            String usernameParam = request.getParameter(Parameters.USERNAME.toString());
-            String messageParam = request.getParameter(Parameters.MESSAGE.toString());
+            String userParam = request.getParameter(Parameters.USERNAME.toString());
+            String messageParam= request.getParameter(Parameters.MESSAGE.toString());
 
             // POST MESSAGE
             if(postMessageParam != null) {
-                chatManager.postMessage(usernameParam, messageParam);
+                chatManager.postMessage(userParam, messageParam);;
                 request.setAttribute("messages", chatManager.ListMessages());
             }
             // CLEAR CHAT
@@ -78,8 +75,8 @@ public class Servlet extends HttpServlet {
                 String strToParam = request.getParameter(Parameters.TO.toString());
 
                 try {
-                    LocalDateTime fromParam = strFromParam.isEmpty() ? null : LocalDateTime.parse(strFromParam);
-                    LocalDateTime toParam = strToParam.isEmpty() ? null : LocalDateTime.parse(strToParam);
+                    LocalDateTime fromParam = strFromParam.isEmpty() ? null : LocalDate.parse(strFromParam).atStartOfDay();
+                    LocalDateTime toParam = strToParam.isEmpty() ? null : LocalDate.parse(strToParam).plusDays(1).atStartOfDay();
                     chatManager.ClearChat(fromParam, toParam);
                 }
                 catch(DateTimeParseException e) {
@@ -106,30 +103,36 @@ public class Servlet extends HttpServlet {
             if(request.getHeader("referer") != null){
                 String strFrom = request.getParameter(Parameters.FROM.toString());
                 String strTo = request.getParameter(Parameters.TO.toString());
-                String strFileFormat = request.getParameter(Parameters.FILE_FORMAT.toString());
+                String downloadChatParam = request.getParameter(Parameters.DOWNLOAD_CHAT.toString());
 
-                LocalDateTime from = strFrom.isEmpty() ? null : LocalDateTime.parse(strFrom);
-                LocalDateTime to = strTo.isEmpty() ? null : LocalDateTime.parse(strTo);
-                FileFormat fileFormat = strFileFormat.isEmpty() ? FileFormat.TEXT : FileFormat.valueOf(strFileFormat);
+                LocalDateTime from = strFrom.isEmpty() ? null : LocalDate.parse(strFrom).atStartOfDay();
+                LocalDateTime to = strTo.isEmpty() ? null : LocalDate.parse(strTo).plusDays(1).atStartOfDay();
 
-                Stream<Message> filteredMessagesStream = chatManager.ListMessages(from, to).stream();
+                if(downloadChatParam != null) {
+                    Stream<Message> filteredMessagesStream = chatManager.ListMessages(from, to).stream();
 
-                StringBuilder fileContent = new StringBuilder();
+                    String strFileFormat = request.getParameter(Parameters.FILE_FORMAT.toString());
+                    FileFormat fileFormat = strFileFormat.isEmpty() ? FileFormat.TEXT : FileFormat.valueOf(strFileFormat);
 
-                if(fileFormat == FileFormat.XML){
-                    fileContent.append("<Messages>\n");
-                    filteredMessagesStream.forEach((Message m) -> fileContent.append(m.toXML()));
-                    fileContent.append("</Messages>");
-                    response.setHeader("Content-Disposition", "attachment; filename=\"messages.xml\"");
-                }else{
-                    filteredMessagesStream.forEach((Message m) -> fileContent.append(m.toString()).append("\n"));
-                    response.setHeader("Content-Disposition", "attachment; filename=\"messages.txt\"");
+                    StringBuilder fileContent = new StringBuilder();
+
+                    if (fileFormat == FileFormat.XML) {
+                        fileContent.append("<Messages>\n");
+                        filteredMessagesStream.forEach((Message m) -> fileContent.append(m.toXML()));
+                        fileContent.append("</Messages>");
+                        response.setHeader("Content-Disposition", "attachment; filename=\"messages.xml\"");
+                    } else {
+                        filteredMessagesStream.forEach((Message m) -> fileContent.append(m.toString()).append("\n"));
+                        response.setHeader("Content-Disposition", "attachment; filename=\"messages.txt\"");
+                    }
+
+                    response.setContentType("text/plain");
+                    response.setHeader("expires", LocalDateTime.now().format(FORMATTER));
+                    responseWriter.append(fileContent.toString());
+                } else {
+                    request.setAttribute("messages", chatManager.ListMessages(from, to));
+                    request.getRequestDispatcher("/").forward(request, response);
                 }
-
-                response.setContentType("text/plain");
-                response.setHeader("expires", LocalDateTime.now().format(FORMATTER));
-                responseWriter.append(fileContent.toString());
-
             }else{
                 responseWriter.append("Invalid request. No Referrer found.");
             }
