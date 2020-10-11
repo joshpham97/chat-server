@@ -64,7 +64,8 @@ public class Servlet extends HttpServlet {
 
             // POST MESSAGE
             if(postMessageParam != null) {
-                // TODO: post message
+                chatManager.postMessage(userParam, messageParam);;
+                request.setAttribute("messages", chatManager.ListMessages());
             }
             // CLEAR CHAT
             else if (clearChatParam != null) {
