@@ -58,15 +58,20 @@ public class Servlet extends HttpServlet {
         PrintWriter responseWriter = response.getWriter();
 
         if(request.getHeader("referer") != null) {
-            String userParam = request.getParameter(Parameters.USERNAME.toString());
             String messageParam= request.getParameter(Parameters.MESSAGE.toString());
 
-            userParam = (userParam == null) ? "" : userParam;
-            Message newMessage = chatManager.postMessage(userParam, messageParam);
+            if(messageParam == null || messageParam.isEmpty()){
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                responseWriter.append("Invalid request. No message found.");
+            }else{
+                String userParam = request.getParameter(Parameters.USERNAME.toString());
+                userParam = (userParam == null) ? "" : userParam;
+                Message newMessage = chatManager.postMessage(userParam, messageParam);
 
-            Gson gson = new Gson();
-            String jsonMessage = gson.toJson(newMessage);
-            responseWriter.append(jsonMessage);
+                Gson gson = new Gson();
+                String jsonMessage = gson.toJson(newMessage);
+                responseWriter.append(jsonMessage);
+            }
         }
         else {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -151,8 +156,8 @@ public class Servlet extends HttpServlet {
             String strToParam = request.getParameter(Parameters.TO.toString());
 
             try {
-                LocalDateTime fromParam = strFromParam.isEmpty() ? null : LocalDate.parse(strFromParam).atStartOfDay();
-                LocalDateTime toParam = strToParam.isEmpty() ? null : LocalDate.parse(strToParam).plusDays(1).atStartOfDay();
+                LocalDateTime fromParam = (strFromParam == null || strFromParam.isEmpty()) ? null : LocalDate.parse(strFromParam).atStartOfDay();
+                LocalDateTime toParam = (strToParam == null || strToParam.isEmpty()) ? null : LocalDate.parse(strToParam).plusDays(1).atStartOfDay();
                 chatManager.clearChat(fromParam, toParam);
             } catch (DateTimeParseException e) {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
