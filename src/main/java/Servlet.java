@@ -36,24 +36,13 @@ public class Servlet extends HttpServlet {
 
 
     private ChatManager chatManager;
-    //private final String TIME_ZONE_ID = TimeZone.getDefault().toString();
-    //private final Locale LOCALE = Locale.ENGLISH;
-    private final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd MMM yyyy HH:mm:ss");
-    private final DateTimeFormatter FORMATTER2 = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    private final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     @Override
     public void init() throws ServletException {
         super.init();
 
         chatManager = new ChatManager();
-
-        for(int i=1; i<=5; i++){
-            String username = "User" + i;
-            String content = "Content" + i;
-            LocalDateTime date = LocalDateTime.of(2020, 10, i, 0, 0, 0);
-            //Message message = new Message(username, content, date);
-            chatManager.postMessage(username, content, date);
-        }
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -61,16 +50,19 @@ public class Servlet extends HttpServlet {
             String userParam = request.getParameter(Parameters.USERNAME.toString());
             String messageParam= request.getParameter(Parameters.MESSAGE.toString());
 
-            chatManager.postMessage(userParam, messageParam);;
-            request.setAttribute("messages", chatManager.ListMessages());
+            Message newMessage = chatManager.postMessage(userParam, messageParam);
+
+            Gson gson = new Gson();
+            String jsonMessage = gson.toJson(newMessage);
+            PrintWriter responseWriter = response.getWriter();
+            responseWriter.append(jsonMessage);
+            responseWriter.close();
         }
         else {
             PrintWriter responseWriter = response.getWriter();
             responseWriter.append("Invalid request. No Referrer found.");
             responseWriter.close();
         }
-
-        request.getRequestDispatcher("/").forward(request, response);
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -123,8 +115,8 @@ public class Servlet extends HttpServlet {
                 String strFrom = request.getParameter(Parameters.FROM.toString());
                 String strTo = request.getParameter(Parameters.TO.toString());
 
-                LocalDateTime from = (strFrom == null || strFrom.isEmpty()) ? null : LocalDateTime.parse(strFrom, FORMATTER2);
-                LocalDateTime to = (strTo == null || strTo.isEmpty()) ? null : LocalDateTime.parse(strTo, FORMATTER2);
+                LocalDateTime from = (strFrom == null || strFrom.isEmpty()) ? null : LocalDateTime.parse(strFrom, FORMATTER);
+                LocalDateTime to = (strTo == null || strTo.isEmpty()) ? null : LocalDateTime.parse(strTo, FORMATTER);
 
                 Gson gson = new Gson();
                 String x = gson.toJson(chatManager.ListMessages(from, to));

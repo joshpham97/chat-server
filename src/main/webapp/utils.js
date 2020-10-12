@@ -12,19 +12,41 @@ function refresh(){
     })
 }
 
-function addMessages(messages){
-    let placeholder = $("#noMessagePlaceholder");
-    if(placeholder.length){
-        placeholder.remove();
+function sendMessage(){
+    if($("#message").val() == ""){
+        alert("Please enter some message before sending");
+    }else{
+        let data = {
+            "username": $("#usernameHidden").val(),
+            "postMessage": $("#message").val()
+        };
+        $.ajax({
+            url: 'Servlet',
+            type: 'POST',
+            data: data,
+            success: function(data) {
+                $("#message").val(""); //Empty the field
+            }
+        })
     }
+}
 
-    $.each(messages, function (index, value){
-        let newMessage = '<div class="row mb-1 message rounded">' +
-            '<small class="senderName textSecondary m-1">' + value.username + '</small>' +
-            '<div class="m-1 messageContent">' + value.message + '</div>' +
-            '</div>'
-        $("#messagesContainer").append(newMessage);
-    })
+function addMessages(messages){
+    if (messages.length > 0){
+        let placeholder = $("#noMessagePlaceholder");
+        if(placeholder.length){
+            placeholder.remove();
+        }
+
+        $.each(messages, function (index, value){
+            let newMessage = '<div class="row mb-1 message rounded">' +
+                '<small class="senderName textSecondary m-1">' + value.username + '</small>' +
+                '<div class="m-1 messageContent rounded">' + value.message + '</div>' +
+                '</div>';
+
+            $("#messagesContainer").append(newMessage);
+        })
+    }
 }
 
 function formatDate(date){
@@ -54,11 +76,15 @@ function setUsername(){
 
 function switchTheme(){
     if (document.styleSheets[1].disabled) {
-        document.styleSheets[1].disabled = false;
-        document.styleSheets[2].disabled = true;
+        if(confirm("Switch to default theme?")){
+            document.styleSheets[1].disabled = false;
+            document.styleSheets[2].disabled = true;
+        }
     }else{
-        document.styleSheets[2].disabled = false;
-        document.styleSheets[1].disabled = true;
+        if(confirm("Switch to dark theme?")) {
+            document.styleSheets[2].disabled = false;
+            document.styleSheets[1].disabled = true;
+        }
     }
 }
 
@@ -84,7 +110,7 @@ let refreshDate = new Date();
 refreshDate.setDate(refreshDate.getDate() - 14);
 $('#refreshDate').val(formatDate(refreshDate));
 
-setInterval(refresh, 1000*5);
+setInterval(refresh, 1000*2);
 
 //Set up the theme switching functionality
 document.styleSheets[1].disabled = false;
