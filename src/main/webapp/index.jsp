@@ -168,7 +168,7 @@
                                 </div>
 
                                 <div class="utilitiesUIBtnContainer">
-                                    <button type="Submit" name="clearChat" class="btn btn-primary">
+                                    <button id="deleteMessagesBtn" type="Submit" name="clearChat" class="btn btn-primary">
                                         <i class="fas fa-trash-alt mr-1"></i>Delete
                                     </button>
                                 </div>
