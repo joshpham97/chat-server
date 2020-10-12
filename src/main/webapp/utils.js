@@ -9,8 +9,8 @@ function refresh(){
             addMessages(JSON.parse(data));
             $("#refreshDate").val(formatDate(newRefreshDate));
         },
-        error: function() {
-            alert("Oh my... Looks like an error has occurred.");
+        error: function(e) {
+            alert(e.responseText);
         }
     })
 }
@@ -30,8 +30,8 @@ function sendMessage(){
             success: function(data) {
                 $("#message").val(""); //Empty the field
             },
-            error: function() {
-                alert("Oh my... Looks like an error has occurred.");
+            error: function(e) {
+                alert(e.responseText);
             }
         })
     }
@@ -111,8 +111,8 @@ function deleteMessages(from, to){
             $('#refreshDate').val(formatDate(date));
             refresh();
         },
-        error: function() {
-            alert("Oh my... Looks like an error has occurred.");
+        error: function(e) {
+            alert(e.responseText);
         }
     })
 }
