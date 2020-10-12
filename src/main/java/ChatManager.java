@@ -7,22 +7,23 @@ import java.util.stream.Stream;
 
 public class ChatManager {
     private ArrayList<Message> messages;
-
+    private Message msg;
     public ChatManager() {
         messages = new ArrayList<Message>();
     }
-  
-    public void postMessage(String username, String message)
+
+    public Message postMessage(String username, String message)
     {
         if(username.isEmpty()) //If username is empty, they post as Anonymous.
         {
-            messages.add(new Message(message));
+            msg = new Message(message);
         }
         else
         {
-            messages.add(new Message(username, message));
+            msg = new Message(username, message);
         }
-        //System.out.println(messages.toString());
+        messages.add(msg);
+        return msg;
     }
 
     public void postMessage(String username, String message, LocalDateTime date)

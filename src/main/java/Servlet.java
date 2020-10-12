@@ -1,3 +1,4 @@
+import com.google.gson.Gson;
 import server.chat.Message;
 
 import javax.servlet.ServletException;
@@ -21,7 +22,9 @@ public class Servlet extends HttpServlet {
         FILE_FORMAT("fileFormat"),
         POST_MESSAGE("postMessage"),
         CLEAR_CHAT("clearChat"),
-        DOWNLOAD_CHAT("downloadChat");
+        DOWNLOAD_CHAT("downloadChat"),
+        USERNAME("username"),
+        MESSAGE("message");
 
         private final String value;
 
@@ -39,6 +42,7 @@ public class Servlet extends HttpServlet {
     //private final String TIME_ZONE_ID = TimeZone.getDefault().toString();
     //private final Locale LOCALE = Locale.ENGLISH;
     private final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd MMM yyyy HH:mm:ss");
+    private final DateTimeFormatter FORMATTER2 = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     @Override
     public void init() throws ServletException {
@@ -59,10 +63,13 @@ public class Servlet extends HttpServlet {
         if(request.getHeader("referer") != null) {
             String postMessageParam = request.getParameter(Parameters.POST_MESSAGE.toString());
             String clearChatParam= request.getParameter(Parameters.CLEAR_CHAT.toString());
+            String userParam = request.getParameter(Parameters.USERNAME.toString());
+            String messageParam= request.getParameter(Parameters.MESSAGE.toString());
 
             // POST MESSAGE
             if(postMessageParam != null) {
-                // TODO: post message
+                chatManager.postMessage(userParam, messageParam);;
+                request.setAttribute("messages", chatManager.ListMessages());
             }
             // CLEAR CHAT
             else if (clearChatParam != null) {
@@ -98,38 +105,55 @@ public class Servlet extends HttpServlet {
             if(request.getHeader("referer") != null){
                 String strFrom = request.getParameter(Parameters.FROM.toString());
                 String strTo = request.getParameter(Parameters.TO.toString());
-                String downloadChatParam = request.getParameter(Parameters.DOWNLOAD_CHAT.toString());
 
-                LocalDateTime from = strFrom.isEmpty() ? null : LocalDate.parse(strFrom).atStartOfDay();
-                LocalDateTime to = strTo.isEmpty() ? null : LocalDate.parse(strTo).plusDays(1).atStartOfDay();
+                LocalDateTime from = (strFrom == null || strFrom.isEmpty()) ? null : LocalDate.parse(strFrom).atStartOfDay();
+                LocalDateTime to = (strTo == null || strTo.isEmpty()) ? null : LocalDate.parse(strTo).plusDays(1).atStartOfDay();
 
-                if(downloadChatParam != null) {
-                    Stream<Message> filteredMessagesStream = chatManager.ListMessages(from, to).stream();
 
-                    String strFileFormat = request.getParameter(Parameters.FILE_FORMAT.toString());
-                    FileFormat fileFormat = strFileFormat.isEmpty() ? FileFormat.TEXT : FileFormat.valueOf(strFileFormat);
+                Stream<Message> filteredMessagesStream = chatManager.ListMessages(from, to).stream();
 
-                    StringBuilder fileContent = new StringBuilder();
+                String strFileFormat = request.getParameter(Parameters.FILE_FORMAT.toString());
+                FileFormat fileFormat = strFileFormat.isEmpty() ? FileFormat.TEXT : FileFormat.valueOf(strFileFormat);
 
-                    if (fileFormat == FileFormat.XML) {
-                        fileContent.append("<Messages>\n");
-                        filteredMessagesStream.forEach((Message m) -> fileContent.append(m.toXML()));
-                        fileContent.append("</Messages>");
-                        response.setHeader("Content-Disposition", "attachment; filename=\"messages.xml\"");
-                    } else {
-                        filteredMessagesStream.forEach((Message m) -> fileContent.append(m.toString()).append("\n"));
-                        response.setHeader("Content-Disposition", "attachment; filename=\"messages.txt\"");
-                    }
+                StringBuilder fileContent = new StringBuilder();
 
-                    response.setContentType("text/plain");
-                    response.setHeader("expires", LocalDateTime.now().format(FORMATTER));
-                    responseWriter.append(fileContent.toString());
+                if (fileFormat == FileFormat.XML) {
+                    fileContent.append("<Messages>\n");
+                    filteredMessagesStream.forEach((Message m) -> fileContent.append(m.toXML()));
+                    fileContent.append("</Messages>");
+                    response.setHeader("Content-Disposition", "attachment; filename=\"messages.xml\"");
                 } else {
-                    request.setAttribute("messages", chatManager.ListMessages(from, to));
-                    request.getRequestDispatcher("/").forward(request, response);
+                    filteredMessagesStream.forEach((Message m) -> fileContent.append(m.toString()).append("\n"));
+                    response.setHeader("Content-Disposition", "attachment; filename=\"messages.txt\"");
                 }
+
+                response.setContentType("text/plain");
+                response.setHeader("expires", LocalDateTime.now().format(FORMATTER));
+                responseWriter.append(fileContent.toString());
             }else{
                 responseWriter.append("Invalid request. No Referrer found.");
+            }
+        }catch (Exception ex){
+            responseWriter.append("An error has occurred while generating the Message Archive file.");
+        }
+
+        responseWriter.close();
+    }
+
+    protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        PrintWriter responseWriter = response.getWriter();
+
+        try{
+            if(request.getHeader("referer") != null) {
+                String strFrom = request.getParameter(Parameters.FROM.toString());
+                String strTo = request.getParameter(Parameters.TO.toString());
+
+                LocalDateTime from = (strFrom == null || strFrom.isEmpty()) ? null : LocalDateTime.parse(strFrom, FORMATTER2);
+                LocalDateTime to = (strTo == null || strTo.isEmpty()) ? null : LocalDateTime.parse(strTo, FORMATTER2);
+
+                Gson gson = new Gson();
+                String x = gson.toJson(chatManager.ListMessages(from, to));
+                responseWriter.append(x);
             }
         }catch (Exception ex){
             responseWriter.append("An error has occurred while generating the Message Archive file.");

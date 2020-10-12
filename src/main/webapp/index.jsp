@@ -24,30 +24,6 @@
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
         <script src="https://kit.fontawesome.com/15f69f89ed.js" crossorigin="anonymous"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
-        <script type="text/javascript">
-            document.styleSheets[1].disabled = false;
-            document.styleSheets[2].disabled = true;
-
-            function setUsername(){
-                let person = prompt("Please choose a username", "Anonymous");
-                if (person != null) {
-                    document.getElementById("usernameDisplay").innerHTML = person;
-                    document.getElementById("usernameHidden").value = person;
-                    document.getElementById("usernameNavBar").innerHTML = person;
-                }
-            }
-
-            function switchTheme(){
-                if (document.styleSheets[1].disabled) {
-                    document.styleSheets[1].disabled = false;
-                    document.styleSheets[2].disabled = true;
-                }else{
-                    document.styleSheets[2].disabled = false;
-                    document.styleSheets[1].disabled = true;
-                }
-            }
-        </script>
         <% ArrayList<Message> messages = (ArrayList<Message>)request.getAttribute("messages"); %>
     </head>
     <body>
@@ -56,6 +32,7 @@
                 scope= "session"
                 class= "Beans.ThemeManager">
         </jsp:useBean>
+        <input id="refreshDate" type="text" hidden />
         <div id="navbar" class="bgPrimary textPrimary">
             <div id="appLogo">
                 <i class="fas fa-comments"></i>
@@ -76,28 +53,10 @@
         <div id="mainUI" class="<%= theme.getBackgroundCSSClass() %>">
             <div id="chatUI" class="bgSecondary rounded">
                 <div id="messagesContainer" class="overflow-auto container">
-                    <%
-                        if(messages == null || messages.size() == 0) {
-                    %>
-                        <div class="row mb-1">
-                            No messages to display
-                        </div>
-                    <%
-                        } else {
-                            for(Message m: messages) {
-                    %>
-                                <div class="row mb-1 message rounded">
-                                    <small class="senderName textSecondary m-1"><%= m.getUsername() %></small>
-                                    <div class="m-1 messageContent rounded"><%= m.getMessage() %></div>
-                                </div>
-                    <div class="row mb-1 message rounded">
-                        <small class="senderName textSecondary m-1"><%= m.getUsername() %></small>
-                        <div class="m-1 messageContent rounded"><%= m.getMessage() %></div>
+                    <div id="noMessagePlaceholder">
+                        <i class="far fa-comment-alt"></i>
+                        <span>Send a message to start the chat!</span>
                     </div>
-                    <%
-                            }
-                        }
-                    %>
                 </div>
                 <div id="usernameChatUI">
                     <span>Sending messages as</span>
@@ -216,6 +175,7 @@
                         </div>
                     </div>
                 </div>
+            </div>
         </div>
     </body>
 </html>
