@@ -7,7 +7,7 @@
     color: white;
 }
 .textSecondary{
-    color: #769494;
+    color: #A8C6C6;
 }
 .bgPrimary{
     background-color: #292b2c;
@@ -27,73 +27,116 @@ body{
     height: 100vh;
     color: white;
     display: inline-block;
+    position: fixed;
 }
 
 #appLogo{
+    width: 100%;
+    text-align: center;
     display: inline-block;
     font-size: xx-large;
-    margin-left: 10px;
-    margin-bottom: 10px;
+    padding: 10px 5px;
 }
 #navBarMenu{
     float: bottom;
     display: block;
-    padding-top: 7px;
-    padding-right: 10px;
+    margin-top: 10px;
 }
 .navBarMenuItem{
-    text-align: right;
+    text-align: center;
     display: block;
     cursor: pointer;
+    padding: 10px 0;
+    border-right: 1px solid #ffffff00;
+}
+.navBarMenuItem:hover{
+    background-color: #666666;
+    border-right-color: white;
 }
 
 /* Main UI*/
 #mainUI{
     width: 80%;
     margin: auto;
+    float: right;
 }
 
 /* Chat UI */
 #chatUI{
-    width: 60%;
+    width: 62%;
     display: inline-block;
     padding: 20px;
-    margin: 20px 0px 20px 20px;
 }
 #messagesContainer{
-    background-color: white;
-    height: 500px;
     margin-bottom: 20px;
 }
 .message{
     width: 100%;
+    display: inline-block;
     margin-left: 3px;
+    margin-bottom: 1rem !important;
 }
-.senderName {
+.senderName{
+    color: white;
     font-weight: bold;
 }
 .messageContent{
-    width: 100%;
+    width: fit-content;
+    background-color: white;
+    padding: .5rem;
 }
-#usernameChatUI span{
+#usernameChatUI {
     font-weight: bold;
+    color: white;
 }
-#btnPostMessageContainer {
+#message{
+    width: 85%;
+    float: left;
+}
+#btnPostMessageContainer{
     margin-top: 5px;
-    text-align: center;
+}
+#btnPostMessageContainer button {
+    height: 50px;
+    width: 50px;
+    border-radius: 25px;
+    margin-top: 7px;
+    margin-left: 10px;
+}
+#btnPostMessageContainer span{
+    display: none;
 }
 
 /* Download and delete UI*/
 #utilitiesUI{
-    width: 35%;
+    width: 30%;
+    height: 100%;
     display: inline-block;
-    float: right;
-    padding: 20px;
-    margin: 0px 20px 20px 0px;
+    text-align: center;
+    position: fixed;
+    right: 0px;
+    background-color: #292b2c;
+    overflow-y: hidden;
 }
 
 #utilitiesUI > .card {
-    margin-bottom: 10px;
+    border: 0;
+}
+
+#utilitiesUI > .card > .card-header {
+    padding: 0;
+    border-left: 1px solid #ffffff00;
+    border-radius: 0;
+}
+
+#utilitiesUI > .card > .card-header:hover {
+    background-color: #666666;
+    border-left-color: white;
+}
+
+#utilitiesUI > .card > .card-header > a {
+    width: 100%;
+    padding: 10px 0;
 }
 
 .customForm > div{
@@ -116,5 +159,6 @@ body{
     text-align: center;
     margin-bottom: 0px !important;
 }
+
 
 
