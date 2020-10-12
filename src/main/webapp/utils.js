@@ -8,6 +8,9 @@ function refresh(){
             console.log(data);
             addMessages(JSON.parse(data));
             $("#refreshDate").val(formatDate(newRefreshDate));
+        },
+        error: function(e) {
+            alert(e.responseText);
         }
     })
 }
@@ -26,6 +29,9 @@ function sendMessage(){
             data: data,
             success: function(data) {
                 $("#message").val(""); //Empty the field
+            },
+            error: function(e) {
+                alert(e.responseText);
             }
         })
     }
@@ -104,6 +110,9 @@ function deleteMessages(from, to){
             date.setDate(date.getDate() - 14);
             $('#refreshDate').val(formatDate(date));
             refresh();
+        },
+        error: function(e) {
+            alert(e.responseText);
         }
     })
 }
