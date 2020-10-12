@@ -57,7 +57,7 @@
 
                     <input id="usernameHidden" name="username" type="text" class="form-control" placeholder="Anonymous" style="display: none"/>
                     <div>
-                        <textarea id="message" name="message" class="form-control" rows="2" placeholder="Enter your message here..." />
+                        <textarea id="message" name="message" class="form-control" rows="2" placeholder="Enter your message here..."></textarea>
                         <div id="btnPostMessageContainer">
                             <div class="btn btn-primary" onclick="sendMessage()">
                                 <i class="fas fa-paper-plane mr-1" />
