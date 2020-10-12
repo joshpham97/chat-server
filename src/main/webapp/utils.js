@@ -18,7 +18,7 @@ function sendMessage(){
     }else{
         let data = {
             "username": $("#usernameHidden").val(),
-            "postMessage": $("#message").val()
+            "message": $("#message").val()
         };
         $.ajax({
             url: 'Servlet',

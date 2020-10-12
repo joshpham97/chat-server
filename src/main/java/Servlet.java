@@ -43,6 +43,15 @@ public class Servlet extends HttpServlet {
         super.init();
 
         chatManager = new ChatManager();
+
+        //Code to test download - dont remove please
+        for(int i=1; i<=10; i++){
+           String username = "User" + (i % 2);
+           String message = "Message " + i;
+           LocalDateTime date = LocalDateTime.of(2020, 10, i, i,0,0);
+           chatManager.postMessage(username, message, date);
+
+        }
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -77,7 +86,7 @@ public class Servlet extends HttpServlet {
                 LocalDateTime to = (strTo == null || strTo.isEmpty()) ? null : LocalDate.parse(strTo).plusDays(1).atStartOfDay();
 
 
-                Stream<Message> filteredMessagesStream = chatManager.ListMessages(from, to).stream();
+                Stream<Message> filteredMessagesStream = chatManager.listMessages(from, to).stream();
 
                 String strFileFormat = request.getParameter(Parameters.FILE_FORMAT.toString());
                 FileFormat fileFormat = strFileFormat.isEmpty() ? FileFormat.TEXT : FileFormat.valueOf(strFileFormat);
@@ -95,7 +104,7 @@ public class Servlet extends HttpServlet {
                 }
 
                 response.setContentType("text/plain");
-                response.setHeader("expires", LocalDateTime.now().format(FORMATTER));
+                response.setDateHeader("Expires", 0);
                 responseWriter.append(fileContent.toString());
             }else{
                 responseWriter.append("Invalid request. No Referrer found.");
@@ -119,7 +128,7 @@ public class Servlet extends HttpServlet {
                 LocalDateTime to = (strTo == null || strTo.isEmpty()) ? null : LocalDateTime.parse(strTo, FORMATTER);
 
                 Gson gson = new Gson();
-                String x = gson.toJson(chatManager.ListMessages(from, to));
+                String x = gson.toJson(chatManager.listMessages(from, to));
                 responseWriter.append(x);
             }
         }catch (Exception ex){
@@ -139,7 +148,7 @@ public class Servlet extends HttpServlet {
             try {
                 LocalDateTime fromParam = strFromParam.isEmpty() ? null : LocalDate.parse(strFromParam).atStartOfDay();
                 LocalDateTime toParam = strToParam.isEmpty() ? null : LocalDate.parse(strToParam).plusDays(1).atStartOfDay();
-                chatManager.ClearChat(fromParam, toParam);
+                chatManager.clearChat(fromParam, toParam);
             } catch (DateTimeParseException e) {
                 responseWriter.append("Invalid request. Unexpected date/time format.");
             }
