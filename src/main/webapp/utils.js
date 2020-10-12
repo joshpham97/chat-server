@@ -88,6 +88,22 @@ function switchTheme(){
     }
 }
 
+function deleteMessages(from, to){
+    let query = "from=" + from + "&to=" + to;
+    $.ajax({
+        url: 'Servlet?' + query,
+        type: 'DELETE',
+        data: {
+            from: from,
+            to: to
+        },
+        success: function(data) {
+            console.log("DELETE: " + data);
+            window.location.reload();
+        }
+    })
+}
+
 //Set up the refresh functionality
 let refreshDate = new Date();
 //Get all messages from 2 weeks ago
@@ -99,3 +115,11 @@ setInterval(refresh, 1000*2);
 //Set up the theme switching functionality
 document.styleSheets[1].disabled = false;
 document.styleSheets[2].disabled = true;
+
+//Set up the delete messages functionality
+$(document).on('click', '#deleteMessagesBtn', function(e) {
+    e.preventDefault();
+    let from = $('#deleteMessage_from').val();
+    let to = $('#deleteMessage_to').val();
+    deleteMessages(from, to);
+});

@@ -20,9 +20,6 @@ public class Servlet extends HttpServlet {
         FROM("from"),
         TO("to"),
         FILE_FORMAT("fileFormat"),
-        POST_MESSAGE("postMessage"),
-        CLEAR_CHAT("clearChat"),
-        DOWNLOAD_CHAT("downloadChat"),
         USERNAME("username"),
         MESSAGE("message");
 
@@ -53,48 +50,23 @@ public class Servlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         if(request.getHeader("referer") != null) {
-            String postMessageParam = request.getParameter(Parameters.POST_MESSAGE.toString());
-            String clearChatParam= request.getParameter(Parameters.CLEAR_CHAT.toString());
             String userParam = request.getParameter(Parameters.USERNAME.toString());
             String messageParam= request.getParameter(Parameters.MESSAGE.toString());
 
-            // POST MESSAGE
-            if(postMessageParam != null) {
-                // TODO: post message
-                String username = request.getParameter(Parameters.USERNAME.toString());
-                Message newMessage = chatManager.postMessage(username, postMessageParam);
+            String username = request.getParameter(Parameters.USERNAME.toString());
+            Message newMessage = chatManager.postMessage(username, postMessageParam);
 
-                Gson gson = new Gson();
-                String jsonMessage = gson.toJson(newMessage);
-                PrintWriter responseWriter = response.getWriter();
-                responseWriter.append(jsonMessage);
-                responseWriter.close();
-            }
-            // CLEAR CHAT
-            else if (clearChatParam != null) {
-                String strFromParam = request.getParameter(Parameters.FROM.toString());
-                String strToParam = request.getParameter(Parameters.TO.toString());
-
-                try {
-                    LocalDateTime fromParam = strFromParam.isEmpty() ? null : LocalDate.parse(strFromParam).atStartOfDay();
-                    LocalDateTime toParam = strToParam.isEmpty() ? null : LocalDate.parse(strToParam).plusDays(1).atStartOfDay();
-                    chatManager.ClearChat(fromParam, toParam);
-                }
-                catch(DateTimeParseException e) {
-                    PrintWriter responseWriter = response.getWriter();
-                    responseWriter.append("Invalid request. Unexpected date/time format.");
-                    responseWriter.close();
-                }
-            }
+            Gson gson = new Gson();
+            String jsonMessage = gson.toJson(newMessage);
+            PrintWriter responseWriter = response.getWriter();
+            responseWriter.append(jsonMessage);
+            responseWriter.close();
         }
         else {
             PrintWriter responseWriter = response.getWriter();
             responseWriter.append("Invalid request. No Referrer found.");
             responseWriter.close();
         }
-
-//        request.setAttribute("messages", chatManager.ListMessages());
-        //request.getRequestDispatcher("/").forward(request, response);
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -156,6 +128,28 @@ public class Servlet extends HttpServlet {
             }
         }catch (Exception ex){
             responseWriter.append("An error has occurred while generating the Message Archive file.");
+        }
+
+        responseWriter.close();
+    }
+
+    protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        PrintWriter responseWriter = response.getWriter();
+
+        if(request.getHeader("referer") != null) {
+            String strFromParam = request.getParameter(Parameters.FROM.toString());
+            String strToParam = request.getParameter(Parameters.TO.toString());
+
+            try {
+                LocalDateTime fromParam = strFromParam.isEmpty() ? null : LocalDate.parse(strFromParam).atStartOfDay();
+                LocalDateTime toParam = strToParam.isEmpty() ? null : LocalDate.parse(strToParam).plusDays(1).atStartOfDay();
+                chatManager.ClearChat(fromParam, toParam);
+            } catch (DateTimeParseException e) {
+                responseWriter.append("Invalid request. Unexpected date/time format.");
+            }
+        }
+        else {
+            responseWriter.append("Invalid request. No Referrer found.");
         }
 
         responseWriter.close();
