@@ -42,7 +42,7 @@ public class ChatManager {
         final LocalDateTime finalTo = (to == null) ? LocalDateTime.MAX : to;
 
         return messages.stream()
-                .filter(m -> (m.getDate().compareTo(finalFrom) >= 0 && m.getDate().compareTo(finalTo) <= 0))
+                .filter(m -> (m.getDate().compareTo(finalFrom) >= 0 && m.getDate().compareTo(finalTo) < 0))
                 .collect(Collectors.toCollection(ArrayList::new));
     }
 

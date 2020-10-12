@@ -1,13 +1,15 @@
 function refresh(){
-    let newRefreshDate = new Date()
-    let query = "from=" + $("#refreshDate").val()
+    let newRefreshDate = formatDate(new Date())
+    let query = "from=" + $("#refreshDate").val() + "&to=" + newRefreshDate;
     $.ajax({
         url: 'Servlet?' + query,
         type: 'PUT',
         success: function(data) {
-            console.log(data);
+            console.log("Last refreshed at " + $("#refreshDate").val());
+            console.log("From query " + query)
+            console.log(data)
             addMessages(JSON.parse(data));
-            $("#refreshDate").val(formatDate(newRefreshDate));
+            $("#refreshDate").val(newRefreshDate);
         }
     })
 }

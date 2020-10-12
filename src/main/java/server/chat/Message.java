@@ -1,8 +1,11 @@
 package server.chat;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Message implements java.io.Serializable {
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
     private String username;
     private String message;
     private LocalDateTime date;
@@ -57,7 +60,8 @@ public class Message implements java.io.Serializable {
 
     @Override
     public String toString() {
-        return this.date + "::" + this.username + "::" + this.message;
+        String strDate = date.format(FORMATTER);
+        return strDate + " :: " + this.username + " :: " + this.message;
     }
 
     public String toXML(){
