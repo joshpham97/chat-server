@@ -12,19 +12,36 @@ function refresh(){
     })
 }
 
-function addMessages(messages){
-    let placeholder = $("#noMessagePlaceholder");
-    if(placeholder.length){
-        placeholder.remove();
-    }
-
-    $.each(messages, function (index, value){
-        let newMessage = '<div class="row mb-1 message rounded">' +
-            '<small class="senderName textSecondary m-1">' + value.username + '</small>' +
-            '<div class="m-1 messageContent">' + value.message + '</div>' +
-            '</div>'
-        $("#messagesContainer").append(newMessage);
+function sendMessage(){
+    let data = {
+        "username": $("#usernameHidden").val(),
+        "postMessage": $("#message").val()
+    };
+    $.ajax({
+        url: 'Servlet',
+        type: 'POST',
+        data: data,
+        success: function(data) {
+            $("#message").val(""); //Empty the field
+        }
     })
+}
+
+function addMessages(messages){
+    if (messages.length > 0){
+        let placeholder = $("#noMessagePlaceholder");
+        if(placeholder.length){
+            placeholder.remove();
+        }
+
+        $.each(messages, function (index, value){
+            let newMessage = '<div class="row mb-1 message rounded">' +
+                '<small class="senderName textSecondary m-1">' + value.username + '</small>' +
+                '<div class="m-1 messageContent">' + value.message + '</div>' +
+                '</div>'
+            $("#messagesContainer").append(newMessage);
+        })
+    }
 }
 
 function formatDate(date){
@@ -68,7 +85,7 @@ let refreshDate = new Date();
 refreshDate.setDate(refreshDate.getDate() - 14);
 $('#refreshDate').val(formatDate(refreshDate));
 
-setInterval(refresh, 1000*5);
+setInterval(refresh, 1000*2);
 
 //Set up the theme switching functionality
 document.styleSheets[1].disabled = false;

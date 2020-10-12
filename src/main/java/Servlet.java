@@ -22,7 +22,7 @@ public class Servlet extends HttpServlet {
         FILE_FORMAT("fileFormat"),
         POST_MESSAGE("postMessage"),
         CLEAR_CHAT("clearChat"),
-        DOWNLOAD_CHAT("downloadChat");
+        USERNAME("username");
 
         private final String value;
 
@@ -47,14 +47,6 @@ public class Servlet extends HttpServlet {
         super.init();
 
         chatManager = new ChatManager();
-
-        for(int i=1; i<=5; i++){
-            String username = "User" + i;
-            String content = "Content" + i;
-            LocalDateTime date = LocalDateTime.of(2020, 10, i, 0, 0, 0);
-            //Message message = new Message(username, content, date);
-            chatManager.postMessage(username, content, date);
-        }
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -65,6 +57,14 @@ public class Servlet extends HttpServlet {
             // POST MESSAGE
             if(postMessageParam != null) {
                 // TODO: post message
+                String username = request.getParameter(Parameters.USERNAME.toString());
+                Message newMessage = chatManager.postMessage(username, postMessageParam);
+
+                Gson gson = new Gson();
+                String jsonMessage = gson.toJson(newMessage);
+                PrintWriter responseWriter = response.getWriter();
+                responseWriter.append(jsonMessage);
+                responseWriter.close();
             }
             // CLEAR CHAT
             else if (clearChatParam != null) {
@@ -90,7 +90,7 @@ public class Servlet extends HttpServlet {
         }
 
 //        request.setAttribute("messages", chatManager.ListMessages());
-        request.getRequestDispatcher("/").forward(request, response);
+        //request.getRequestDispatcher("/").forward(request, response);
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

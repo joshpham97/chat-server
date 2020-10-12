@@ -7,11 +7,12 @@ public class Message implements java.io.Serializable {
     private String message;
     private LocalDateTime date;
 
-    public Message(String username, String message, LocalDateTime date) {
+    //To be remove
+    /*public Message(String username, String message, LocalDateTime date) {
         this.username = username;
         this.message = message;
         this.date = date;
-    }
+    }*/
   
     public Message(String username, String message) {
         this.username = username;

@@ -5,17 +5,15 @@
   Time: 9:06 a.m.
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-         pageEncoding="ISO-8859-1"%>
-
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="server.chat.Message" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-        <title>Post Message</title>
+        <title>A simple Chat Server</title>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
         <link rel="stylesheet" href="defaultTheme.css" />
         <link rel="stylesheet" href="darkTheme.css" />
@@ -25,7 +23,6 @@
         <script src="https://kit.fontawesome.com/15f69f89ed.js" crossorigin="anonymous"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="utils.js"></script>
-        <% ArrayList<Message> messages = (ArrayList<Message>)request.getAttribute("messages"); %>
     </head>
     <body>
         <jsp:useBean
@@ -33,7 +30,7 @@
                 scope= "session"
                 class= "Beans.ThemeManager">
         </jsp:useBean>
-        <input id="refreshDate" type="text" hidden />
+        <input id="refreshDate" type="text" hidden="true"/>
         <div id="navbar" class="bgPrimary textPrimary">
             <div id="appLogo">
                 <i class="fas fa-comments"></i>
@@ -64,18 +61,16 @@
                     <span id="usernameDisplay" class="textSecondary">Anonymous</span>
                 </div>
 
-                <form class="form" action="Servlet" method="POST">
-                    <input id="usernameHidden" name="username" type="text" class="form-control" placeholder="Anonymous" hidden/>
-                    <div>
-                        <textarea id="message" name="message" class="form-control" rows="2" placeholder="Enter your message here..."></textarea>
+                <input id="usernameHidden" name="username" type="text" class="form-control" placeholder="Anonymous" hidden/>
+                <div>
+                    <textarea id="message" name="message" class="form-control" rows="2" placeholder="Enter your message here..."></textarea>
+                </div>
+                <div id="btnPostMessageContainer">
+                    <div class="btn btn-primary" onclick="sendMessage()">
+                        <i class="fas fa-paper-plane mr-1"></i>
+                        <span>Send</span>
                     </div>
-                    <div id="btnPostMessageContainer">
-                        <button type="submit" class="btn btn-primary">
-                            <i class="fas fa-paper-plane mr-1"></i>
-                            <span>Send</span>
-                        </button>
-                    </div>
-                </form>
+                </div>
             </div>
 
             <div id="utilitiesUI">
@@ -88,7 +83,7 @@
                     </div>
                     <div class="collapse show" id="filterCardBody">
                         <div class="card-body">
-                            <form action="Servlet" class="customForm">
+                            <form action="Servlet" class="customForm" method="put">
                                 <div>
                                     <label for="filterMessage_from">From: </label>
                                     <input id="filterMessage_from" name="from" type="date" class="form-control"/>
