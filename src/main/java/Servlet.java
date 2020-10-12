@@ -55,23 +55,24 @@ public class Servlet extends HttpServlet {
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        PrintWriter responseWriter = response.getWriter();
+
         if(request.getHeader("referer") != null) {
             String userParam = request.getParameter(Parameters.USERNAME.toString());
             String messageParam= request.getParameter(Parameters.MESSAGE.toString());
 
+            userParam = (userParam == null) ? "" : userParam;
             Message newMessage = chatManager.postMessage(userParam, messageParam);
 
             Gson gson = new Gson();
             String jsonMessage = gson.toJson(newMessage);
-            PrintWriter responseWriter = response.getWriter();
             responseWriter.append(jsonMessage);
-            responseWriter.close();
         }
         else {
-            PrintWriter responseWriter = response.getWriter();
             responseWriter.append("Invalid request. No Referrer found.");
-            responseWriter.close();
         }
+
+        responseWriter.close();
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -89,7 +90,7 @@ public class Servlet extends HttpServlet {
                 Stream<Message> filteredMessagesStream = chatManager.listMessages(from, to).stream();
 
                 String strFileFormat = request.getParameter(Parameters.FILE_FORMAT.toString());
-                FileFormat fileFormat = strFileFormat.isEmpty() ? FileFormat.TEXT : FileFormat.valueOf(strFileFormat);
+                FileFormat fileFormat = (strFileFormat == null || strFileFormat.isEmpty()) ? FileFormat.TEXT : FileFormat.valueOf(strFileFormat);
 
                 StringBuilder fileContent = new StringBuilder();
 

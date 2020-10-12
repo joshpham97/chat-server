@@ -1,0 +1,4 @@
+curl http://localhost:8080/chat_server_war/Servlet?fileFormat=XML --referer http://localhost:8080/chat_server_war/ -v
+curl http://localhost:8080/chat_server_war/Servlet --referer http://localhost:8080/chat_server_war/ -v
+curl http://localhost:8080/chat_server_war/Servlet --data "message=Send from curl" --referer http://localhost:8080/chat_server_war/ -v
+curl http://localhost:8080/chat_server_war/Servlet --data "message=Send from curl" --data "username=joshCurl" --referer http://localhost:8080/chat_server_war/ -v
