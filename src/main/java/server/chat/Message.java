@@ -24,6 +24,13 @@ public class Message implements java.io.Serializable {
         this("Anonymous", message);
     }
 
+    //Test code, dont remove yet
+    public Message(String username, String message, LocalDateTime date) {
+        this.username = username;
+        this.message = message;
+        this.date = date;
+    }
+
     public String getUsername() {
         return username;
     }

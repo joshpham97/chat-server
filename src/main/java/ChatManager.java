@@ -29,11 +29,15 @@ public class ChatManager {
         return msg;
     }
 
-    public ArrayList<Message> ListMessages() {
-        return messages;
+    //Test code, please dont remove
+    public Message postMessage(String username, String message, LocalDateTime date)
+    {
+        Message msg = new Message(username, message, date);
+        messages.add(msg);
+        return msg;
     }
 
-    public ArrayList<Message> ListMessages(LocalDateTime from, LocalDateTime to) {
+    public ArrayList<Message> listMessages(LocalDateTime from, LocalDateTime to) {
         final LocalDateTime finalFrom = (from == null) ? LocalDateTime.MIN : from;
         final LocalDateTime finalTo = (to == null) ? LocalDateTime.MAX : to;
 
@@ -42,7 +46,7 @@ public class ChatManager {
                 .collect(Collectors.toCollection(ArrayList::new));
     }
 
-    public void ClearChat(LocalDateTime from, LocalDateTime to) {
+    public void clearChat(LocalDateTime from, LocalDateTime to) {
         LocalDateTime finalFrom = (from == null) ? LocalDateTime.MIN : from;
         LocalDateTime finalTo = (to == null) ? LocalDateTime.MAX : to;
 

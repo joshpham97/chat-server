@@ -62,7 +62,7 @@
                         <span id="usernameDisplay" class="textSecondary">Anonymous</span>
                     </div>
 
-                    <input id="usernameHidden" name="username" type="text" class="form-control" placeholder="Anonymous" hidden/>
+                    <input id="usernameHidden" name="username" type="text" class="form-control" placeholder="Anonymous" hidden="true"/>
                     <div>
                         <textarea id="message" name="message" class="form-control" rows="2" placeholder="Enter your message here..."></textarea>
                         <div id="btnPostMessageContainer">
