@@ -24,6 +24,7 @@
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
         <script src="https://kit.fontawesome.com/15f69f89ed.js" crossorigin="anonymous"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="utils.js"></script>
         <% ArrayList<Message> messages = (ArrayList<Message>)request.getAttribute("messages"); %>
     </head>
     <body>
@@ -167,7 +168,7 @@
                                 </div>
 
                                 <div class="utilitiesUIBtnContainer">
-                                    <button type="Submit" name="clearChat" class="btn btn-primary">
+                                    <button id="deleteMessagesBtn" type="Submit" name="clearChat" class="btn btn-primary">
                                         <i class="fas fa-trash-alt mr-1"></i>Delete
                                     </button>
                                 </div>
