@@ -109,9 +109,11 @@ public class Servlet extends HttpServlet {
                 response.setDateHeader("Expires", 0);
                 responseWriter.append(fileContent.toString());
             }else{
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 responseWriter.append("Invalid request. No Referrer found.");
             }
         }catch (Exception ex){
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             responseWriter.append("An error has occurred while generating the Message Archive file.");
         }
 
