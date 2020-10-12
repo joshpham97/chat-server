@@ -22,7 +22,9 @@ public class Servlet extends HttpServlet {
         FILE_FORMAT("fileFormat"),
         POST_MESSAGE("postMessage"),
         CLEAR_CHAT("clearChat"),
-        USERNAME("username");
+        DOWNLOAD_CHAT("downloadChat"),
+        USERNAME("username"),
+        MESSAGE("message");
 
         private final String value;
 
@@ -53,6 +55,8 @@ public class Servlet extends HttpServlet {
         if(request.getHeader("referer") != null) {
             String postMessageParam = request.getParameter(Parameters.POST_MESSAGE.toString());
             String clearChatParam= request.getParameter(Parameters.CLEAR_CHAT.toString());
+            String userParam = request.getParameter(Parameters.USERNAME.toString());
+            String messageParam= request.getParameter(Parameters.MESSAGE.toString());
 
             // POST MESSAGE
             if(postMessageParam != null) {
