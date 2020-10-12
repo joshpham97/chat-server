@@ -102,29 +102,32 @@ function deleteMessages(from, to){
 
             let date = new Date();
             date.setDate(date.getDate() - 14);
-            $('#refreshDate').val(formatDate(refreshDate));
+            $('#refreshDate').val(formatDate(date));
             refresh();
         }
     })
 }
 
-//Set up the refresh functionality
-let refreshDate = new Date();
-//Get all messages from 2 weeks ago
-refreshDate.setDate(refreshDate.getDate() - 14);
-$('#refreshDate').val(formatDate(refreshDate));
+$(document).ready(function() {
+    //Set up the refresh functionality
+    let refreshDate = new Date();
 
-$(document).ready(refresh);
-setInterval(refresh, 1000*2);
+    //Get all messages from 2 weeks ago
+    refreshDate.setDate(refreshDate.getDate() - 14);
+    $('#refreshDate').val(formatDate(refreshDate));
 
-//Set up the theme switching functionality
-document.styleSheets[1].disabled = false;
-document.styleSheets[2].disabled = true;
+    refresh();
+    setInterval(refresh, 1000*2);
 
-//Set up the delete messages functionality
-$(document).on('click', '#deleteMessagesBtn', function(e) {
-    e.preventDefault();
-    const from = $('#deleteMessage_from').val();
-    const to = $('#deleteMessage_to').val();
-    deleteMessages(from, to);
+    //Set up the theme switching functionality
+    document.styleSheets[1].disabled = false;
+    document.styleSheets[2].disabled = true;
+
+    //Set up the delete messages functionality
+    $(document).on('click', '#deleteMessagesBtn', function(e) {
+        e.preventDefault();
+        let from = $('#deleteMessage_from').val();
+        let to = $('#deleteMessage_to').val();
+        deleteMessages(from, to);
+    });
 });
