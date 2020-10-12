@@ -18,7 +18,7 @@ function sendMessage(){
     }else{
         let data = {
             "username": $("#usernameHidden").val(),
-            "postMessage": $("#message").val()
+            "message": $("#message").val()
         };
         $.ajax({
             url: 'Servlet',
@@ -98,28 +98,36 @@ function deleteMessages(from, to){
             to: to
         },
         success: function(data) {
-            console.log("DELETE: " + data);
-            window.location.reload();
+            $("#messagesContainer").text("");
+
+            let date = new Date();
+            date.setDate(date.getDate() - 14);
+            $('#refreshDate').val(formatDate(date));
+            refresh();
         }
     })
 }
 
-//Set up the refresh functionality
-let refreshDate = new Date();
-//Get all messages from 2 weeks ago
-refreshDate.setDate(refreshDate.getDate() - 14);
-$('#refreshDate').val(formatDate(refreshDate));
+$(document).ready(function() {
+    //Set up the refresh functionality
+    let refreshDate = new Date();
 
-setInterval(refresh, 1000*2);
+    //Get all messages from 2 weeks ago
+    refreshDate.setDate(refreshDate.getDate() - 14);
+    $('#refreshDate').val(formatDate(refreshDate));
 
-//Set up the theme switching functionality
-document.styleSheets[1].disabled = false;
-document.styleSheets[2].disabled = true;
+    refresh();
+    setInterval(refresh, 1000*2);
 
-//Set up the delete messages functionality
-$(document).on('click', '#deleteMessagesBtn', function(e) {
-    e.preventDefault();
-    let from = $('#deleteMessage_from').val();
-    let to = $('#deleteMessage_to').val();
-    deleteMessages(from, to);
+    //Set up the theme switching functionality
+    document.styleSheets[1].disabled = false;
+    document.styleSheets[2].disabled = true;
+
+    //Set up the delete messages functionality
+    $(document).on('click', '#deleteMessagesBtn', function(e) {
+        e.preventDefault();
+        let from = $('#deleteMessage_from').val();
+        let to = $('#deleteMessage_to').val();
+        deleteMessages(from, to);
+    });
 });
