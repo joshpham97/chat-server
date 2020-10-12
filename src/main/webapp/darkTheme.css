@@ -1,19 +1,30 @@
 /*Primary and secondary accents*/
 .btn-primary{
-    background-color: #c3976a;
-    border-color: #c3976a;
+    background-color: #7289da;
+    border-color: #7289da;
+}
+.btn-primary:hover{
+    background-color: #5b6dae;
+    border-color: #5b6dae;
 }
 .textPrimary{
     color: white;
 }
 .textSecondary{
-    color: #A8C6C6;
+    color: 	#7289da;
+}
+.textInfo{
+    color: white;
 }
 .bgPrimary{
     background-color: #292b2c;
 }
 .bgSecondary{
     background-color: #4a4c4f;
+}
+/*Only for dark theme*/
+.bgHighlight{
+    background-color: #7289da;
 }
 
 /* Main background */
@@ -48,10 +59,10 @@ body{
     cursor: pointer;
     padding: 10px 0;
     border-right: 1px solid #ffffff00;
+    margin: 7px;
 }
 .navBarMenuItem:hover{
-    background-color: #666666;
-    border-right-color: white;
+    background-color: #5b6dae;
 }
 
 /* Main UI*/
@@ -63,12 +74,25 @@ body{
 
 /* Chat UI */
 #chatUI{
-    width: 62%;
+    width: 100%;
     display: inline-block;
     padding: 20px;
+    height: 90vh;
 }
 #messagesContainer{
+    height: 95%;
+    width: 100%;
     margin-bottom: 20px;
+    margin-left: 0px;
+    margin-right: 0px;
+    background-color: #292b2c;
+    padding: 20px;
+}
+#noMessagePlaceholder {
+    font-size: 20px;
+    width: 100%;
+    text-align: center;
+    margin-top: 20px;
 }
 .message{
     width: 100%;
@@ -82,26 +106,33 @@ body{
 }
 .messageContent{
     width: fit-content;
-    background-color: white;
+    background-color: #4a4c4f;
+    color: white;
     padding: .5rem;
+
 }
 #usernameChatUI {
     font-weight: bold;
     color: white;
 }
 #message{
-    width: 85%;
-    float: left;
+    width: 100%;
 }
 #btnPostMessageContainer{
-    margin-top: 5px;
+    float: right;
+    position: relative;
+    top: -55px;
+    right: 7px;
 }
-#btnPostMessageContainer button {
-    height: 50px;
-    width: 50px;
-    border-radius: 25px;
-    margin-top: 7px;
-    margin-left: 10px;
+#btnPostMessageContainer div {
+    height: 50px !important;
+    width: 50px !important;
+    border-radius: 25px !important;
+}
+#btnPostMessageContainer i {
+    display: block;
+    position: relative;
+    margin-top: 10px;
 }
 #btnPostMessageContainer span{
     display: none;
@@ -109,14 +140,9 @@ body{
 
 /* Download and delete UI*/
 #utilitiesUI{
-    width: 30%;
-    height: 100%;
-    display: inline-block;
-    text-align: center;
-    position: fixed;
-    right: 0px;
-    background-color: #292b2c;
-    overflow-y: hidden;
+    float: right;
+    position: relative;
+    top: -80vh;
 }
 
 #utilitiesUI > .card {
@@ -130,18 +156,19 @@ body{
 }
 
 #utilitiesUI > .card > .card-header:hover {
-    background-color: #666666;
-    border-left-color: white;
+    background-color: #5b6dae;
 }
 
 #utilitiesUI > .card > .card-header > a {
     width: 100%;
-    padding: 10px 0;
+    padding: 10px 10px;
+    text-align: right;
 }
 
 .customForm > div{
     margin: 0px auto 10px auto;
     width: 90%;
+    color: white;
 }
 
 .customForm > div > label{
@@ -159,6 +186,3 @@ body{
     text-align: center;
     margin-bottom: 0px !important;
 }
-
-
-
