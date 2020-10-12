@@ -145,7 +145,6 @@ public class Servlet extends HttpServlet {
             String strToParam = request.getParameter(Parameters.TO.toString());
 
             try {
-                System.out.println(strFromParam);
                 LocalDateTime fromParam = strFromParam.isEmpty() ? null : LocalDate.parse(strFromParam).atStartOfDay();
                 LocalDateTime toParam = strToParam.isEmpty() ? null : LocalDate.parse(strToParam).plusDays(1).atStartOfDay();
                 chatManager.ClearChat(fromParam, toParam);
