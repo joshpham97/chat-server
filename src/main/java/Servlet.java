@@ -69,6 +69,7 @@ public class Servlet extends HttpServlet {
             responseWriter.append(jsonMessage);
         }
         else {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             responseWriter.append("Invalid request. No Referrer found.");
         }
 
@@ -133,6 +134,7 @@ public class Servlet extends HttpServlet {
                 responseWriter.append(x);
             }
         }catch (Exception ex){
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             responseWriter.append("An error has occurred while generating the Message Archive file.");
         }
 
@@ -151,10 +153,12 @@ public class Servlet extends HttpServlet {
                 LocalDateTime toParam = strToParam.isEmpty() ? null : LocalDate.parse(strToParam).plusDays(1).atStartOfDay();
                 chatManager.clearChat(fromParam, toParam);
             } catch (DateTimeParseException e) {
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 responseWriter.append("Invalid request. Unexpected date/time format.");
             }
         }
         else {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             responseWriter.append("Invalid request. No Referrer found.");
         }
 
