@@ -15,27 +15,27 @@
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous" />
         <link rel="stylesheet" href="css/defaultTheme.css" />
         <link rel="stylesheet" href="css/darkTheme.css" />
-        <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous" />
-        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous" />
-        <script type="text/javascript" src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous" />
-        <script type="text/javascript" src="https://kit.fontawesome.com/15f69f89ed.js" crossorigin="anonymous"></script>
-        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+        <script src="https://kit.fontawesome.com/15f69f89ed.js" crossorigin="anonymous"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script type="text/javascript" src="js/utils.js"></script>
     </head>
     <body>
         <input id="refreshDate" type="text" style="display: none"/>
         <div id="navbar" class="bgPrimary textPrimary">
             <div id="appLogo">
-                <i class="fas fa-comments" />
+                <i class="fas fa-comments"></i>
                 <span>Chat Server</span>
             </div>
             <div id="navBarMenu">
                 <div class="navBarMenuItem bgHighlight rounded" onclick="setUsername()" title="Click to change username">
-                    <i class="fas fa-user mr-1" />
+                    <i class="fas fa-user mr-1"></i>
                     <span id="usernameNavBar">Anonymous</span>
                 </div>
                 <div class="navBarMenuItem bgHighlight rounded" onclick="switchTheme()" title="Click to change theme">
-                    <i class="fas fa-cog mr-1" />
+                    <i class="fas fa-cog mr-1"></i>
                     <span>Change theme</span>
                 </div>
             </div>
@@ -45,7 +45,7 @@
             <div id="chatUI" class="bgSecondary rounded">
                 <div id="messagesContainer" class="overflow-auto rounded">
                     <div id="noMessagePlaceholder" class="textSecondary">
-                        <i class="far fa-comment-alt" />
+                        <i class="far fa-comment-alt"></i>
                         <span>Send a message to start the chat!</span>
                     </div>
                 </div>
@@ -60,7 +60,7 @@
                         <textarea id="message" name="message" class="form-control" rows="2" placeholder="Enter your message here..."></textarea>
                         <div id="btnPostMessageContainer">
                             <div class="btn btn-primary" onclick="sendMessage()">
-                                <i class="fas fa-paper-plane mr-1" />
+                                <i class="fas fa-paper-plane mr-1"></i>
                                 <span>Send</span>
                             </div>
                         </div>
@@ -72,7 +72,7 @@
                 <div class="card mb-2">
                     <div class="card-header bgPrimary textPrimary bgHighlight">
                         <a class="btn" data-toggle="collapse" data-target="#downloadCardBody">
-                            <i class="fas fa-download mr-1" />
+                            <i class="fas fa-download mr-1"></i>
                             <span>Archive Messages</span>
                         </a>
                     </div>
@@ -107,7 +107,7 @@
 
                                 <div class="utilitiesUIBtnContainer">
                                     <button type="submit" class="btn btn-primary">
-                                        <i class="fas fa-download mr-1" />Download
+                                        <i class="fas fa-download mr-1"></i>Download
                                     </button>
                                 </div>
                             </form>
@@ -117,7 +117,7 @@
                 <div class="card">
                     <div class="card-header bgPrimary bgHighlight">
                         <a class="btn" data-toggle="collapse" data-target="#deleteCardBody">
-                            <i class="fas fa-trash-alt mr-1 textPrimary" />
+                            <i class="fas fa-trash-alt mr-1 textPrimary"></i>
                             <span class="textPrimary">Clear Messages</span>
                         </a>
                     </div>
@@ -141,7 +141,7 @@
 
                                 <div class="utilitiesUIBtnContainer">
                                     <button id="deleteMessagesBtn" type="submit" name="clearChat" class="btn btn-primary">
-                                        <i class="fas fa-trash-alt mr-1" />Delete
+                                        <i class="fas fa-trash-alt mr-1"></i>Delete
                                     </button>
                                 </div>
                             </form>
