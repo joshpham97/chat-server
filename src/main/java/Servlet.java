@@ -43,15 +43,6 @@ public class Servlet extends HttpServlet {
         super.init();
 
         chatManager = new ChatManager();
-
-        //Code to test download - dont remove please
-        for(int i=1; i<=10; i++){
-           String username = "User" + (i % 2);
-           String message = "Message " + i;
-           LocalDateTime date = LocalDateTime.of(2020, 10, i, i,0,0);
-           chatManager.postMessage(username, message, date);
-
-        }
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

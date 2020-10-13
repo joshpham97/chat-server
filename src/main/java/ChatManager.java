@@ -27,14 +27,6 @@ public class ChatManager {
         return msg;
     }
 
-    //Test code, please dont remove
-    public Message postMessage(String username, String message, LocalDateTime date)
-    {
-        Message msg = new Message(username, message, date);
-        messages.add(msg);
-        return msg;
-    }
-
     public ArrayList<Message> listMessages(LocalDateTime from, LocalDateTime to) {
         final LocalDateTime finalFrom = (from == null) ? LocalDateTime.MIN : from;
         final LocalDateTime finalTo = (to == null) ? LocalDateTime.MAX : to;
