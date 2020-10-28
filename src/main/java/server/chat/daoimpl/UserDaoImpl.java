@@ -72,9 +72,10 @@ public class UserDaoImpl implements UserDAO {
         return user;
     }
 
-    public static void main(String[] args) {
-        UserDaoImpl test = new UserDaoImpl();
-        System.out.println(test.getUser(1));
+    // Quick testing: to be removed later
+//    public static void main(String[] args) {
+//        UserDaoImpl test = new UserDaoImpl();
+//        System.out.println(test.getUser(1));
 //        System.out.println(test.getUserByUsername("username1"));
     }
 }
