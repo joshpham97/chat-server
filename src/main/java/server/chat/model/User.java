@@ -8,6 +8,7 @@ public class User {
     private String email;
     private String password;
 
+    // Needed for DAO implementation
     public User() {
 
     }

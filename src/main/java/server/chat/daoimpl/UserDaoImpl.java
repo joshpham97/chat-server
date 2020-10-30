@@ -77,5 +77,5 @@ public class UserDaoImpl implements UserDAO {
 //        UserDaoImpl test = new UserDaoImpl();
 //        System.out.println(test.getUser(1));
 //        System.out.println(test.getUserByUsername("username1"));
-    }
+//    }
 }

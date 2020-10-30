@@ -9,7 +9,7 @@ import java.sql.DriverManager;
 
 public class DBConnection  {
     // Read config file
-    private static final String CONFIG_FILE = "config.json";
+    private static final String CONFIG_FILE = "src\\main\\config.json";
     private static Object obj;
     private static JSONObject jo;
     static {
