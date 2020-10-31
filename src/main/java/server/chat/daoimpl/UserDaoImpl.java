@@ -23,9 +23,8 @@ public class UserDaoImpl implements UserDAO {
             ResultSet rs = ps.executeQuery();
 
             // If query result is not empty
-            if(rs.next()) {
+            if(rs.next())
                 user = resultSetToUser(rs);
-            }
         } catch(Exception e) {
             e.printStackTrace();
         } finally {
@@ -37,7 +36,7 @@ public class UserDaoImpl implements UserDAO {
 
     @Override
     public User getUserByUsername(String username) {
-        User user = new User();
+        User user = null;
 
         try {
             Connection conn = DBConnection.getConnection();
@@ -46,9 +45,8 @@ public class UserDaoImpl implements UserDAO {
             PreparedStatement ps = conn.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
 
-            if(rs.next()) {
+            if(rs.next())
                 user = resultSetToUser(rs);
-            }
         } catch(Exception e) {
             e.printStackTrace();
         } finally {
@@ -76,6 +74,6 @@ public class UserDaoImpl implements UserDAO {
 //    public static void main(String[] args) {
 //        UserDaoImpl test = new UserDaoImpl();
 //        System.out.println(test.getUser(1));
-//        System.out.println(test.getUserByUsername("username1"));
+//        System.out.println(test.getUserByUsername("username2"));
 //    }
 }
