@@ -47,8 +47,8 @@ public class AuthServlet extends HttpServlet {
         String pass = user.getPassword();
         String username = user.getUsername();
 
+        HttpSession session = request.getSession();
         if (user != null && generatedPassword.equals(pass)) {
-            HttpSession session = request.getSession();
             session.setAttribute("user", user);
             session.setAttribute("username", username);
             destPage = "index.jsp";
@@ -56,6 +56,7 @@ public class AuthServlet extends HttpServlet {
         else {
             String message = "Invalid username/password";
             System.out.println("Invalid Username or Password");
+            session.setAttribute("errorMessage", message);
             request.setAttribute("message", message);
         }
 

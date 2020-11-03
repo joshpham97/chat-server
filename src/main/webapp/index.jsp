@@ -25,7 +25,7 @@
     <%
         String username = (String) session.getAttribute("username");
         if (null == username) {
-            session.setAttribute("errorMessage", "Login Failed ");
+            session.setAttribute("errorMessage", "You have to be logged in to access the home page ");
             response.sendRedirect("login.jsp");
         }
     %>

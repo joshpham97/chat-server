@@ -23,7 +23,7 @@
     password: password3
 
 --%>
-
+<p>${sessionScope['errorMessage']}</p>
 <form action="AuthServlet" method="post">
     UserName:<input type="text" name="username"/><br/><br/>
     Password:<input type="password" name="password"/><br/><br/>
