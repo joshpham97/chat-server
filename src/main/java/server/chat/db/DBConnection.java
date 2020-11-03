@@ -4,17 +4,19 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
 import java.io.FileReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.sql.Connection;
 import java.sql.DriverManager;
 
 public class DBConnection  {
     // Read config file
-    private static final String CONFIG_FILE = "src\\main\\config.json";
-    private static Object obj;
+    private static final String CONFIG_FILE = "config.json";
     private static JSONObject jo;
     static {
         try {
-            obj = new JSONParser().parse(new FileReader(CONFIG_FILE));
+            InputStream inputStream = DBConnection.class.getClassLoader().getResourceAsStream(CONFIG_FILE); // Get resource
+            Object obj = new JSONParser().parse(new InputStreamReader(inputStream)); // Read file
             jo = (JSONObject) obj;
         } catch (Exception e) {
             e.printStackTrace();

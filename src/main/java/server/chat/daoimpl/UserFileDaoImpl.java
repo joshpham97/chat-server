@@ -1,19 +1,18 @@
 package server.chat.daoimpl;
 
+import jdk.internal.util.xml.impl.Input;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import server.chat.dao.UserFileDAO;
 import server.chat.model.User;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 public class UserFileDaoImpl implements UserFileDAO {
-    private final String USERS_FILE = "src\\main\\users.json";
+    private final String USERS_FILE = "users.json";
 
     @Override
     public User getUser(int userID) {
@@ -73,7 +72,8 @@ public class UserFileDaoImpl implements UserFileDAO {
     private JSONArray readUsersFile() throws Exception {
         JSONArray ja = null;
 
-        Object obj = new JSONParser().parse(new FileReader(USERS_FILE)); // Read users file
+        InputStream inputStream = getClass().getClassLoader().getResourceAsStream(USERS_FILE); // Get resource
+        Object obj = new JSONParser().parse(new InputStreamReader(inputStream)); // Read file
         ja = (JSONArray) obj; // Parse object to JSONArray
 
         return ja;
