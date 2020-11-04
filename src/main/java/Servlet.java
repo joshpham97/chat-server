@@ -35,14 +35,14 @@ public class Servlet extends HttpServlet {
     }
 
 
-    private ChatManager chatManager;
+    private PostManager chatManager;
     private final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     @Override
     public void init() throws ServletException {
         super.init();
 
-        chatManager = new ChatManager();
+        chatManager = new PostManager();
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

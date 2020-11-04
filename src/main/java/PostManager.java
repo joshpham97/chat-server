@@ -4,9 +4,9 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
-public class ChatManager {
+public class PostManager {
     private ArrayList<Message> messages;
-    public ChatManager() {
+    public PostManager() {
         messages = new ArrayList<Message>();
     }
 

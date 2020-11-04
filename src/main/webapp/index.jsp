@@ -48,7 +48,29 @@
                         <i class="far fa-comment-alt"></i>
                         <span>Send a message to start the chat!</span>
                     </div>
+                    <div class="card mb-2">
+                        <div class="card-header">
+                            <div class="float-left text-muted">
+                                <span>Username</span>
+                                <small><i class="far fa-clock pr-1"></i>Date</small>
+                            </div>
+                            <div class="float-right">
+                                <a href="/AttachmentServlet"><i class="fas fa-paperclip" title="Download attachment"></i>
+                                <a href="/AttachmentServlet"><i class="fas fa-edit"></i></a>
+                                <a href="/AttachmentServlet"><i class="fas fa-trash"></i></a>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="card-body ">
+                                <div>Message</div>
+                                <div class="float-right">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+
                 <div>
                     <div id="usernameChatUI">
                         <span>Sending messages as</span>
