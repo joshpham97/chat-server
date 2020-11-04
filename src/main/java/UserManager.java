@@ -7,7 +7,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 public class UserManager {
-    public boolean login(String username, String password, HttpSession session)
+    public static boolean login(String username, String password, HttpSession session)
     {
         boolean result = false;
 
@@ -40,7 +40,7 @@ public class UserManager {
         return result;
     }
 
-    public String encryptPassword(String password)
+    public static String encryptPassword(String password)
     {
         String generatedPassword = null;
         try {
