@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.sql.SQLException;
 
 @WebServlet(name = "AuthServlet")
 public class AuthServlet extends HttpServlet {
@@ -41,34 +42,47 @@ public class AuthServlet extends HttpServlet {
         }
 
         UserFileDaoImpl userDao = new UserFileDaoImpl();
-
-        User user = userDao.getUserByUsername(uname);
-        String destPage = "login.jsp";
-        String pass = user.getPassword();
-        String username = user.getUsername();
-
         HttpSession session = request.getSession();
-        if (user != null && generatedPassword.equals(pass)) {
-            session.setAttribute("user", user);
-            session.setAttribute("username", username);
-            destPage = "index.jsp";
-        }
-        else {
-            String message = "Invalid username/password";
-            System.out.println("Invalid Username or Password");
-            session.setAttribute("errorMessage", message);
-            request.setAttribute("message", message);
-        }
+        String destPage = "login.jsp";
 
-        RequestDispatcher dispatcher = request.getRequestDispatcher(destPage);
-        dispatcher.forward(request, response);
+        try {
+            User user = userDao.getUserByUsername(uname);
+
+            String pass = user.getPassword();
+            String username = user.getUsername();
+            int userID = user.getUserID();
+
+            if (user != null && generatedPassword.equals(pass)) {
+                String errMsg = (String)session.getAttribute("errorMessage");
+                if(errMsg != null)
+                {
+                    session.removeAttribute("errorMessage");
+                }
+
+                session.setAttribute("userID", userID);
+                session.setAttribute("username", username);
+                destPage = "index.jsp";
+            } else {
+                String message = "Invalid username/password";
+                System.out.println("Invalid Username or Password");
+                session.setAttribute("errorMessage", message);
+                request.setAttribute("message", message);
+            }
+
+            response.sendRedirect(destPage);
+            //RequestDispatcher dispatcher = request.getRequestDispatcher(destPage);
+            //dispatcher.forward(request, response);
+        }catch (Exception ex) {
+            session.setAttribute("errorMessage", "No user found");
+            response.sendRedirect(destPage);
+        }
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         HttpSession session = request.getSession(false);
         if (session != null) {
-            session.removeAttribute("user");
+            session.removeAttribute("userID");
             session.removeAttribute("username");
 
             RequestDispatcher dispatcher = request.getRequestDispatcher("login.jsp");
