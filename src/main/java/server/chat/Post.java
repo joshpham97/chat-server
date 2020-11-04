@@ -3,20 +3,20 @@ package server.chat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-public class Message implements java.io.Serializable {
+public class Post implements java.io.Serializable {
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     private String username;
     private String message;
     private LocalDateTime date;
   
-    public Message(String username, String message) {
+    public Post(String username, String message) {
         this.username = username;
         this.message = message;
         date = LocalDateTime.now();
     }
 
-    public Message(String message) {
+    public Post(String message) {
         this("Anonymous", message);
     }
 
