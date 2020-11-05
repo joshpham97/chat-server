@@ -1,12 +1,9 @@
 import org.junit.jupiter.api.Test;
 
-import server.chat.Message;
 import java.time.LocalDateTime;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 class ChatManagerTest {
-    ChatManager cm = new ChatManager();
+    PostManager cm = new PostManager();
     LocalDateTime today = LocalDateTime.now();
     LocalDateTime yesterday = today.minusDays(1);
     LocalDateTime tomorrow = today.plusDays(1);
