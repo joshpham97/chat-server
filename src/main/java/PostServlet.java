@@ -22,7 +22,7 @@ public class PostServlet extends HttpServlet {
             responseWriter.append(gson.toJson(posts));
         } catch(Exception e) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            responseWriter.append("Invalid request. No Referrer found.");
+            responseWriter.append("Invalid request");
         }
 
         responseWriter.close();

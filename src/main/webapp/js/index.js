@@ -1,6 +1,6 @@
 function getRecentPosts() {
     $.ajax({
-        url: 'posts',
+        url: 'PostServlet',
         type: 'GET',
         success: function(response) {
             displayPosts(JSON.parse(response));
