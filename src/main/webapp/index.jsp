@@ -20,6 +20,13 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script type="text/javascript" src="js/utils.js"></script>
     </head>
+    <%
+        String username = (String) session.getAttribute("username");
+        if (null == username) {
+            session.setAttribute("errorMessage", "You have to be logged in to access the home page ");
+            response.sendRedirect("login.jsp");
+        }
+    %>
     <body>
         <input id="refreshDate" type="text" style="display: none"/>
         <nav class="navbar navbar-dark bg-dark">
@@ -31,6 +38,14 @@
         </nav>
 
         <div class="container mt-2">
+            <div id="navBarMenu">
+                <p>Hello, ${sessionScope['username']}</p>
+                <a href="AuthServlet">Logout</a>
+                <div class="navBarMenuItem bgHighlight rounded" onclick="setUsername()" title="Click to change username">
+                    <i class="fas fa-user mr-1"></i>
+                    <span id="usernameNavBar">Anonymous</span>
+                </div>
+            </div>
             <div class="row">
                 <div class="col-12 text-right">
                     <a class="btn btn-primary mb-0 h1 text" href="post.jsp"><i class="fas fa-plus mr-2"></i>New Post</a>
