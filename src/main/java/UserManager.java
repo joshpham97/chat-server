@@ -40,7 +40,7 @@ public class UserManager {
         return result;
     }
 
-    public static String encryptPassword(String password)
+    private static String encryptPassword(String password)
     {
         String generatedPassword = null;
         try {
