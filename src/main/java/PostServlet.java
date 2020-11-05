@@ -13,24 +13,18 @@ import java.util.ArrayList;
 @WebServlet(name = "PostServlet")
 public class PostServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        ArrayList<Post> posts = PostManager.getRecentPosts();
         PrintWriter responseWriter = response.getWriter();
 
         try {
+            ArrayList<Post> posts = PostManager.getRecentPosts();
+
             Gson gson = new Gson();
             responseWriter.append(gson.toJson(posts));
         } catch(Exception e) {
-
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            responseWriter.append("Invalid request. No Referrer found.");
         }
 
         responseWriter.close();
-//        request.setAttribute("posts", posts);
-
-//        RequestDispatcher dispatcher = request.getRequestDispatcher("posts.jsp");
-//        try {
-//            dispatcher.forward(request, response);
-//        } catch(Exception e) {
-//
-//        }
     }
 }

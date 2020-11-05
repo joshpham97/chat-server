@@ -3,5 +3,8 @@
   "dbHost": "jdbc:mysql://localhost:3306/",
   "dbName": "message_board",
   "dbUser": "test",
-  "dbPassword": "QwErT1@3"
+  "dbPassword": "QwErT1@3",
+  "postConfig": {
+    "numberPosts": "10"
+  }
 }
