@@ -16,16 +16,12 @@ function displayPosts(posts) {
         $("#posts").text("");
 
         $.each(posts, function (key, value) {
-            // $.get("html/post.html?", { post: value }, function(data) {
-            //     $("#posts").append(data);
-            // });
-
             let post =
                 '<div class="card mb-2">' +
                     '<div class="card-header">' +
                         '<div class="float-left text-muted">' +
                             '<span>' + value.username + '</span>' +
-                            '<small><i class="far fa-clock pr-1"></i>Date</small>' +
+                            '<small><i class="far fa-clock pr-1"></i>' + formatDateTime(value.date) + '</small>' +
                         '</div>' +
                         '<div class="float-right">' +
                             '<a href="/AttachmentServlet"><i class="fas fa-paperclip mr-2" title="Download attachment"></i></a>' +
@@ -47,6 +43,11 @@ function displayPosts(posts) {
     }
     else
         $("posts").text("No posts to display")
+}
+
+function formatDateTime(datetime) {
+    date = datetime.date;
+    return date.day + "/" + date.month + "/" + date.year;
 }
 
 $(document).ready(function() {
