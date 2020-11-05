@@ -12,11 +12,16 @@ public class PostManager {
         messages = new ArrayList<Post>();
     }
 
-    // TEMPORARY: waiting for PostDAO and Post model
-    //public static Post[] getRecentPosts() {
-    public static String getRecentPosts() {
-        //Post[] posts = postDao.getRecentPosts();
-        String posts = "MANAGER";
+    public static ArrayList<Post> getRecentPosts() {
+        // TEMPORARY HARDCODING: waiting for PostDao and Post
+        ArrayList<Post> tempPosts = new ArrayList<>();
+        tempPosts.add(new Post("username1", "message1"));
+        tempPosts.add(new Post("username2", "message2"));
+        tempPosts.add(new Post("username3", "message3"));
+
+
+        //ArrayList<Post> posts = postDao.getRecentPosts();
+        ArrayList<Post> posts = tempPosts;
 
         return posts;
     }

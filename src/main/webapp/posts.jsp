@@ -7,25 +7,12 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
     <script>
-        tempPosts = [
-            {
-                id: 1,
-                message: "ONE"
-            }, {
-                id: 2,
-                message: "TWO"
-            }, {
-                id: 3,
-                message: "THREE"
-            }
-        ];
-
         function getRecentPosts() {
             $.ajax({
                 url: 'posts',
                 type: 'GET',
                 success: function(response) {
-                    displayPosts(tempPosts);
+                    displayPosts(JSON.parse(response));
                 },
                 error: function(e) {
                     alert(e.responseText);
