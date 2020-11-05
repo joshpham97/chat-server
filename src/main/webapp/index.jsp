@@ -18,7 +18,7 @@
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
         <script src="https://kit.fontawesome.com/15f69f89ed.js" crossorigin="anonymous"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-        <script type="text/javascript" src="js/utils.js"></script>
+        <script type="text/javascript" src="js/index.js"></script>
     </head>
     <%
         String username = (String) session.getAttribute("username");
@@ -32,20 +32,12 @@
         <nav class="navbar navbar-dark bg-dark">
             <span class="navbar-brand mb-0 h1">Simple Message Board</span>
             <div>
-                <span class="text-light mr-2"><i class="fas fa-user mr-2"></i>User name</span>
-                <a class="btn btn-primary mb-0 h1" href="post.jsp"><i class="fas fa-sign-out-alt mr-2"></i>Sign Out</a>
+                <span class="text-light mr-2"><i class="fas fa-user mr-2"></i>${sessionScope['username']}</span>
+                <a class="btn btn-primary mb-0 h1" href="AuthServlet"><i class="fas fa-sign-out-alt mr-2"></i>Sign Out</a>
             </div>
         </nav>
 
         <div class="container mt-2">
-            <div id="navBarMenu">
-                <p>Hello, ${sessionScope['username']}</p>
-                <a href="AuthServlet">Logout</a>
-                <div class="navBarMenuItem bgHighlight rounded" onclick="setUsername()" title="Click to change username">
-                    <i class="fas fa-user mr-1"></i>
-                    <span id="usernameNavBar">Anonymous</span>
-                </div>
-            </div>
             <div class="row">
                 <div class="col-12 text-right">
                     <a class="btn btn-primary mb-0 h1 text" href="post.jsp"><i class="fas fa-plus mr-2"></i>New Post</a>
@@ -53,32 +45,13 @@
                 </div>
             </div>
             <div class="row mt-2">
-                <div class="col-12">
-                    <div class="card mb-2">
-                        <div class="card-header">
-                            <div class="float-left text-muted">
-                                <span>Username</span>
-                                <small><i class="far fa-clock pr-1"></i>Date</small>
-                            </div>
-                            <div class="float-right">
-                                <a href="/AttachmentServlet"><i class="fas fa-paperclip mr-2" title="Download attachment"></i></a>
-                                <a href="/AttachmentServlet"><i class="fas fa-edit mr-2"></i></a>
-                                <a href="/AttachmentServlet"><i class="fas fa-trash mr-2"></i></a>
-                            </div>
-                        </div>
-                        <div>
-                            <div class="card-body ">
-                                <div>Message</div>
-                                <div class="float-right">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <div id="posts" class="col-12">
+                    No posts to display
                 </div>
             </div>
         </div>
 
-        <div id="mainUI">
+        <!--<div id="mainUI">
             <div id="chatUI" class="bgSecondary rounded">
                 <div id="messagesContainer" class="overflow-auto rounded">
                     <div id="noMessagePlaceholder" class="textSecondary">
@@ -106,7 +79,7 @@
                 </div>
             </div>
 
-            <!--<div id="utilitiesUI">
+            <div id="utilitiesUI">
                 <div class="card mb-2">
                     <div class="card-header bgPrimary textPrimary bgHighlight">
                         <a class="btn" data-toggle="collapse" data-target="#downloadCardBody">

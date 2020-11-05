@@ -18,10 +18,9 @@ public class PostManager {
         tempPosts.add(new Post("username1", "message1"));
         tempPosts.add(new Post("username2", "message2"));
         tempPosts.add(new Post("username3", "message3"));
-
+        ArrayList<Post> posts = tempPosts;
 
         //ArrayList<Post> posts = postDao.getRecentPosts();
-        ArrayList<Post> posts = tempPosts;
 
         return posts;
     }
