@@ -13,8 +13,6 @@
         <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
         <title>A simple Chat Server</title>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous" />
-        <link rel="stylesheet" href="css/defaultTheme.css" />
-        <link rel="stylesheet" href="css/darkTheme.css" />
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
@@ -31,11 +29,15 @@
     %>
     <body>
         <input id="refreshDate" type="text" style="display: none"/>
-        <div id="navbar" class="bgPrimary textPrimary">
-            <div id="appLogo">
-                <i class="fas fa-comments"></i>
-                <span>Chat Server</span>
+        <nav class="navbar navbar-dark bg-dark">
+            <span class="navbar-brand mb-0 h1">Simple Message Board</span>
+            <div>
+                <span class="text-light mr-2"><i class="fas fa-user mr-2"></i>User name</span>
+                <a class="btn btn-primary mb-0 h1" href="post.jsp"><i class="fas fa-sign-out-alt mr-2"></i>Sign Out</a>
             </div>
+        </nav>
+
+        <div class="container mt-2">
             <div id="navBarMenu">
                 <p>Hello, ${sessionScope['username']}</p>
                 <a href="AuthServlet">Logout</a>
@@ -43,9 +45,35 @@
                     <i class="fas fa-user mr-1"></i>
                     <span id="usernameNavBar">Anonymous</span>
                 </div>
-                <div class="navBarMenuItem bgHighlight rounded" onclick="switchTheme()" title="Click to change theme">
-                    <i class="fas fa-cog mr-1"></i>
-                    <span>Change theme</span>
+            </div>
+            <div class="row">
+                <div class="col-12 text-right">
+                    <a class="btn btn-primary mb-0 h1 text" href="post.jsp"><i class="fas fa-plus mr-2"></i>New Post</a>
+                    <a class="btn btn-primary mb-0 h1 text" href="post.jsp"><i class="fas fa-filter mr-2"></i>Filter</a>
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-12">
+                    <div class="card mb-2">
+                        <div class="card-header">
+                            <div class="float-left text-muted">
+                                <span>Username</span>
+                                <small><i class="far fa-clock pr-1"></i>Date</small>
+                            </div>
+                            <div class="float-right">
+                                <a href="/AttachmentServlet"><i class="fas fa-paperclip mr-2" title="Download attachment"></i></a>
+                                <a href="/AttachmentServlet"><i class="fas fa-edit mr-2"></i></a>
+                                <a href="/AttachmentServlet"><i class="fas fa-trash mr-2"></i></a>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="card-body ">
+                                <div>Message</div>
+                                <div class="float-right">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -58,6 +86,7 @@
                         <span>Send a message to start the chat!</span>
                     </div>
                 </div>
+
                 <div>
                     <div id="usernameChatUI">
                         <span>Sending messages as</span>
@@ -77,7 +106,7 @@
                 </div>
             </div>
 
-            <div id="utilitiesUI">
+            <!--<div id="utilitiesUI">
                 <div class="card mb-2">
                     <div class="card-header bgPrimary textPrimary bgHighlight">
                         <a class="btn" data-toggle="collapse" data-target="#downloadCardBody">
@@ -157,7 +186,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div>-->
         </div>
     </body>
 </html>

@@ -1,33 +1,33 @@
-import server.chat.Message;
+import server.chat.Post;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
-public class ChatManager {
-    private ArrayList<Message> messages;
-    public ChatManager() {
-        messages = new ArrayList<Message>();
+public class PostManager {
+    private ArrayList<Post> messages;
+    public PostManager() {
+        messages = new ArrayList<Post>();
     }
 
-    public Message postMessage(String username, String message)
+    public Post postMessage(String username, String message)
     {
-        Message msg;
+        Post msg;
 
         if(username.isEmpty()) //If username is empty, they post as Anonymous.
         {
-            msg = new Message(message);
+            msg = new Post(message);
         }
         else
         {
-            msg = new Message(username, message);
+            msg = new Post(username, message);
         }
 
         messages.add(msg);
         return msg;
     }
 
-    public ArrayList<Message> listMessages(LocalDateTime from, LocalDateTime to) {
+    public ArrayList<Post> listMessages(LocalDateTime from, LocalDateTime to) {
         final LocalDateTime finalFrom = (from == null) ? LocalDateTime.MIN : from;
         final LocalDateTime finalTo = (to == null) ? LocalDateTime.MAX : to;
 

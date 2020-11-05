@@ -1,5 +1,5 @@
 import com.google.gson.Gson;
-import server.chat.Message;
+import server.chat.Post;
 import server.chat.dao.UserDAO;
 import server.chat.dao.UserFileDAO;
 import server.chat.daoimpl.UserFileDaoImpl;
@@ -43,14 +43,14 @@ public class Servlet extends HttpServlet {
     }
 
 
-    private ChatManager chatManager;
+    private PostManager chatManager;
     private final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     @Override
     public void init() throws ServletException {
         super.init();
 
-        chatManager = new ChatManager();
+        chatManager = new PostManager();
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -65,7 +65,7 @@ public class Servlet extends HttpServlet {
             }else{
                 String userParam = request.getParameter(Parameters.USERNAME.toString());
                 userParam = (userParam == null) ? "" : userParam;
-                Message newMessage = chatManager.postMessage(userParam, messageParam);
+                Post newMessage = chatManager.postMessage(userParam, messageParam);
 
                 Gson gson = new Gson();
                 String jsonMessage = gson.toJson(newMessage);
@@ -92,7 +92,7 @@ public class Servlet extends HttpServlet {
                 LocalDateTime to = (strTo == null || strTo.isEmpty()) ? null : LocalDate.parse(strTo).plusDays(1).atStartOfDay();
 
 
-                Stream<Message> filteredMessagesStream = chatManager.listMessages(from, to).stream();
+                Stream<Post> filteredMessagesStream = chatManager.listMessages(from, to).stream();
 
                 String strFileFormat = request.getParameter(Parameters.FILE_FORMAT.toString());
                 FileFormat fileFormat = (strFileFormat == null || strFileFormat.isEmpty()) ? FileFormat.TEXT : FileFormat.valueOf(strFileFormat);
@@ -101,11 +101,11 @@ public class Servlet extends HttpServlet {
 
                 if (fileFormat == FileFormat.XML) {
                     fileContent.append("<Messages>\n");
-                    filteredMessagesStream.forEach((Message m) -> fileContent.append(m.toXML()));
+                    filteredMessagesStream.forEach((Post m) -> fileContent.append(m.toXML()));
                     fileContent.append("</Messages>");
                     response.setHeader("Content-Disposition", "attachment; filename=\"messages.xml\"");
                 } else {
-                    filteredMessagesStream.forEach((Message m) -> fileContent.append(m.toString()).append("\n"));
+                    filteredMessagesStream.forEach((Post m) -> fileContent.append(m.toString()).append("\n"));
                     response.setHeader("Content-Disposition", "attachment; filename=\"messages.txt\"");
                 }
 
