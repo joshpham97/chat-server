@@ -1,6 +1,7 @@
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import server.chat.Post;
+import server.chat.daoimpl.PostDAO;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -23,7 +24,7 @@ public class PostManager {
         }
     }
 
-    private static final int NUMBER_POSTS = Integer.parseInt((String) jo.get("numberPosts"));
+    private static final int NUMBER_OF_POSTS = Integer.parseInt((String) jo.get("numberOfPosts"));
     //private static PostDaoImpl postDao = new PostDaoImpl();
     private ArrayList<Post> messages;
 
@@ -39,7 +40,7 @@ public class PostManager {
         tempPosts.add(new Post("username3", "message3"));
         ArrayList<Post> posts = tempPosts;
 
-        //ArrayList<Post> posts = postDao.getRecentPosts(NUMBER_POSTS);
+//        ArrayList<Post> posts = (ArrayList<Post>) PostDAO.getRecentNPosts(NUMBER_OF_POSTS);
         return posts;
     }
 
