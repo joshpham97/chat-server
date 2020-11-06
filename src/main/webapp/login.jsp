@@ -37,10 +37,17 @@
                     password: password3
 
                 --%>
-                <div class="alert alert-danger" role="alert">
-                        This is a danger alert—check it out!
-                </div>
-                <p>${sessionScope['errorMessage']}</p>
+                <%
+                    Object objErrorMessage = session.getAttribute("errorMessage");
+                    String errorMessage = objErrorMessage == null ? "" : (String) objErrorMessage;
+                    if(!errorMessage.isEmpty()) {
+                %>
+                        <div class="alert alert-danger" role="alert">
+                            <%= errorMessage %>
+                        </div>
+                <%
+                    }
+                %>
                 <form action="AuthServlet" method="post">
                     <div class="form-group">
                         <label for="username">Username</label>

@@ -20,13 +20,13 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script type="text/javascript" src="js/utils.js"></script>
     </head>
-    <%--
+    <%
         String username = (String) session.getAttribute("username");
         if (null == username) {
             session.setAttribute("errorMessage", "You have to be logged in to access the home page ");
             response.sendRedirect("login.jsp");
         }
-    --%>
+    %>
     <body>
         <input id="refreshDate" type="text" style="display: none"/>
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
