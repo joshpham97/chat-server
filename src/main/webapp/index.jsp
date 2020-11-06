@@ -18,6 +18,7 @@
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
         <script src="https://kit.fontawesome.com/15f69f89ed.js" crossorigin="anonymous"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script type="text/javascript" src="js/utils.js"></script>
         <script type="text/javascript" src="js/index.js"></script>
     </head>
     <%
@@ -29,21 +30,39 @@
     %>
     <body>
         <input id="refreshDate" type="text" style="display: none"/>
-        <nav class="navbar navbar-dark bg-dark">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <span class="navbar-brand mb-0 h1">Simple Message Board</span>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="mb-0 nav-link active" href="index.jsp"><i class="fas fa-home mr-2"></i>Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="mb-0 nav-link" href="post.jsp"><i class="fas fa-plus mr-2"></i>New Post</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="mb-0 nav-link" href="search.jsp"><i class="fas fa-filter mr-2"></i>Filter</a>
+                    </li>
+                </ul>
+            </div>
             <div>
-                <span class="text-light mr-2"><i class="fas fa-user mr-2"></i>${sessionScope['username']}</span>
-                <a class="btn btn-primary mb-0 h1" href="AuthServlet"><i class="fas fa-sign-out-alt mr-2"></i>Sign Out</a>
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown">
+                            <i class="fas fa-user mr-2"></i>Hello, ${sessionScope['username']}
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <a class="dropdown-item" href="#" onclick="featureNotImplemented()"><i class="fas fa-key mr-2" ></i>Change Password</a>
+                            <a class="dropdown-item" href="#" onclick="featureNotImplemented()"><i class="fas fa-user-circle mr-2"></i>Update account</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="AuthServlet"><i class="fas fa-sign-out-alt mr-2"></i>Sign Out</a>
+                        </div>
+                    </li>
+                </ul>
             </div>
         </nav>
 
         <div class="container mt-2">
-            <div class="row">
-                <div class="col-12 text-right">
-                    <a class="btn btn-primary mb-0 h1 text" href="post.jsp"><i class="fas fa-plus mr-2"></i>New Post</a>
-                    <a class="btn btn-primary mb-0 h1 text" href="post.jsp"><i class="fas fa-filter mr-2"></i>Filter</a>
-                </div>
-            </div>
             <div class="row mt-2">
                 <div id="posts" class="col-12">
                     No posts to display
@@ -159,7 +178,7 @@
                         </div>
                     </div>
                 </div>
-            </div>-->
-        </div>
+            </div>
+        </div>-->
     </body>
 </html>
