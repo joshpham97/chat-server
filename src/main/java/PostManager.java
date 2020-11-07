@@ -35,9 +35,9 @@ public class PostManager {
     public static ArrayList<Post> getRecentPosts() {
         // TEMPORARY HARDCODING: waiting for PostDao and Post
         ArrayList<Post> tempPosts = new ArrayList<>();
-        tempPosts.add(new Post("username1", "message1"));
-        tempPosts.add(new Post("username2", "message2"));
-        tempPosts.add(new Post("username3", "message3"));
+        tempPosts.add(new Post(1, "username1", "title1", "message1", 1));
+        tempPosts.add(new Post(2, "username2", "title2", "message2", null));
+        tempPosts.add(new Post(3, "username3", "title3", "message3", 2));
         ArrayList<Post> posts = tempPosts;
 
 //        ArrayList<Post> posts = (ArrayList<Post>) PostDAO.getRecentNPosts(NUMBER_OF_POSTS);
@@ -66,7 +66,7 @@ public class PostManager {
         final LocalDateTime finalTo = (to == null) ? LocalDateTime.MAX : to;
 
         return messages.stream()
-                .filter(m -> (m.getDate().compareTo(finalFrom) >= 0 && m.getDate().compareTo(finalTo) < 0))
+                .filter(m -> (m.getDatePosted().compareTo(finalFrom) >= 0 && m.getDatePosted().compareTo(finalTo) < 0))
                 .collect(Collectors.toCollection(ArrayList::new));
     }
 
@@ -75,7 +75,7 @@ public class PostManager {
         LocalDateTime finalTo = (to == null) ? LocalDateTime.MAX : to;
 
         for(int i = 0; i < messages.size(); i++) {
-            LocalDateTime messageDate = messages.get(i).getDate();
+            LocalDateTime messageDate = messages.get(i).getDatePosted();
 
             if(messageDate.compareTo(finalFrom) >= 0 && messageDate.compareTo(finalTo) <= 0) {
                 messages.remove(i);

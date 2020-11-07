@@ -21,7 +21,7 @@ function displayPosts(posts) {
                     '<div class="card-header">' +
                         '<div class="float-left text-muted">' +
                             '<span>' + value.username + '</span>' +
-                            '<small><i class="far fa-clock pr-1"></i>' + formatDateTime(value.date) + '</small>' +
+                            '<small><i class="far fa-clock pr-1"></i>' + formatDateTime(value.datePosted) + '</small>' +
                         '</div>' +
                         '<div class="float-right">' +
                             '<a href="/AttachmentServlet"><i class="fas fa-paperclip mr-2" title="Download attachment"></i></a>' +

@@ -9,35 +9,40 @@ public class Post implements java.io.Serializable {
     private int postID;
     private String username;
     private String title;
+    private LocalDateTime datePosted;
+    private LocalDateTime dateModified;
     private String message;
-    private LocalDateTime date;
-    private LocalDateTime lastModified;
+    private Integer attID; // Integer instead of int to simulate nullable fields
 
     // NEEDED FOR TESTING WITHOUT DAO
-    public Post(int postID, String username, String title, String message, LocalDateTime date, LocalDateTime lastModified) {
+    public Post(int postID, String username, String title, String message, LocalDateTime datePosted, LocalDateTime dateModified, Integer attID) {
         this.postID = postID;
         this.username = username;
         this.title = title;
         this.message = message;
-        this.date = date;
-        this.lastModified = lastModified;
+        this.datePosted = datePosted;
+        this.dateModified = dateModified;
+        this.attID = attID;
     }
 
-    public Post(int postID, String username, String title, String message) {
+    public Post(int postID, String username, String title, String message, Integer attID) {
         this.postID = postID;
         this.username = username;
         this.title = title;
+        datePosted = LocalDateTime.now();
+        dateModified = LocalDateTime.now();
         this.message = message;
-        date = LocalDateTime.now();
-        lastModified = LocalDateTime.now();
+        this.attID = attID;
     }
 
+    // KEEPING FOR PREVIOUS ASSIGNMENT SERVLET
     public Post(String username, String message) {
         this.username = username;
         this.message = message;
-        date = LocalDateTime.now();
+        datePosted = LocalDateTime.now();
     }
 
+    // KEEPING FOR PREVIOUS ASSIGNMENT SERVLET
     public Post(String message) {
         this("Anonymous", message);
     }
@@ -50,15 +55,15 @@ public class Post implements java.io.Serializable {
 
     public String getTitle() { return title; }
 
+    public LocalDateTime getDatePosted() { return datePosted; }
+
+    public LocalDateTime getDateModified() { return dateModified; }
+
     public String getMessage() {
         return message;
     }
 
-    public LocalDateTime getDate() {
-        return date;
-    }
-
-    public LocalDateTime getLastModified() { return lastModified; }
+    public Integer getAttID() { return attID; }
 
     public void setPostID(int postID) { this.postID = postID; }
 
@@ -68,26 +73,28 @@ public class Post implements java.io.Serializable {
 
     public void setTitle(String title) { this.title = title; }
 
+    public void setDatePosted(LocalDateTime datePosted) {
+        this.datePosted = datePosted;
+    }
+
+    public void setDateModified(LocalDateTime dateModified) { this.dateModified = dateModified;}
+
     public void setMessage(String message) {
         this.message = message;
     }
 
-    public void setDate(LocalDateTime date) {
-        this.date = date;
-    }
-
-    public void setLastModified(LocalDateTime lastModified) { this.lastModified = lastModified;}
+    public void setAttID(Integer attID) { this.attID = attID; }
 
     @Override
     public String toString() {
-        String strDate = date.format(FORMATTER);
+        String strDate = datePosted.format(FORMATTER);
         return strDate + " :: " + this.username + " :: " + this.message;
     }
 
     public String toXML(){
         StringBuilder messageXML = new StringBuilder();
         return  " <Message>\n" +
-                "  <Date>" + this.getDate() + "</Date>\n" +
+                "  <Date>" + this.getDatePosted() + "</Date>\n" +
                 "  <Username>" + this.getUsername() + "</Username>\n" +
                 "  <Content>" + this.getMessage() + "</Content>\n" +
                 " </Message>\n";

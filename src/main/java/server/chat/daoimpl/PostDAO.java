@@ -10,5 +10,6 @@ public class PostDAO extends DBConnection {
     public static Blob getAttachmentByPostId(int postId) {
         return null;
     }
+    public static Set<Post> getRecentPosts() { return null; }
     public static Set<Post> getRecentNPosts(int n) { return null; }
 }
