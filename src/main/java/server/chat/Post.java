@@ -13,6 +13,8 @@ public class Post implements java.io.Serializable {
     private LocalDateTime dateModified;
     private String message;
     private Integer attID; // Integer instead of int to simulate nullable fields
+    private String datePostedStr; // Helps with displaying date on frontend
+    private String dateModifiedStr;
 
     // NEEDED FOR TESTING WITHOUT DAO
     public Post(int postID, String username, String title, String message, LocalDateTime datePosted, LocalDateTime dateModified, Integer attID) {
@@ -23,6 +25,8 @@ public class Post implements java.io.Serializable {
         this.datePosted = datePosted;
         this.dateModified = dateModified;
         this.attID = attID;
+        this.datePostedStr = formatDate(datePosted);
+        this.dateModifiedStr = formatDate(dateModified);
     }
 
     public Post(int postID, String username, String title, String message, Integer attID) {
@@ -33,6 +37,8 @@ public class Post implements java.io.Serializable {
         dateModified = LocalDateTime.now();
         this.message = message;
         this.attID = attID;
+        this.datePostedStr = formatDate(datePosted);
+        this.dateModifiedStr = formatDate(dateModified);
     }
 
     // KEEPING FOR PREVIOUS ASSIGNMENT SERVLET
@@ -75,9 +81,13 @@ public class Post implements java.io.Serializable {
 
     public void setDatePosted(LocalDateTime datePosted) {
         this.datePosted = datePosted;
+        this.datePostedStr = formatDate(datePosted);
     }
 
-    public void setDateModified(LocalDateTime dateModified) { this.dateModified = dateModified;}
+    public void setDateModified(LocalDateTime dateModified) {
+        this.dateModified = dateModified;
+        this.dateModifiedStr = formatDate(dateModified);
+    }
 
     public void setMessage(String message) {
         this.message = message;
@@ -98,5 +108,9 @@ public class Post implements java.io.Serializable {
                 "  <Username>" + this.getUsername() + "</Username>\n" +
                 "  <Content>" + this.getMessage() + "</Content>\n" +
                 " </Message>\n";
+    }
+
+    private String formatDate(LocalDateTime date) {
+        return date.getMonth().toString().toLowerCase() + " " + date.getDayOfMonth() + ", " + date.getYear();
     }
 }
