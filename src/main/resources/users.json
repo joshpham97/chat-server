@@ -1,0 +1,24 @@
+[
+  {
+    "userID": "1",
+    "username": "username1",
+    "firstName": "fname1",
+    "lastName": "lname1",
+    "email": "email1",
+    "password": "7c6a180b36896a0a8c02787eeafb0e4c"
+  }, {
+    "userID": "2",
+    "username": "username2",
+    "firstName": "fname2",
+    "lastName": "lname2",
+    "email": "email2",
+    "password": "6cb75f652a9b52798eb6cf2201057c73"
+  }, {
+    "userID": "3",
+    "username": "username3",
+    "firstName": "fname3",
+    "lastName": "lname3",
+    "email": "email3",
+    "password": "819b0643d6b89dc9b579fdfc9094f28e"
+  }
+]

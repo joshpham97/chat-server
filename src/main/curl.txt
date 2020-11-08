@@ -1,0 +1,22 @@
+Curl commands for deleting messages:
+curl "http://localhost:8080/chat_server_war/Servlet?from=2020-10-08" -X "DELETE" --referer http://localhost:8080/chat_server_war/ -v
+curl "http://localhost:8080/chat_server_war/Servlet?to=2020-10-08" -X "DELETE" --referer http://localhost:8080/chat_server_war/ -v
+curl "http://localhost:8080/chat_server_war/Servlet?from=2020-10-03&to=2020-10-5" -X "DELETE" --referer http://localhost:8080/chat_server_war/ -v
+curl "http://localhost:8080/chat_server_war/Servlet" -X "DELETE" --referer http://localhost:8080/chat_server_war/ -v
+
+Curl commands for posting messages
+curl http://localhost:8080/chat_server_war/Servlet -X "POST" --referer http://localhost:8080/chat_server_war/ -v
+curl http://localhost:8080/chat_server_war/Servlet --data "message=Send from curl" --referer http://localhost:8080/chat_server_war/ -v
+curl http://localhost:8080/chat_server_war/Servlet --data "message=Send from curl" --data "username=joshCurl" --referer http://localhost:8080/chat_server_war/ -v
+
+Curl commands for downloading
+--TEXT
+curl http://localhost:8080/chat_server_war/Servlet --referer http://localhost:8080/chat_server_war/ -v
+curl "http://localhost:8080/chat_server_war/Servlet?from=2020-10-02" --referer http://localhost:8080/chat_server_war/ -v
+curl "http://localhost:8080/chat_server_war/Servlet?to=2020-10-02" --referer http://localhost:8080/chat_server_war/ -v
+--XML
+curl http://localhost:8080/chat_server_war/Servlet?fileFormat=XML --referer http://localhost:8080/chat_server_war/ -v
+curl "http://localhost:8080/chat_server_war/Servlet?from=2020-10-02&to=2020-10-07" --referer http://localhost:8080/chat_server_war/ -v
+--Output to files
+curl http://localhost:8080/chat_server_war/Servlet?fileFormat=XML --referer http://localhost:8080/chat_server_war/ -o output.xml
+curl http://localhost:8080/chat_server_war/Servlet --referer http://localhost:8080/chat_server_war/ -o output.txt

@@ -9,11 +9,17 @@
 .textSecondary{
     color: #769494;
 }
+.textTertiary{
+    color: #fc8405;
+}
 .bgPrimary{
     background-color: #c3976a;
 }
 .bgSecondary{
     background-color: #f7f7f7;;
+}
+.bgTertiary{
+    background-color: #d2dcd5;
 }
 
 /* Main background */
@@ -62,6 +68,13 @@ body{
     background-color: white;
     height: 500px;
     margin-bottom: 20px;
+    padding: 20px;
+}
+#noMessagePlaceholder {
+    font-size: 20px;
+    width: 100%;
+    text-align: center;
+    margin-top: 20px;
 }
 .message{
     width: 100%;
@@ -93,7 +106,6 @@ body{
 #utilitiesUI > .card {
     margin-bottom: 10px;
 }
-
 .customForm > div{
     margin: 0px auto 10px auto;
     width: 90%;
