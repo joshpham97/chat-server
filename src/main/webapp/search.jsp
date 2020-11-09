@@ -11,6 +11,13 @@
     <title>Title</title>
 </head>
 <body>
-
+    <form action="index.jsp">
+        <div>
+            <input type="text" placeholder="Username" name="username" />
+        </div>
+        <div>
+            <button>Search</button>
+        </div>
+    </form>
 </body>
 </html>

@@ -15,8 +15,17 @@ public class PostServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         PrintWriter responseWriter = response.getWriter();
 
+        String username = request.getParameter("username");
+//        String strFrom = request.getParameter("from");
+//        String strTo = request.getParameter("to");
+//        String hashtags = request.getParameter("hashtags");
+
         try {
-            ArrayList<Post> posts = PostManager.getRecentPosts();
+            ArrayList<Post> posts;
+            if(username != null)
+                posts = PostManager.searchPostsByUsername(username);
+            else
+                posts = PostManager.getRecentPosts();
 
             Gson gson = new Gson();
             responseWriter.append(gson.toJson(posts));
