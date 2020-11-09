@@ -61,7 +61,7 @@ public class Servlet extends HttpServlet {
         String title = request.getParameter("title");
 
         Post post = null;
-        post = chatManager.postMessageDatabase(uname,title, message);
+        post = chatManager.insertPost(uname,title, message);
         chatManager.postMessage(uname, message);
         response.sendRedirect("post.jsp");
        

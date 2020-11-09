@@ -17,12 +17,6 @@ public class PostDAO extends DBConnection {
         Post post = new Post();
         try{
             Connection conn = DBConnection.getConnection();
-            System.out.println("Entered conn");
-            //Statement stmt = conn.createStatement();
-
-            System.out.println("create statement");
-            //long millis=System.currentTimeMillis();
-            //java.sql.Date date=new java.sql.Date(millis);
 
             LocalDateTime localDate = LocalDateTime.now();
             //Date date = Date.valueOf(localDate);

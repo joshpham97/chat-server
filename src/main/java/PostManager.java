@@ -35,29 +35,21 @@ public class PostManager {
         messages = new ArrayList<Post>();
     }
 
-    public Post postMessageDatabase(String username,String title, String message)
+    public Post insertPost(String username,String title, String message)
     {
         PostDAO postDao = new PostDAO();
         Post post = postDao.createPost(username, title, message);
 
         int postID = post.getPostID();
-        String postMessage = post.getMessage();
-        System.out.println("Post id: " + postID + " Message: " + postMessage);
 
         Set<String> hashtags = getHashtags(message);
         Iterator<String> it = hashtags.iterator();
 
         if(!hashtags.isEmpty()) {
-            System.out.println("Message has hashtags.");
             while(it.hasNext()) {
                 String hashtagWord = it.next();
-                System.out.println(hashtagWord);
                 postDao.insertHashtag(postID, hashtagWord);
             }
-        }
-        else
-        {
-            System.out.println("No hashtags.");
         }
         return post;
     }
