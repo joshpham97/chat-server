@@ -7,6 +7,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class PostManager {
@@ -41,6 +43,30 @@ public class PostManager {
 //        ArrayList<Post> posts = tempPosts;
 
         ArrayList<Post> posts = PostDAO.getRecentPosts();
+        return posts;
+    }
+
+    public static ArrayList<Post> searchPostsByUsername(String username) {
+        ArrayList<Post> posts = PostDAO.searchPostsByUsername(username);
+
+        return posts;
+    }
+
+    public static ArrayList<Post> searchPostsByDatePosted(LocalDateTime from, LocalDateTime to) {
+        ArrayList<Post> posts = PostDAO.searchPostsByDatePosted(from, to);
+
+        return posts;
+    }
+
+    public static ArrayList<Post> searchPostsByDateModified(LocalDateTime from, LocalDateTime to) {
+        ArrayList<Post> posts = PostDAO.searchPostsByDateModified(from, to);
+
+        return posts;
+    }
+
+    public static ArrayList<Post> searchPostsByHashtags(List<String> hashtags) {
+        ArrayList<Post> posts = PostDAO.searchPostByHashtags(hashtags);
+
         return posts;
     }
 

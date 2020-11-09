@@ -47,17 +47,29 @@ public class PostDAO extends DBConnection {
     }
 
     public static ArrayList<Post> searchPostsByDatePosted(LocalDateTime from, LocalDateTime to) {
-        String sql = "SELECT * FROM post_info " +
-                "WHERE date_posted >= \'" + from.toLocalDate() + "\'" +
-                "AND date_posted <= \'" + to.toLocalDate() + "\'";
+        String sql = "SELECT * FROM post_info";
+
+        if(from != null && to != null)
+            sql += " WHERE date_posted >= \'" + from.toLocalDate() + "\' " +
+                    "AND date_posted <= \'" + to.toLocalDate() + "\'";
+        else if(from != null)
+            sql += " WHERE date_posted >= \'" + from.toLocalDate() + "\'";
+        else if(to != null)
+            sql += " WHERE date_posted <= \'" + to.toLocalDate() + "\'";
 
         return getPostsHelper(sql);
     }
 
     public static ArrayList<Post> searchPostsByDateModified(LocalDateTime from, LocalDateTime to) {
-        String sql = "SELECT * FROM post_info " +
-                "WHERE date_modified >= \'" + from.toLocalDate() + "\'" +
-                "AND date_modified <= \'" + to.toLocalDate() + "\'";
+        String sql = "SELECT * FROM post_info";
+
+        if(from != null && to != null)
+            sql += " WHERE date_modified >= \'" + from.toLocalDate() + "\' " +
+                    "AND date_modified <= \'" + to.toLocalDate() + "\'";
+        else if(from != null)
+            sql += " WHERE date_modified >= \'" + from.toLocalDate() + "\'";
+        else if(to != null)
+            sql += " WHERE date_modified <= \'" + to.toLocalDate() + "\'";
 
         return getPostsHelper(sql);
     }
@@ -122,18 +134,17 @@ public class PostDAO extends DBConnection {
     }
 
     // Quick testing: to be removed later
-    public static void main(String[] args) {
-        ArrayList<Post> posts;
+//    public static void main(String[] args) {
+//        ArrayList<Post> posts;
 //        posts = getRecentPosts();
 //        posts = getRecentNPosts(3);
 //        posts = getRecentNPostsWithOffset(3, 1);
 //        posts = searchPostsByUsername("user");
 //        posts = searchPostsByDatePosted(LocalDateTime.now().minusDays(6), LocalDateTime.now().minusDays(4));
 //        posts = searchPostsByDateModified(LocalDateTime.now().minusDays(6), LocalDateTime.now().minusDays(4));
-
-        posts = searchPostByHashtags(Arrays.asList("three", "five"));
-
-        for (Post p: posts)
-            System.out.println(p.getPostID());
-    }
+//        posts = searchPostByHashtags(Arrays.asList("three", "five"));
+//
+//        for (Post p: posts)
+//            System.out.println(p.getPostID());
+//    }
 }

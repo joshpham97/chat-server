@@ -64,12 +64,12 @@ public class HashtagDAO extends DBConnection {
     }
 
     // Quick testing: to be removed later
-    public static void main(String[] args) {
-        ArrayList<Integer> ids;
+//    public static void main(String[] args) {
+//        ArrayList<Integer> ids;
 //        ids = getHashtagIDs(Arrays.asList("one", "five"));
-        ids = getPostIDs(Arrays.asList(3, 5));
-
-        for (Integer i: ids)
-            System.out.println(i);
-    }
+//        ids = getPostIDs(Arrays.asList(3, 5));
+//
+//        for (Integer i: ids)
+//            System.out.println(i);
+//    }
 }
