@@ -34,13 +34,13 @@ public class PostManager {
 
     public static ArrayList<Post> getRecentPosts() {
         // TEMPORARY HARDCODING: waiting for PostDao and Post
-        ArrayList<Post> tempPosts = new ArrayList<>();
-        tempPosts.add(new Post(1, "username1", "title1", "message1", 1));
-        tempPosts.add(new Post(2, "username2", "title2", "message2", null));
-        tempPosts.add(new Post(3, "username3", "title3", "message3", 2));
-        ArrayList<Post> posts = tempPosts;
+//        ArrayList<Post> tempPosts = new ArrayList<>();
+//        tempPosts.add(new Post(1, "username1", "title1", "message1", 1));
+//        tempPosts.add(new Post(2, "username2", "title2", "message2", null));
+//        tempPosts.add(new Post(3, "username3", "title3", "message3", 2));
+//        ArrayList<Post> posts = tempPosts;
 
-//        ArrayList<Post> posts = (ArrayList<Post>) PostDAO.getRecentNPosts(NUMBER_OF_POSTS);
+        ArrayList<Post> posts = PostDAO.getRecentPosts();
         return posts;
     }
 

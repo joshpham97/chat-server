@@ -8,7 +8,7 @@ function getRecentPosts() {
         error: function(e) {
             alert(e.responseText);
         }
-    })
+    });
 }
 
 function displayPosts(posts) {

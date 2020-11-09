@@ -16,6 +16,11 @@ public class Post implements java.io.Serializable {
     private String datePostedStr; // Helps with displaying date on frontend
     private String dateModifiedStr;
 
+    // Needed for DAO implementation
+    public Post() {
+
+    }
+
     // NEEDED FOR TESTING WITHOUT DAO
     public Post(int postID, String username, String title, String message, LocalDateTime datePosted, LocalDateTime dateModified, Integer attID) {
         this.postID = postID;
