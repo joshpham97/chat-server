@@ -1,6 +1,5 @@
 package server.chat;
 
-import java.sql.Date;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -21,6 +20,7 @@ public class Post implements java.io.Serializable {
     {
 
     }
+
     // NEEDED FOR TESTING WITHOUT DAO
     public Post(int postID, String username, String title, String message, LocalDateTime datePosted, LocalDateTime dateModified, Integer attID) {
         this.postID = postID;
@@ -118,4 +118,5 @@ public class Post implements java.io.Serializable {
     private String formatDate(LocalDateTime date) {
         return date.getMonth().toString().toLowerCase() + " " + date.getDayOfMonth() + ", " + date.getYear();
     }
+
 }

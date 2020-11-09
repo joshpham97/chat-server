@@ -24,8 +24,6 @@ public class AuthServlet extends HttpServlet {
         String destPage = "login.jsp";
         UserManager manager = new UserManager();
 
-        PrintWriter responseWriter = response.getWriter();
-
         try {
                 if(manager.login(uname, password, session))
                 {
@@ -33,19 +31,16 @@ public class AuthServlet extends HttpServlet {
                 }
                 else
                 {
-                    request.setAttribute("loginError", "Invalid username/password");
-                    //responseWriter.println("Invalid username/password");
                     destPage = "login.jsp";
                 }
             response.sendRedirect(destPage);
-            //request.getRequestDispatcher(destPage).forward(request, response);
+
             //RequestDispatcher dispatcher = request.getRequestDispatcher(destPage);
             //dispatcher.forward(request, response);
         }catch (Exception ex) {
             session.setAttribute("errorMessage", "No user found");
             response.sendRedirect(destPage);
         }
-        responseWriter.close();
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

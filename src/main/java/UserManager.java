@@ -3,14 +3,12 @@ import server.chat.model.User;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.io.PrintWriter;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 public class UserManager {
     public static boolean login(String username, String password, HttpSession session)
     {
-
         boolean result = false;
 
         String generatedPassword = encryptPassword(password);

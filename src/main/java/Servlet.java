@@ -3,7 +3,6 @@ import server.chat.Post;
 import server.chat.dao.UserDAO;
 import server.chat.dao.UserFileDAO;
 import server.chat.daoimpl.UserFileDaoImpl;
-import server.chat.db.DBConnection;
 import server.chat.model.User;
 
 import javax.servlet.RequestDispatcher;
@@ -17,10 +16,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -69,7 +64,7 @@ public class Servlet extends HttpServlet {
         post = chatManager.postMessageDatabase(uname,title, message);
         chatManager.postMessage(uname, message);
         response.sendRedirect("post.jsp");
-        /**
+       
         if(request.getHeader("referer") != null) {
             String messageParam= request.getParameter(Parameters.MESSAGE.toString());
 
@@ -91,7 +86,6 @@ public class Servlet extends HttpServlet {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             responseWriter.append("Invalid request. No Referrer found.");
         }
-         */
 
         responseWriter.close();
     }
@@ -138,7 +132,7 @@ public class Servlet extends HttpServlet {
 
         responseWriter.close();
     }
-
+  
     protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         PrintWriter responseWriter = response.getWriter();
 

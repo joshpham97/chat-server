@@ -17,12 +17,14 @@
     <script type="text/javascript" src="js/utils.js"></script>
     <title>Login Page</title>
 </head>
+
 <%
     String username = (String) session.getAttribute("username");
     if (null != username) {
         response.sendRedirect("index.jsp");
     }
 %>
+
 <body>
     <nav class="navbar navbar-dark bg-dark">
         <span class="navbar-brand mb-0 h1">Simple Message Board</span>

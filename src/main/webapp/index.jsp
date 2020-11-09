@@ -19,6 +19,7 @@
         <script src="https://kit.fontawesome.com/15f69f89ed.js" crossorigin="anonymous"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script type="text/javascript" src="js/utils.js"></script>
+        <script type="text/javascript" src="js/index.js"></script>
     </head>
     <%
         String username = (String) session.getAttribute("username");
@@ -63,27 +64,8 @@
 
         <div class="container mt-2">
             <div class="row mt-2">
-                <div class="col-12">
-                    <div class="card mb-2">
-                        <div class="card-header">
-                            <div class="float-left text-muted">
-                                <span>Username</span>
-                                <small><i class="far fa-clock pr-1"></i>Date</small>
-                            </div>
-                            <div class="float-right">
-                                <a href="/AttachmentServlet"><i class="fas fa-paperclip mr-2" title="Download attachment"></i></a>
-                                <a href="/AttachmentServlet"><i class="fas fa-edit mr-2"></i></a>
-                                <a href="/AttachmentServlet"><i class="fas fa-trash mr-2"></i></a>
-                            </div>
-                        </div>
-                        <div>
-                            <div class="card-body ">
-                                <div>Message</div>
-                                <div class="float-right">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <div id="posts" class="col-12">
+                    No posts to display
                 </div>
             </div>
         </div>
