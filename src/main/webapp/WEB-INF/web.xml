@@ -20,6 +20,14 @@
         <url-pattern>/Servlet</url-pattern>
     </servlet-mapping>
     <servlet>
+        <servlet-name>PostServlet</servlet-name>
+        <servlet-class>PostServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>PostServlet</servlet-name>
+        <url-pattern>/PostServlet</url-pattern>
+    </servlet-mapping>
+    <servlet>
         <servlet-name>AttachmentServlet</servlet-name>
         <servlet-class>AttachmentServlet</servlet-class>
     </servlet>

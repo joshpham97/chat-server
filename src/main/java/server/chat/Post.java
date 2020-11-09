@@ -6,56 +6,111 @@ import java.time.format.DateTimeFormatter;
 public class Post implements java.io.Serializable {
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
+    private int postID;
     private String username;
+    private String title;
+    private LocalDateTime datePosted;
+    private LocalDateTime dateModified;
     private String message;
-    private LocalDateTime date;
-  
+    private Integer attID; // Integer instead of int to simulate nullable fields
+    private String datePostedStr; // Helps with displaying date on frontend
+    private String dateModifiedStr;
+
+    // NEEDED FOR TESTING WITHOUT DAO
+    public Post(int postID, String username, String title, String message, LocalDateTime datePosted, LocalDateTime dateModified, Integer attID) {
+        this.postID = postID;
+        this.username = username;
+        this.title = title;
+        this.message = message;
+        this.datePosted = datePosted;
+        this.dateModified = dateModified;
+        this.attID = attID;
+        this.datePostedStr = formatDate(datePosted);
+        this.dateModifiedStr = formatDate(dateModified);
+    }
+
+    public Post(int postID, String username, String title, String message, Integer attID) {
+        this.postID = postID;
+        this.username = username;
+        this.title = title;
+        datePosted = LocalDateTime.now();
+        dateModified = LocalDateTime.now();
+        this.message = message;
+        this.attID = attID;
+        this.datePostedStr = formatDate(datePosted);
+        this.dateModifiedStr = formatDate(dateModified);
+    }
+
+    // KEEPING FOR PREVIOUS ASSIGNMENT SERVLET
     public Post(String username, String message) {
         this.username = username;
         this.message = message;
-        date = LocalDateTime.now();
+        datePosted = LocalDateTime.now();
     }
 
+    // KEEPING FOR PREVIOUS ASSIGNMENT SERVLET
     public Post(String message) {
         this("Anonymous", message);
     }
+
+    public int getPostID() { return postID; }
 
     public String getUsername() {
         return username;
     }
 
+    public String getTitle() { return title; }
+
+    public LocalDateTime getDatePosted() { return datePosted; }
+
+    public LocalDateTime getDateModified() { return dateModified; }
+
     public String getMessage() {
         return message;
     }
 
-    public LocalDateTime getDate() {
-        return date;
-    }
+    public Integer getAttID() { return attID; }
 
-    public void setUser(String username) {
+    public void setPostID(int postID) { this.postID = postID; }
+
+    public void setUsername(String username) {
         this.username = username;
     }
 
-    public void setContent(String message) {
+    public void setTitle(String title) { this.title = title; }
+
+    public void setDatePosted(LocalDateTime datePosted) {
+        this.datePosted = datePosted;
+        this.datePostedStr = formatDate(datePosted);
+    }
+
+    public void setDateModified(LocalDateTime dateModified) {
+        this.dateModified = dateModified;
+        this.dateModifiedStr = formatDate(dateModified);
+    }
+
+    public void setMessage(String message) {
         this.message = message;
     }
 
-    public void setDate(LocalDateTime date) {
-        this.date = date;
-    }
+    public void setAttID(Integer attID) { this.attID = attID; }
 
     @Override
     public String toString() {
-        String strDate = date.format(FORMATTER);
+        String strDate = datePosted.format(FORMATTER);
         return strDate + " :: " + this.username + " :: " + this.message;
     }
 
     public String toXML(){
         StringBuilder messageXML = new StringBuilder();
         return  " <Message>\n" +
-                "  <Date>" + this.getDate() + "</Date>\n" +
+                "  <Date>" + this.getDatePosted() + "</Date>\n" +
                 "  <Username>" + this.getUsername() + "</Username>\n" +
                 "  <Content>" + this.getMessage() + "</Content>\n" +
                 " </Message>\n";
+    }
+
+    private String formatDate(LocalDateTime date) {
+        return date.getMonth().toString().toLowerCase() + " " + date.getDayOfMonth() + ", " + date.getYear();
     }
 }
