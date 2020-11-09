@@ -58,7 +58,7 @@ public class Servlet extends HttpServlet {
 
         String uname = (String)request.getSession(false).getAttribute("username");
         String message = request.getParameter("message");
-        String title = "TITLE";
+        String title = request.getParameter("title");
 
         Post post = null;
         post = chatManager.postMessageDatabase(uname,title, message);

@@ -27,6 +27,7 @@
             <form action="Servlet" method="post">
                 <div class="form-group">
                     <label for="postContent"></label>
+                    <textarea id="postTitle" name="title" class="form-control" rows="1" placeholder="Title" required></textarea>
                     <textarea id="postContent" name="message" class="form-control" rows="2" placeholder="Type your post here..." required></textarea>
                 </div>
                 <div class="custom-file">

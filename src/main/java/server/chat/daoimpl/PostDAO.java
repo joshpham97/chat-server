@@ -29,13 +29,14 @@ public class PostDAO extends DBConnection {
             //date = java.sql.Date.valueOf(String.valueOf(date));
             java.sql.Date date = java.sql.Date.valueOf(localDate.toLocalDate());
             //String title = "TITLE";
-            String query = "INSERT INTO Post_info (username, title, date_posted, message)" + " values (?,?,?,?)";
+            String query = "INSERT INTO Post_info (username, title, date_posted, date_modified, message)" + " values (?,?,?,?,?)";
 
             PreparedStatement stmt = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
             stmt.setString(1, username);
             stmt.setString(2, title);
             stmt.setDate(3, date);
-            stmt.setString(4, message);
+            stmt.setDate(4, date);
+            stmt.setString(5, message);
             stmt.execute();
             ResultSet rs = stmt.getGeneratedKeys();
             int generatedKey =0;
@@ -58,15 +59,26 @@ public class PostDAO extends DBConnection {
     public void insertHashtag(int postID, String hashtagWord)
     {
         try {
-            Connection conn = DBConnection.getConnection();
-            String query2 = "INSERT INTO Hashtag (hashtag)" + " value (?)";
-            PreparedStatement ps1 = conn.prepareStatement(query2, Statement.RETURN_GENERATED_KEYS);
-            ps1.setString(1, hashtagWord);
-            ps1.execute();
-            ResultSet result = ps1.getGeneratedKeys();
             int hashtagID = 0;
-            if (result.next()) {
-                hashtagID = result.getInt(1);
+            Connection conn = DBConnection.getConnection();
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM Hashtag WHERE hashtag = ?");
+            ps.setString(1, hashtagWord);
+            ResultSet r = ps.executeQuery();
+
+            if (r.next()) {
+                hashtagID = r.getInt(1);
+            }
+            else
+            {
+                String query2 = "INSERT INTO Hashtag (hashtag)" + " value (?)";
+                PreparedStatement ps1 = conn.prepareStatement(query2, Statement.RETURN_GENERATED_KEYS);
+                ps1.setString(1, hashtagWord);
+                ps1.execute();
+                ResultSet result = ps1.getGeneratedKeys();
+
+                if (result.next()) {
+                    hashtagID = result.getInt(1);
+                }
             }
             insertPostHashTag(conn, postID, hashtagID);
         }

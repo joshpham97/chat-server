@@ -7,6 +7,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class PostManager {
@@ -63,7 +66,7 @@ public class PostManager {
         Set<String> hashtags = new HashSet<String>();
         for (String word : words) {
             if (word.startsWith("#")) {
-                hashtags.add(word);
+                hashtags.add(word.substring(1));
             }
         }
         return hashtags;
