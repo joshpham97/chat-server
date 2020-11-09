@@ -65,9 +65,11 @@ public class Servlet extends HttpServlet {
         String message = request.getParameter("message");
         String title = "TITLE";
 
-        chatManager.postMessageDatabase(uname,title, message);
+        Post post = null;
+        post = chatManager.postMessageDatabase(uname,title, message);
         chatManager.postMessage(uname, message);
-
+        response.sendRedirect("post.jsp");
+        /**
         if(request.getHeader("referer") != null) {
             String messageParam= request.getParameter(Parameters.MESSAGE.toString());
 
@@ -83,11 +85,13 @@ public class Servlet extends HttpServlet {
                 String jsonMessage = gson.toJson(newMessage);
                 responseWriter.append(jsonMessage);
             }
+
         }
         else {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             responseWriter.append("Invalid request. No Referrer found.");
         }
+         */
 
         responseWriter.close();
     }

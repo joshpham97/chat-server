@@ -16,7 +16,7 @@ public class PostManager {
         messages = new ArrayList<Post>();
     }
 
-    public void postMessageDatabase(String username,String title, String message)
+    public Post postMessageDatabase(String username,String title, String message)
     {
         PostDAO postDao = new PostDAO();
         Post post = postDao.createPost(username, title, message);
@@ -40,9 +40,10 @@ public class PostManager {
         {
             System.out.println("No hashtags.");
         }
+        return post;
     }
-    public static Set<String> getHashtags(String tweet) {
-        String[] words = tweet.split(" ");
+    public static Set<String> getHashtags(String message) {
+        String[] words = message.split("\\s+");
         Set<String> hashtags = new HashSet<String>();
         for (String word : words) {
             if (word.startsWith("#")) {
