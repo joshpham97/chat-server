@@ -13,6 +13,13 @@ import java.util.List;
     Handles querying the post_hashtag and hashtag tables
  */
 public class HashtagDAO extends DBConnection {
+    public static Integer getHashtagID(String hashtag) {
+        String sql = "SELECT hashtag_id FROM hashtag " +
+                "WHERE hashtag = '" + hashtag + "'";
+
+        return getIdHelper(sql, "hashtag_id");
+    }
+
     public static ArrayList<Integer> getHashtagIDs(List<String> hashtags) {
         // Build a string of comma separated hashtags
         String hashtagStr = "";
@@ -39,6 +46,28 @@ public class HashtagDAO extends DBConnection {
                 "WHERE hashtag_id IN (" + hashtagIDsStr + ")";
 
         return getIdsHelper(sql, "post_id");
+    }
+
+    public static Integer getIdHelper(String sql, String idField) {
+        Integer id = null;
+
+        try {
+            Connection conn = DBConnection.getConnection();
+
+            // Get query result
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+
+            // For each element of query result
+            while(rs.next())
+                id = rs.getInt(idField);
+        } catch(Exception e) {
+            e.printStackTrace();
+        } finally {
+            DBConnection.closeConnection();
+        }
+
+        return id;
     }
 
     public static ArrayList<Integer> getIdsHelper(String sql, String idField) {
@@ -68,6 +97,7 @@ public class HashtagDAO extends DBConnection {
 //        ArrayList<Integer> ids;
 //        ids = getHashtagIDs(Arrays.asList("one", "five"));
 //        ids = getPostIDs(Arrays.asList(3, 5));
+//        System.out.println(getHashtagID("fakehashtag"));
 //
 //        for (Integer i: ids)
 //            System.out.println(i);
