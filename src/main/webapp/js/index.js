@@ -1,12 +1,6 @@
 function getRecentPosts() {
-    // Get query string params
-    const urlSearchParams = new URLSearchParams(window.location.search)
-    const username = urlSearchParams.get("username");
-
-    // Build query string
-    let query = '';
-    if(username)
-        query += 'username=' + username;
+    // Build the query string
+    let query = buildQueryString();
 
     $.ajax({
         url: 'PostServlet?' + query,
@@ -30,6 +24,20 @@ function displayPosts(posts) {
     }
     else
         $("posts").text("No posts to display")
+}
+
+function buildQueryString() {
+    // Get query string params
+    const urlSearchParams = new URLSearchParams(window.location.search)
+    const queryParams = urlSearchParams.entries();
+
+    // Build the query string
+    let query = '';
+    for(const [k, v] of queryParams)
+        if(v != '')
+            query += k + '=' + v + '&';
+
+    return query;
 }
 
 $(document).ready(function() {

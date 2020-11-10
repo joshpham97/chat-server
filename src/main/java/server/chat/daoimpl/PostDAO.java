@@ -51,11 +51,13 @@ public class PostDAO extends DBConnection {
 
         if(from != null && to != null)
             sql += " WHERE date_posted >= \'" + from.toLocalDate() + "\' " +
-                    "AND date_posted <= \'" + to.toLocalDate() + "\'";
+                    "AND date_posted < \'" + to.toLocalDate() + "\'";
         else if(from != null)
             sql += " WHERE date_posted >= \'" + from.toLocalDate() + "\'";
         else if(to != null)
-            sql += " WHERE date_posted <= \'" + to.toLocalDate() + "\'";
+            sql += " WHERE date_posted < \'" + to.toLocalDate() + "\'";
+
+        sql += " ORDER BY date_modified DESC, date_posted DESC";
 
         return getPostsHelper(sql);
     }
@@ -65,11 +67,13 @@ public class PostDAO extends DBConnection {
 
         if(from != null && to != null)
             sql += " WHERE date_modified >= \'" + from.toLocalDate() + "\' " +
-                    "AND date_modified <= \'" + to.toLocalDate() + "\'";
+                    "AND date_modified < \'" + to.toLocalDate() + "\'";
         else if(from != null)
             sql += " WHERE date_modified >= \'" + from.toLocalDate() + "\'";
         else if(to != null)
-            sql += " WHERE date_modified <= \'" + to.toLocalDate() + "\'";
+            sql += " WHERE date_modified < \'" + to.toLocalDate() + "\'";
+
+        sql += " ORDER BY date_modified DESC, date_posted DESC";
 
         return getPostsHelper(sql);
     }
