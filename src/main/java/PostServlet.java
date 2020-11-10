@@ -28,7 +28,7 @@ public class PostServlet extends HttpServlet {
             LocalDateTime from = (strFrom == null || strFrom.isEmpty()) ? null : LocalDate.parse(strFrom).atStartOfDay();
             LocalDateTime to = (strTo == null || strTo.isEmpty()) ? null : LocalDate.parse(strTo).plusDays(1).atStartOfDay();
             List<String> hashtags = (strHashtags == null) ? null : Arrays.asList(strHashtags.split(" "));
-System.out.println(hashtags);
+            
             ArrayList<Post> posts = PostManager.searchPosts(username, from, to, hashtags);
 
             Gson gson = new Gson();
