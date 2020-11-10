@@ -38,100 +38,49 @@ public class PostDAO extends DBConnection {
         return getPostsHelper(sql);
     }
 
-    public static ArrayList<Post> searchPostsByUsername(String username) {
-        String sql = "SELECT * FROM post_info " +
-                "WHERE username LIKE \'%" + username + "%\' " +
-                "ORDER BY date_modified DESC, date_posted DESC, post_id DESC";
-
-        return getPostsHelper(sql);
-    }
-
-    public static ArrayList<Post> searchPostsByDatePosted(LocalDateTime from, LocalDateTime to) {
-        String sql = "SELECT * FROM post_info";
-
-        if(from != null && to != null)
-            sql += " WHERE date_posted >= \'" + from.toLocalDate() + "\' " +
-                    "AND date_posted < \'" + to.toLocalDate() + "\'";
-        else if(from != null)
-            sql += " WHERE date_posted >= \'" + from.toLocalDate() + "\'";
-        else if(to != null)
-            sql += " WHERE date_posted < \'" + to.toLocalDate() + "\'";
-
-        sql += " ORDER BY date_modified DESC, date_posted DESC, post_id DESC";
-
-        return getPostsHelper(sql);
-    }
-
-    public static ArrayList<Post> searchPostsByDateModified(LocalDateTime from, LocalDateTime to) {
-        String sql = "SELECT * FROM post_info";
-
-        if(from != null && to != null)
-            sql += " WHERE date_modified >= \'" + from.toLocalDate() + "\' " +
-                    "AND date_modified < \'" + to.toLocalDate() + "\'";
-        else if(from != null)
-            sql += " WHERE date_modified >= \'" + from.toLocalDate() + "\'";
-        else if(to != null)
-            sql += " WHERE date_modified < \'" + to.toLocalDate() + "\'";
-
-        sql += " ORDER BY date_modified DESC, date_posted DESC, post_id DESC";
-
-        return getPostsHelper(sql);
-    }
-
-    public static ArrayList<Post> searchPostsByHashtags(List<String> hashtags) {
-        // Get the post ids
-        ArrayList<Integer> postIDs = HashtagDAO.getPostIDsByHashtags(hashtags);
-
-        if(postIDs.size() == 0)
-            return null;
-
-        // Get the posts
-        String postIDsStr = "";
-        for (Integer i: postIDs)
-            postIDsStr += i + ", ";
-        postIDsStr = postIDsStr.substring(0, postIDsStr.length() - 2);
-
-        String sql = "SELECT * FROM post_info " +
-                "WHERE post_id IN (" + postIDsStr + ") " +
-                "ORDER BY date_modified DESC, date_posted DESC, post_id DESC";
-
-        return getPostsHelper(sql);
-    }
-
+    // General search: builds query based on arguments
     public static ArrayList<Post> searchPosts(String username, LocalDateTime from, LocalDateTime to, List<String> hashtags) {
         String sql = "SELECT * FROM post_info";
 
-        String[] conj = new String[]{"WHERE", "AND"}; // Conjunctions for WHERE clause
-        int conjNumb = 0;
+        // Conjunctions for WHERE clause (for query building)
+        String[] conj = new String[]{"WHERE", "AND"};
+        int conjNumb = 0; // First conjunction is WHERE
+
+        // Username filtering
         if(username != null) {
             sql += " " + conj[conjNumb] + " username LIKE \'%" + username + "%\'";
             conjNumb = 1;
         }
-        if(from != null || to != null) {
-            if(from != null && to != null)
-                sql += " " + conj[conjNumb] + " date_modified >= \'" + from.toLocalDate() + "\' " +
-                        "AND date_modified < \'" + to.toLocalDate() + "\'";
-            else if(from != null)
-                sql += " " + conj[conjNumb] + " date_modified >= \'" + from.toLocalDate() + "\'";
-            else if(to != null)
-                sql += " " + conj[conjNumb] + " date_modified < \'" + to.toLocalDate() + "\'";
 
+        // Date filtering (lower bound)
+        if(from != null) {
+            sql += " " + conj[conjNumb] + " date_modified >= \'" + from.toLocalDate() + "\'";
             conjNumb = 1;
         }
+
+        // Date filtering (upper bound)
+        if(to != null) {
+            sql += " " + conj[conjNumb] + " date_modified < \'" + to.toLocalDate() + "\'";
+            conjNumb = 1;
+        }
+
+        // Hashtag filtering
         if(hashtags != null && hashtags.size() != 0) {
             // Get the post ids
             ArrayList<Integer> postIDs = HashtagDAO.getPostIDsByHashtags(hashtags);
 
-            if(postIDs.size() != 0) {
-                // Build a string of comma separated post ids
-                String postIDsStr = "";
-                for (Integer i : postIDs)
-                    postIDsStr += i + ", ";
-                postIDsStr = postIDsStr.substring(0, postIDsStr.length() - 2);
-
-                sql += " " + conj[conjNumb] + " post_id IN (" + postIDsStr + ")";
-                conjNumb = 1;
+            if(postIDs.size() == 0) {
+                return null;
             }
+
+            // Build a string of comma separated post ids
+            String postIDsStr = "";
+            for (Integer i : postIDs)
+                postIDsStr += i + ", ";
+            postIDsStr = postIDsStr.substring(0, postIDsStr.length() - 2);
+
+            sql += " " + conj[conjNumb] + " post_id IN (" + postIDsStr + ")";
+            conjNumb = 1;
         }
 
         sql += " ORDER BY date_modified DESC, date_posted DESC, post_id DESC";
@@ -185,12 +134,7 @@ public class PostDAO extends DBConnection {
 //        posts = getRecentPosts();
 //        posts = getRecentNPosts(3);
 //        posts = getRecentNPostsWithOffset(3, 1);
-//        posts = searchPostsByUsername("user");
-//        posts = searchPostsByDatePosted(LocalDateTime.now().minusDays(6), LocalDateTime.now().minusDays(4));
-//        posts = searchPostsByDateModified(LocalDateTime.now().minusDays(6), LocalDateTime.now().minusDays(4));
-//        posts = searchPostsByHashtags(Arrays.asList("one", "three"));
 //        posts = searchPosts("1", LocalDateTime.now().minusDays(10), LocalDateTime.now().minusDays(1), Arrays.asList("one", "three"));
-//
 //
 //        for (Post p: posts)
 //            System.out.println(p.getPostID());

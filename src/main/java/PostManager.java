@@ -27,7 +27,6 @@ public class PostManager {
     }
 
     private static final int NUMBER_OF_POSTS = Integer.parseInt((String) jo.get("numberOfPosts"));
-    //private static PostDaoImpl postDao = new PostDaoImpl();
     private ArrayList<Post> messages;
 
     public PostManager() {
@@ -36,26 +35,6 @@ public class PostManager {
 
     public static ArrayList<Post> getRecentPosts() {
         ArrayList<Post> posts = PostDAO.getRecentPosts();
-        return posts;
-    }
-
-    public static ArrayList<Post> searchPostsByUsername(String username) {
-        ArrayList<Post> posts = PostDAO.searchPostsByUsername(username);
-        return posts;
-    }
-
-    public static ArrayList<Post> searchPostsByDatePosted(LocalDateTime from, LocalDateTime to) {
-        ArrayList<Post> posts = PostDAO.searchPostsByDatePosted(from, to);
-        return posts;
-    }
-
-    public static ArrayList<Post> searchPostsByDateModified(LocalDateTime from, LocalDateTime to) {
-        ArrayList<Post> posts = PostDAO.searchPostsByDateModified(from, to);
-        return posts;
-    }
-
-    public static ArrayList<Post> searchPostsByHashtags(List<String> hashtags) {
-        ArrayList<Post> posts = PostDAO.searchPostsByHashtags(hashtags);
         return posts;
     }
 
