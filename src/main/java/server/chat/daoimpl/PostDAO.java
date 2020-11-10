@@ -6,6 +6,7 @@ import server.chat.db.DBConnection;
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.sql.Blob;
+import java.util.ArrayList;
 import java.util.Set;
 
 public class PostDAO extends DBConnection {
@@ -97,6 +98,104 @@ public class PostDAO extends DBConnection {
             System.err.println(e.getMessage());
         }
     }
-    public static Set<Post> getRecentPosts() { return null; }
+    public static ArrayList<Post> getRecentPosts() {
+        //return null;
+        // Get query result
+        String sql = "SELECT * FROM post_info " +
+                "ORDER BY date_modified DESC, date_posted DESC, post_id DESC";
+
+        return getPostsHelper(sql);
+    }
     public static Set<Post> getRecentNPosts(int n) { return null; }
+    private static ArrayList<Post> getPostsHelper(String sql) {
+        ArrayList<Post> posts = new ArrayList<>();
+
+        try {
+            Connection conn = DBConnection.getConnection();
+
+            // Get query result
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+
+            // For each element of query result
+            while(rs.next())
+                posts.add(resultSetToPost(rs));
+        } catch(Exception e) {
+            e.printStackTrace();
+        } finally {
+            DBConnection.closeConnection();
+        }
+
+        return posts;
+    }
+    private static Post resultSetToPost(ResultSet rs) throws SQLException {
+        Post post = new Post();
+        Integer attID = rs.getInt("att_id");
+        if(attID == 0) { // Means that db field was null
+            attID = null;
+        }
+
+        post.setPostID(rs.getInt("post_id"));
+        post.setUsername(rs.getString("username"));
+        post.setTitle(rs.getString("title"));
+        post.setDatePosted(rs.getDate("date_posted").toLocalDate().atStartOfDay());
+        post.setDatePosted(rs.getDate("date_modified").toLocalDate().atStartOfDay());
+        post.setMessage((rs.getString("message")));
+        post.setAttID(attID);
+
+        return post;
+    }
+    public boolean deletePostDatabase(int postId)
+    {
+        boolean success = false;
+        try {
+            Connection conn = DBConnection.getConnection();
+            if(existsInPostHashtag(conn, postId))
+            {
+                String query1 = "DELETE from post_hashtag where post_id=?";
+                PreparedStatement pstmt = conn.prepareStatement(query1);
+                pstmt.setInt(1, postId);
+                pstmt.executeUpdate();
+            }
+
+            String sql = "DELETE from post_info where post_id=?";
+
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, postId);
+            ps.executeUpdate();
+
+            System.out.println("Record has been deleted!");
+            success = true;
+
+        }
+        catch (Exception e)
+        {
+            System.err.println("Got an exception! ");
+            System.err.println(e.getMessage());
+        }
+        return success;
+    }
+    public boolean existsInPostHashtag(Connection conn, int postId)
+    {
+        boolean exists = false;
+        try {
+            String sql = "SELECT * from post_hashtag where post_id=?";
+
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, postId);
+            ResultSet r = ps.executeQuery();
+
+            if (r.next()) {
+                exists = true;
+            }
+        }
+        catch (Exception e)
+        {
+            System.err.println("Got an exception! ");
+            System.err.println(e.getMessage());
+        }
+
+        return exists;
+    }
+
 }

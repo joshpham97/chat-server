@@ -56,15 +56,25 @@ public class Servlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         PrintWriter responseWriter = response.getWriter();
 
+        String action = request.getParameter("action");
         String uname = (String)request.getSession(false).getAttribute("username");
         String message = request.getParameter("message");
         String title = request.getParameter("title");
+        String postID = request.getParameter("postId");
 
         Post post = null;
-        post = chatManager.insertPost(uname,title, message);
-        chatManager.postMessage(uname, message);
-        response.sendRedirect("post.jsp");
-       
+        System.out.println("Deleting post id: " + postID);
+        if(action.equals("post"))
+        {
+            post = chatManager.insertPost(uname,title, message);
+            chatManager.postMessage(uname, message);
+            response.sendRedirect("post.jsp");
+        }
+        if(action.equals("update"))
+        {
+            System.out.println("Post ID: " + postID);
+            //post = chatManager.updatePost(uname,title, message);
+        }
         if(request.getHeader("referer") != null) {
             String messageParam= request.getParameter(Parameters.MESSAGE.toString());
 
@@ -91,6 +101,18 @@ public class Servlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String action = request.getParameter("action");
+        String paramName = "postID";
+        String strPostID = request.getParameter(paramName);
+        int postID = Integer.parseInt(strPostID);
+        if(action.equals("delete"))
+        {
+            boolean isSuccess = PostManager.deletePost(postID);
+            System.out.println("GET Deleting post id: " + postID);
+            response.sendRedirect(String.format("index.jsp?postId=%d&success=%b", postID, isSuccess));
+        }
+
+        /**
         PrintWriter responseWriter = response.getWriter();
         try{
             if(request.getHeader("referer") != null){
@@ -131,6 +153,7 @@ public class Servlet extends HttpServlet {
         }
 
         responseWriter.close();
+         */
     }
   
     protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

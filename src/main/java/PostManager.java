@@ -65,6 +65,7 @@ public class PostManager {
     }
 
     public static ArrayList<Post> getRecentPosts() {
+        /**
         // TEMPORARY HARDCODING: waiting for PostDao and Post
         ArrayList<Post> tempPosts = new ArrayList<>();
         tempPosts.add(new Post(1, "username1", "title1", "message1", 1));
@@ -73,6 +74,9 @@ public class PostManager {
         ArrayList<Post> posts = tempPosts;
 
 //        ArrayList<Post> posts = (ArrayList<Post>) PostDAO.getRecentNPosts(NUMBER_OF_POSTS);
+        return posts;
+         */
+        ArrayList<Post> posts = PostDAO.getRecentPosts();
         return posts;
     }
 
@@ -114,5 +118,25 @@ public class PostManager {
                 i--;
             }
         }
+    }
+    /**
+    public Post updatePost(String username,String title, String message)
+    {
+
+    }
+     */
+    public static boolean deletePost(int postId) {
+        PostDAO postDao = new PostDAO();
+        boolean deleted = false;
+        if(postDao.deletePostDatabase(postId))
+        {
+            deleted = true;
+        }
+        else
+        {
+            deleted = false;
+        }
+        return deleted;
+        //return AttachmentDAO.delete(postId);
     }
 }
