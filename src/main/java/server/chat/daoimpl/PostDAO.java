@@ -79,11 +79,11 @@ public class PostDAO extends DBConnection {
     }
 
     public static ArrayList<Post> searchPostByHashtags(List<String> hashtags) {
-        // Get the hashtag ids
-        ArrayList<Integer> hashtagIDs = HashtagDAO.getHashtagIDs(hashtags);
-
         // Get the post ids
-        ArrayList<Integer> postIDs = HashtagDAO.getPostIDs(hashtagIDs);
+        ArrayList<Integer> postIDs = HashtagDAO.getPostIDsByHashtags(hashtags);
+
+        if(postIDs.size() == 0)
+            return null;
 
         // Get the posts
         String postIDsStr = "";
@@ -146,7 +146,8 @@ public class PostDAO extends DBConnection {
 //        posts = searchPostsByUsername("user");
 //        posts = searchPostsByDatePosted(LocalDateTime.now().minusDays(6), LocalDateTime.now().minusDays(4));
 //        posts = searchPostsByDateModified(LocalDateTime.now().minusDays(6), LocalDateTime.now().minusDays(4));
-//        posts = searchPostByHashtags(Arrays.asList("three", "five"));
+//        posts = searchPostByHashtags(Arrays.asList("one", "three"));
+//
 //
 //        for (Post p: posts)
 //            System.out.println(p.getPostID());

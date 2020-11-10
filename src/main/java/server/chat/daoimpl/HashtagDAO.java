@@ -20,30 +20,19 @@ public class HashtagDAO extends DBConnection {
         return getIdHelper(sql, "hashtag_id");
     }
 
-    public static ArrayList<Integer> getHashtagIDs(List<String> hashtags) {
+    public static ArrayList<Integer> getPostIDsByHashtags(List<String> hashtags) {
         // Build a string of comma separated hashtags
         String hashtagStr = "";
         for (String h: hashtags)
             hashtagStr += "'" + h + "', ";
         hashtagStr = hashtagStr.substring(0, hashtagStr.length() - 2);
 
-        // Get the hashtag ids
-        String sql = "SELECT hashtag_id FROM hashtag " +
-                "WHERE hashtag IN (" + hashtagStr + ")";
-
-        return getIdsHelper(sql, "hashtag_id");
-    }
-
-    public static ArrayList<Integer> getPostIDs(List<Integer> hashtagIDs) {
-        // Build a string of comma separated hashtagIDs
-        String hashtagIDsStr = "";
-        for (Integer i: hashtagIDs)
-            hashtagIDsStr += i + ", ";
-        hashtagIDsStr = hashtagIDsStr.substring(0, hashtagIDsStr.length() - 2);
-
         // Get the post ids
         String sql = "SELECT DISTINCT post_id FROM post_hashtag " +
-                "WHERE hashtag_id IN (" + hashtagIDsStr + ")";
+                "WHERE hashtag_id IN (SELECT hashtag_id " +
+                    "FROM hashtag " +
+                    "WHERE hashtag IN (" + hashtagStr + ")" +
+                ")";
 
         return getIdsHelper(sql, "post_id");
     }
@@ -95,8 +84,7 @@ public class HashtagDAO extends DBConnection {
     // Quick testing: to be removed later
 //    public static void main(String[] args) {
 //        ArrayList<Integer> ids;
-//        ids = getHashtagIDs(Arrays.asList("one", "five"));
-//        ids = getPostIDs(Arrays.asList(3, 5));
+//        ids = getPostIDsByHashtags(Arrays.asList("one", "five"));
 //        System.out.println(getHashtagID("fakehashtag"));
 //
 //        for (Integer i: ids)
