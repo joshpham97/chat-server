@@ -4,17 +4,14 @@ import server.chat.db.DBConnection;
 import server.chat.model.Attachment;
 
 import java.io.InputStream;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class AttachmentDAO{
-    public static boolean insert(Attachment attachment, InputStream fileInputStream){
+    public static Attachment insert(Attachment attachment, InputStream fileInputStream){
         try{
             Connection conn = DBConnection.getConnection();
             String sql = "INSERT INTO attachments (file_size, filename, file_type, attachment) values (?, ?, ?, ?)";
-            PreparedStatement statement = conn.prepareStatement(sql);
+            PreparedStatement statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             statement.setInt(1, attachment.getFilesize());
             statement.setString(2, attachment.getFilename());
             statement.setString(3, attachment.getMediaType());
@@ -22,7 +19,11 @@ public class AttachmentDAO{
 
             int row = statement.executeUpdate();
             if (row > 0) {
-                return true;
+                ResultSet generatedKeys = statement.getGeneratedKeys();
+                if (generatedKeys.next()) {
+                    attachment.setAttachmentId((int) generatedKeys.getLong(1));
+                    return attachment;
+                }
             }
         }catch (SQLException ex){
             ex.printStackTrace();
@@ -30,7 +31,7 @@ public class AttachmentDAO{
             DBConnection.closeConnection();
         }
 
-        return false;
+        return null;
     }
 
     public static boolean delete(int attachmentId){

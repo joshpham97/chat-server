@@ -53,6 +53,8 @@ public class Post implements java.io.Serializable {
         this("Anonymous", message);
     }
 
+    public Post(){}
+
     public int getPostID() { return postID; }
 
     public String getUsername() {

@@ -1,6 +1,7 @@
 package server.chat;
 
 import server.chat.daoimpl.AttachmentDAO;
+import server.chat.daoimpl.PostDAO;
 import server.chat.model.Attachment;
 
 import javax.servlet.http.Part;
@@ -10,7 +11,11 @@ public class AttachmentManager {
     public static boolean insertAttachment(Part filePart, int postId){
         try{
             Attachment attachment = constructAttachmentFromPart(filePart, postId);
-            return AttachmentDAO.insert(attachment, filePart.getInputStream());
+            attachment = AttachmentDAO.insert(attachment, filePart.getInputStream());
+            if (attachment != null){
+                PostDAO.updateAttachmentId(postId, attachment.getAttachmentId());
+                return true;
+            }
         }catch (IOException ex){
             ex.printStackTrace();
         }
