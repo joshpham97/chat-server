@@ -12,6 +12,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 @WebServlet(name = "PostServlet")
 public class PostServlet extends HttpServlet {
@@ -21,23 +22,27 @@ public class PostServlet extends HttpServlet {
         String username = request.getParameter("username");
         String strFrom = request.getParameter("from");
         String strTo = request.getParameter("to");
-        String hashtags = request.getParameter("hashtags");
+        String strHashtags = request.getParameter("hashtags");
 
         try {
-            ArrayList<Post> posts;
+            LocalDateTime from = (strFrom == null || strFrom.isEmpty()) ? null : LocalDate.parse(strFrom).atStartOfDay();
+            LocalDateTime to = (strTo == null || strTo.isEmpty()) ? null : LocalDate.parse(strTo).plusDays(1).atStartOfDay();
+            List<String> hashtags = (strHashtags == null) ? null : Arrays.asList(strHashtags.split(" "));
 
-            if(username != null)
-                posts = PostManager.searchPostsByUsername(username);
-            else if(strFrom != null || strTo != null) {
-                LocalDateTime from = (strFrom == null || strFrom.isEmpty()) ? null : LocalDate.parse(strFrom).atStartOfDay();
-                LocalDateTime to = (strTo == null || strTo.isEmpty()) ? null : LocalDate.parse(strTo).plusDays(1).atStartOfDay();
+            ArrayList<Post> posts = PostManager.searchPosts(username, from, to, hashtags);
 
-                posts = PostManager.searchPostsByDateModified(from, to);
-            }
-            else if(hashtags != null)
-                posts = PostManager.searchPostsByHashtags(Arrays.asList(hashtags.split(" ")));
-            else
-                posts = PostManager.getRecentPosts();
+//            if(username != null)
+//                posts = PostManager.searchPostsByUsername(username);
+//            else if(strFrom != null || strTo != null) {
+//                LocalDateTime from = (strFrom == null || strFrom.isEmpty()) ? null : LocalDate.parse(strFrom).atStartOfDay();
+//                LocalDateTime to = (strTo == null || strTo.isEmpty()) ? null : LocalDate.parse(strTo).plusDays(1).atStartOfDay();
+//
+//                posts = PostManager.searchPostsByDateModified(from, to);
+//            }
+//            else if(hashtags != null)
+//                posts = PostManager.searchPostsByHashtags(Arrays.asList(hashtags.split(" ")));
+//            else
+//                posts = PostManager.getRecentPosts();
 
             Gson gson = new Gson();
             responseWriter.append(gson.toJson(posts));

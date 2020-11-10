@@ -35,38 +35,32 @@ public class PostManager {
     }
 
     public static ArrayList<Post> getRecentPosts() {
-        // TEMPORARY HARDCODING: waiting for PostDao and Post
-//        ArrayList<Post> tempPosts = new ArrayList<>();
-//        tempPosts.add(new Post(1, "username1", "title1", "message1", 1));
-//        tempPosts.add(new Post(2, "username2", "title2", "message2", null));
-//        tempPosts.add(new Post(3, "username3", "title3", "message3", 2));
-//        ArrayList<Post> posts = tempPosts;
-
         ArrayList<Post> posts = PostDAO.getRecentPosts();
         return posts;
     }
 
     public static ArrayList<Post> searchPostsByUsername(String username) {
         ArrayList<Post> posts = PostDAO.searchPostsByUsername(username);
-
         return posts;
     }
 
     public static ArrayList<Post> searchPostsByDatePosted(LocalDateTime from, LocalDateTime to) {
         ArrayList<Post> posts = PostDAO.searchPostsByDatePosted(from, to);
-
         return posts;
     }
 
     public static ArrayList<Post> searchPostsByDateModified(LocalDateTime from, LocalDateTime to) {
         ArrayList<Post> posts = PostDAO.searchPostsByDateModified(from, to);
-
         return posts;
     }
 
     public static ArrayList<Post> searchPostsByHashtags(List<String> hashtags) {
-        ArrayList<Post> posts = PostDAO.searchPostByHashtags(hashtags);
+        ArrayList<Post> posts = PostDAO.searchPostsByHashtags(hashtags);
+        return posts;
+    }
 
+    public static ArrayList<Post> searchPosts(String username, LocalDateTime from, LocalDateTime to, List<String> hashtags) {
+        ArrayList<Post> posts = PostDAO.searchPosts(username, from, to, hashtags);
         return posts;
     }
 

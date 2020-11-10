@@ -17,14 +17,14 @@ public class PostDAO extends DBConnection {
     public static ArrayList<Post> getRecentPosts() {
         // Get query result
         String sql = "SELECT * FROM post_info " +
-                     "ORDER BY date_modified DESC, date_posted DESC";
+                     "ORDER BY date_modified DESC, date_posted DESC, post_id DESC";
 
         return getPostsHelper(sql);
     }
 
     public static ArrayList<Post> getRecentNPosts(int n) {
         String sql = "SELECT * FROM post_info " +
-                     "ORDER BY date_modified DESC, date_posted DESC " +
+                     "ORDER BY date_modified DESC, date_posted DESC, post_id DESC " +
                      "LIMIT " + n;
 
         return getPostsHelper(sql);
@@ -32,7 +32,7 @@ public class PostDAO extends DBConnection {
 
     public static ArrayList<Post> getRecentNPostsWithOffset(int n, int o) {
         String sql = "SELECT * FROM post_info " +
-                "ORDER BY date_modified DESC, date_posted DESC " +
+                "ORDER BY date_modified DESC, date_posted DESC, post_id DESC " +
                 "LIMIT " + n + " OFFSET " + o;
 
         return getPostsHelper(sql);
@@ -41,7 +41,7 @@ public class PostDAO extends DBConnection {
     public static ArrayList<Post> searchPostsByUsername(String username) {
         String sql = "SELECT * FROM post_info " +
                 "WHERE username LIKE \'%" + username + "%\' " +
-                "ORDER BY date_modified DESC, date_posted DESC";
+                "ORDER BY date_modified DESC, date_posted DESC, post_id DESC";
 
         return getPostsHelper(sql);
     }
@@ -57,7 +57,7 @@ public class PostDAO extends DBConnection {
         else if(to != null)
             sql += " WHERE date_posted < \'" + to.toLocalDate() + "\'";
 
-        sql += " ORDER BY date_modified DESC, date_posted DESC";
+        sql += " ORDER BY date_modified DESC, date_posted DESC, post_id DESC";
 
         return getPostsHelper(sql);
     }
@@ -73,12 +73,12 @@ public class PostDAO extends DBConnection {
         else if(to != null)
             sql += " WHERE date_modified < \'" + to.toLocalDate() + "\'";
 
-        sql += " ORDER BY date_modified DESC, date_posted DESC";
+        sql += " ORDER BY date_modified DESC, date_posted DESC, post_id DESC";
 
         return getPostsHelper(sql);
     }
 
-    public static ArrayList<Post> searchPostByHashtags(List<String> hashtags) {
+    public static ArrayList<Post> searchPostsByHashtags(List<String> hashtags) {
         // Get the post ids
         ArrayList<Integer> postIDs = HashtagDAO.getPostIDsByHashtags(hashtags);
 
@@ -92,7 +92,49 @@ public class PostDAO extends DBConnection {
         postIDsStr = postIDsStr.substring(0, postIDsStr.length() - 2);
 
         String sql = "SELECT * FROM post_info " +
-                "WHERE post_id IN (" + postIDsStr + ")";
+                "WHERE post_id IN (" + postIDsStr + ") " +
+                "ORDER BY date_modified DESC, date_posted DESC, post_id DESC";
+
+        return getPostsHelper(sql);
+    }
+
+    public static ArrayList<Post> searchPosts(String username, LocalDateTime from, LocalDateTime to, List<String> hashtags) {
+        String sql = "SELECT * FROM post_info";
+
+        String[] conj = new String[]{"WHERE", "AND"}; // Conjunctions for WHERE clause
+        int conjNumb = 0;
+        if(username != null) {
+            sql += " " + conj[conjNumb] + " username LIKE \'%" + username + "%\'";
+            conjNumb = 1;
+        }
+        if(from != null || to != null) {
+            if(from != null && to != null)
+                sql += " " + conj[conjNumb] + " date_modified >= \'" + from.toLocalDate() + "\' " +
+                        "AND date_modified < \'" + to.toLocalDate() + "\'";
+            else if(from != null)
+                sql += " " + conj[conjNumb] + " date_modified >= \'" + from.toLocalDate() + "\'";
+            else if(to != null)
+                sql += " " + conj[conjNumb] + " date_modified < \'" + to.toLocalDate() + "\'";
+
+            conjNumb = 1;
+        }
+        if(hashtags != null && hashtags.size() != 0) {
+            // Get the post ids
+            ArrayList<Integer> postIDs = HashtagDAO.getPostIDsByHashtags(hashtags);
+
+            if(postIDs.size() != 0) {
+                // Build a string of comma separated post ids
+                String postIDsStr = "";
+                for (Integer i : postIDs)
+                    postIDsStr += i + ", ";
+                postIDsStr = postIDsStr.substring(0, postIDsStr.length() - 2);
+
+                sql += " " + conj[conjNumb] + " post_id IN (" + postIDsStr + ")";
+                conjNumb = 1;
+            }
+        }
+
+        sql += " ORDER BY date_modified DESC, date_posted DESC, post_id DESC";
 
         return getPostsHelper(sql);
     }
@@ -146,7 +188,8 @@ public class PostDAO extends DBConnection {
 //        posts = searchPostsByUsername("user");
 //        posts = searchPostsByDatePosted(LocalDateTime.now().minusDays(6), LocalDateTime.now().minusDays(4));
 //        posts = searchPostsByDateModified(LocalDateTime.now().minusDays(6), LocalDateTime.now().minusDays(4));
-//        posts = searchPostByHashtags(Arrays.asList("one", "three"));
+//        posts = searchPostsByHashtags(Arrays.asList("one", "three"));
+//        posts = searchPosts("1", LocalDateTime.now().minusDays(10), LocalDateTime.now().minusDays(1), Arrays.asList("one", "three"));
 //
 //
 //        for (Post p: posts)
