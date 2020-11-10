@@ -5,6 +5,7 @@
   Time: 4:53 p.m.
   To change this template use File | Settings | File Templates.
 --%>
+<%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -23,20 +24,51 @@
     </nav>
     <div class="container">
         <div class="col-12 mt-2">
-            <div class="h4">Create New Post</div>
-            <form>
+            <div class="h3">Edit post</div>
+            <form method="post" action="AttachmentServlet" enctype="multipart/form-data">
                 <div class="form-group">
-                    <label for="postContent"></label>
-                    <textarea id="postContent" name="message" class="form-control" rows="2" placeholder="Type your post here..." required></textarea>
+                    <label for="message">Post message</label>
+                    <textarea id="message" name="message" class="form-control" rows="2" placeholder="Type your post here..." required></textarea>
                 </div>
-                <div class="custom-file">
-                    <input type="file" class="custom-file-input" id="attachment">
-                    <label class="custom-file-label" for="attachment">Add attachment</label>
-                </div>
-                <div class="col text-center">
-                    <button type="submit" class="btn btn-primary mt-2 mi">Create Post</button>
+                <div>
+                    <button type="submit" class="btn btn-primary mt-2 mi">Edit post</button>
                 </div>
             </form>
+        </div>
+        <div class="col-12 mt-2">
+            <div class="h3">Manage attachment</div>
+            <div>
+                <div>
+                    <div class="h5">Add attachment</div>
+                    <form method="post" action="AttachmentServlet" enctype="multipart/form-data">
+                        <input type="text" name="postId" value="${param.postId}" />
+                        <input type="text" name="action" value="post" />
+                        <input type="file" id="addAttachment" name="attachment" >
+                        <div>
+                            <button type="submit" class="btn btn-primary mt-2 mi">Upload</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div>
+                    <div class="h5">Update attachment</div>
+                    <form method="post" action="AttachmentServlet" enctype="multipart/form-data">
+                        <input type="file" id="attachment" name="attachment" >
+                        <div>
+                            <button type="submit" class="btn btn-primary mt-2 mi">Update</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div>
+                    <div class="h5">Delete attachment</div>
+                    <form method="get" action="AttachmentServlet" enctype="multipart/form-data">
+                        <input type="text" name="postId" value="${param.postId}" hidden/>
+                        <input type="text" name="action" value="delete" hidden/>
+                        <button type="submit" class="btn btn-danger mt-2 mi"><i class="fas fa-trash mr-2"></i>Delete</button>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
 </body>
