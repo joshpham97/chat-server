@@ -7,6 +7,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class PostManager {
@@ -27,9 +30,38 @@ public class PostManager {
     private static final int NUMBER_OF_POSTS = Integer.parseInt((String) jo.get("numberOfPosts"));
     //private static PostDaoImpl postDao = new PostDaoImpl();
     private ArrayList<Post> messages;
-
+  
     public PostManager() {
         messages = new ArrayList<Post>();
+    }
+
+    public Post insertPost(String username,String title, String message)
+    {
+        PostDAO postDao = new PostDAO();
+        Post post = postDao.createPost(username, title, message);
+
+        int postID = post.getPostID();
+
+        Set<String> hashtags = getHashtags(message);
+        Iterator<String> it = hashtags.iterator();
+
+        if(!hashtags.isEmpty()) {
+            while(it.hasNext()) {
+                String hashtagWord = it.next();
+                postDao.insertHashtag(postID, hashtagWord);
+            }
+        }
+        return post;
+    }
+    public static Set<String> getHashtags(String message) {
+        String[] words = message.split("\\s+");
+        Set<String> hashtags = new HashSet<String>();
+        for (String word : words) {
+            if (word.startsWith("#")) {
+                hashtags.add(word.substring(1));
+            }
+        }
+        return hashtags;
     }
 
     public static ArrayList<Post> getRecentPosts() {
