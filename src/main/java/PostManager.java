@@ -38,9 +38,18 @@ public class PostManager {
         return posts;
     }
 
-    public static ArrayList<Post> searchPosts(String username, LocalDateTime from, LocalDateTime to, List<String> hashtags) {
-        ArrayList<Post> posts = PostDAO.searchPosts(username, from, to, hashtags);
+    public static ArrayList<Post> searchPostsWithPagination(String username, LocalDateTime from, LocalDateTime to, List<String> hashtags, int pageNumb) {
+        int limit = NUMBER_OF_POSTS;
+        int offset = NUMBER_OF_POSTS * (pageNumb - 1);
+
+        ArrayList<Post> posts = PostDAO.searchNPostsWithOffset(username, from, to, hashtags, limit, offset);
         return posts;
+    }
+
+    public static int getNumberOfPages(String username, LocalDateTime from, LocalDateTime to, List<String> hashtags) {
+        int postCount = PostDAO.countPosts(username, from, to, hashtags);
+        int pages = (int) Math.ceil(((double) postCount)/NUMBER_OF_POSTS);
+        return pages;
     }
 
     public Post postMessage(String username, String message)

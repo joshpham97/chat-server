@@ -21,13 +21,13 @@
         <script type="text/javascript" src="js/utils.js"></script>
         <script type="text/javascript" src="js/index.js"></script>
     </head>
-    <%
-        String username = (String) session.getAttribute("username");
-        if (null == username) {
-            session.setAttribute("errorMessage", "You have to be logged in to access the home page ");
-            response.sendRedirect("login.jsp");
-        }
-    %>
+<%--    <%--%>
+<%--        String username = (String) session.getAttribute("username");--%>
+<%--        if (null == username) {--%>
+<%--            session.setAttribute("errorMessage", "You have to be logged in to access the home page ");--%>
+<%--            response.sendRedirect("login.jsp");--%>
+<%--        }--%>
+<%--    %>--%>
     <body>
         <input id="refreshDate" type="text" style="display: none"/>
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -67,6 +67,12 @@
                 <div id="posts" class="col-12">
                     No posts to display
                 </div>
+            </div>
+
+            <div class="mt-3">
+                <ul id="pagination" class="pagination">
+
+                </ul>
             </div>
         </div>
 

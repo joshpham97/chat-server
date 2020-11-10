@@ -1,4 +1,5 @@
 import com.google.gson.Gson;
+import org.json.simple.JSONObject;
 import server.chat.Post;
 
 import javax.servlet.RequestDispatcher;
@@ -23,16 +24,24 @@ public class PostServlet extends HttpServlet {
         String strFrom = request.getParameter("from");
         String strTo = request.getParameter("to");
         String strHashtags = request.getParameter("hashtags");
+        String strCurrentPage = request.getParameter("page");
 
         try {
+            // Parse request parameters
             LocalDateTime from = (strFrom == null || strFrom.isEmpty()) ? null : LocalDate.parse(strFrom).atStartOfDay();
             LocalDateTime to = (strTo == null || strTo.isEmpty()) ? null : LocalDate.parse(strTo).plusDays(1).atStartOfDay();
             List<String> hashtags = (strHashtags == null) ? null : Arrays.asList(strHashtags.split(" "));
-            
-            ArrayList<Post> posts = PostManager.searchPosts(username, from, to, hashtags);
+            int currentPage = (strCurrentPage == null) ? 1 : Integer.parseInt(strCurrentPage);
 
+            ArrayList<Post> posts = PostManager.searchPostsWithPagination(username, from, to, hashtags, currentPage);
+            int pages = PostManager.getNumberOfPages(username, from, to, hashtags);
+
+            JSONObject jo = new JSONObject();
             Gson gson = new Gson();
-            responseWriter.append(gson.toJson(posts));
+            jo.put("currentPage", currentPage);
+            jo.put("pages", pages);
+            jo.put("posts", gson.toJson(posts));
+            responseWriter.append(gson.toJson(jo));
         } catch(Exception e) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             responseWriter.append("Invalid request");
