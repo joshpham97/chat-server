@@ -41,7 +41,7 @@
                         <a class="mb-0 nav-link" href="post.jsp"><i class="fas fa-plus mr-2"></i>New Post</a>
                     </li>
                     <li class="nav-item">
-                        <a class="mb-0 nav-link" href="search.jsp"><i class="fas fa-filter mr-2"></i>Filter</a>
+                        <a class="mb-0 nav-link" href="filter.jsp"><i class="fas fa-filter mr-2"></i>Filter</a>
                     </li>
                 </ul>
             </div>
