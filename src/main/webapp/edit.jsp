@@ -41,8 +41,8 @@
                         <label for="postContent"></label>
                         <input type="text" name="action" value="update" hidden/>
                         <input type="text" name="postId" value="${param.postId}" hidden/>
-                        <textarea id="postTitle" name="title" class="form-control" rows="1" placeholder="Title" required></textarea>
-                        <textarea id="postContent" name="message" class="form-control" rows="2" placeholder="Type your post here..." required></textarea>
+                        <input id="postTitle" name="title" class="form-control" rows="1" placeholder="Title" value="${post.title}" required/>
+                        <textarea id="postContent" name="message" class="form-control" rows="2" required><c:out value="${post.message}" /></textarea>
                     </div>
                     <div class="col text-center">
                         <button type="submit" class="btn btn-primary mt-2 mi">Update Post</button>
