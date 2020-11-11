@@ -1,6 +1,6 @@
 package servlet;
 
-import Business.UserManager;
+import app.UserManager;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;

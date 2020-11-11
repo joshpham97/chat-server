@@ -1,3 +1,5 @@
+package app;
+
 import server.chat.daoimpl.HashtagDAO;
 
 import java.util.HashSet;

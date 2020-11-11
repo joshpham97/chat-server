@@ -1,4 +1,4 @@
-package Business;
+package app;
 
 import server.dabatase.daoimpl.AttachmentDAO;
 import server.dabatase.daoimpl.PostDAO;

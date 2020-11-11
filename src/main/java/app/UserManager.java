@@ -1,4 +1,4 @@
-package Business;
+package app;
 
 import server.dabatase.daoimpl.UserFileDaoImpl;
 import server.dabatase.model.User;

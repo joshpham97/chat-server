@@ -1,7 +1,7 @@
 package servlet;
 
-import Business.PostManager;
-import Business.AttachmentManager;
+import app.PostManager;
+import app.AttachmentManager;
 import server.dabatase.model.Attachment;
 import server.dabatase.model.Post;
 

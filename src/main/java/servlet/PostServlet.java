@@ -1,6 +1,6 @@
 package servlet;
 
-import Business.PostManager;
+import app.PostManager;
 import com.google.gson.Gson;
 import server.dabatase.model.Post;
 
