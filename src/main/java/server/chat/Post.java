@@ -118,4 +118,5 @@ public class Post implements java.io.Serializable {
     private String formatDate(LocalDateTime date) {
         return date.getMonth().toString().toLowerCase() + " " + date.getDayOfMonth() + ", " + date.getYear();
     }
+
 }

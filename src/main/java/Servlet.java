@@ -56,6 +56,15 @@ public class Servlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         PrintWriter responseWriter = response.getWriter();
 
+        String uname = (String)request.getSession(false).getAttribute("username");
+        String message = request.getParameter("message");
+        String title = request.getParameter("title");
+
+        Post post = null;
+        post = chatManager.insertPost(uname,title, message);
+        chatManager.postMessage(uname, message);
+        response.sendRedirect("post.jsp");
+       
         if(request.getHeader("referer") != null) {
             String messageParam= request.getParameter(Parameters.MESSAGE.toString());
 
@@ -71,6 +80,7 @@ public class Servlet extends HttpServlet {
                 String jsonMessage = gson.toJson(newMessage);
                 responseWriter.append(jsonMessage);
             }
+
         }
         else {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -82,7 +92,6 @@ public class Servlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         PrintWriter responseWriter = response.getWriter();
-
         try{
             if(request.getHeader("referer") != null){
                 String strFrom = request.getParameter(Parameters.FROM.toString());
@@ -123,7 +132,7 @@ public class Servlet extends HttpServlet {
 
         responseWriter.close();
     }
-
+  
     protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         PrintWriter responseWriter = response.getWriter();
 

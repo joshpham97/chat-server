@@ -34,6 +34,7 @@ public class AuthServlet extends HttpServlet {
                     destPage = "login.jsp";
                 }
             response.sendRedirect(destPage);
+
             //RequestDispatcher dispatcher = request.getRequestDispatcher(destPage);
             //dispatcher.forward(request, response);
         }catch (Exception ex) {
