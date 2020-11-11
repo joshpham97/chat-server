@@ -25,7 +25,7 @@
                 <%
                     }
                 %>
-                <a href="PostServlet?action=update&postID=<%= post.get("postID") %>"><i class="fas fa-edit mr-2"></i></a>
+                <a href="PostEditServlet?postId=<%= post.get("postID") %>"><i class="fas fa-edit mr-2"></i></a>
                 <a href="PostServlet?action=delete&postID=<%= post.get("postID") %>"><i class="fas fa-trash mr-2"></i></a>
             </div>
         </div>

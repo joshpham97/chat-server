@@ -31,7 +31,7 @@ public class PostEditServlet extends HttpServlet {
 
             request.setAttribute("post", post);
             request.setAttribute("attachment", attachment);
-            RequestDispatcher rd = getServletContext().getRequestDispatcher("/post.jsp");
+            RequestDispatcher rd = getServletContext().getRequestDispatcher("/edit.jsp");
             rd.forward(request, response);
         }
     }
