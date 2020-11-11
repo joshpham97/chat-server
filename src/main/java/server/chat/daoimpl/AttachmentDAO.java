@@ -37,7 +37,7 @@ public class AttachmentDAO{
     public static boolean delete(int attachmentId){
         try{
             Connection conn = DBConnection.getConnection();
-            String sql = "DELETE FROM attachments WHERE attachment_id = ?";
+            String sql = "DELETE FROM attachments WHERE att_id = ?";
             PreparedStatement statement = conn.prepareStatement(sql);
             statement.setInt(1, attachmentId);
 
@@ -59,7 +59,7 @@ public class AttachmentDAO{
 
         try{
             Connection conn = DBConnection.getConnection();
-            String sql = "SELECT * FROM attachments WHERE attachment_id = ?";
+            String sql = "SELECT * FROM attachments WHERE att_id = ?";
             PreparedStatement statement = conn.prepareStatement(sql);
             statement.setInt(1, attachmentId);
 
@@ -86,7 +86,7 @@ public class AttachmentDAO{
     public static boolean update(Attachment attachment, InputStream fileInputStream){
         try{
             Connection conn = DBConnection.getConnection();
-            String sql = "UPDATE attachments SET filename = ?, file_size = ?, file_type = ?, attachment = ?,  WHERE att_id = ? ";
+            String sql = "UPDATE attachments SET filename = ?, file_size = ?, file_type = ?, attachment = ?  WHERE att_id = ? ";
             PreparedStatement statement = conn.prepareStatement(sql);
             statement.setString(1, attachment.getFilename());
             statement.setInt(2, attachment.getFilesize());

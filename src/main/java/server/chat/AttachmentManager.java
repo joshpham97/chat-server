@@ -23,17 +23,22 @@ public class AttachmentManager {
         return false;
     }
 
-    public static boolean deleteAttachment(int postId) {
-        return AttachmentDAO.delete(postId);
+    public static boolean deleteAttachment(int postId, int attachmentId) {
+        if (PostDAO.updateAttachmentId(postId, null)){
+            AttachmentDAO.delete(attachmentId);
+            return true;
+        }
+        else
+            return false;
     }
 
     public static Attachment getAttachment(int attachmentId){
         return AttachmentDAO.select(attachmentId);
     }
 
-    public static boolean updateAttachment(Part filePart, int attachmentId){
+    public static boolean updateAttachment(Part filePart, int postId, int attachmentId){
         try{
-            Attachment attachment = constructAttachmentFromPart(filePart, attachmentId);
+            Attachment attachment = constructAttachmentFromPart(filePart, postId, attachmentId);
             return AttachmentDAO.update(attachment, filePart.getInputStream());
         }catch (IOException ex){
             ex.printStackTrace();
@@ -44,7 +49,8 @@ public class AttachmentManager {
 
     public static Attachment constructAttachmentFromPart(Part filePart, int postId){
         Attachment attachment = new Attachment();
-        attachment.setFilename(filePart.getName());
+
+        attachment.setFilename(filePart.getSubmittedFileName());
         attachment.setFilesize((int)filePart.getSize());
         attachment.setMediaType(filePart.getContentType());
 

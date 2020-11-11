@@ -1,8 +1,7 @@
 package server.chat.daoimpl;
 
-import server.chat.Post;
+import server.chat.model.Post;
 import server.chat.db.DBConnection;
-import server.chat.model.Attachment;
 
 import java.sql.*;
 import java.util.Set;
@@ -34,7 +33,12 @@ public class PostDAO extends DBConnection {
                 post.setDatePosted(rs.getTimestamp("date_posted").toLocalDateTime());
                 post.setDateModified(rs.getTimestamp("date_modified").toLocalDateTime());
                 post.setMessage(rs.getString("message"));
-                post.setAttID(rs.getInt("att_id"));
+
+                Integer attachmentId = rs.getInt("att_id");
+                if(rs.wasNull())
+                    post.setAttID(null);
+                else
+                    post.setAttID(attachmentId);
             }
         }catch (SQLException ex) {
             ex.printStackTrace();
@@ -45,12 +49,16 @@ public class PostDAO extends DBConnection {
         return post;
     }
 
-    public static boolean updateAttachmentId(int postId, int attachmentId){
+    public static boolean updateAttachmentId(int postId, Integer attachmentId){
         try{
             Connection conn = DBConnection.getConnection();
             String sql = "UPDATE post_info SET att_id = ? WHERE post_id = ? ";
             PreparedStatement statement = conn.prepareStatement(sql);
-            statement.setInt(1, attachmentId);
+
+            if(attachmentId != null)
+                statement.setInt(1, attachmentId);
+            else
+                statement.setNull(1, Types.INTEGER);
             statement.setInt(2, postId);
 
             int row = statement.executeUpdate();

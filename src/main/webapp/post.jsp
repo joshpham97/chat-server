@@ -1,4 +1,5 @@
-<%--
+<%@ page import="server.chat.daoimpl.PostDAO" %>
+<%@ page import="server.chat.model.Post" %><%--
   Created by IntelliJ IDEA.
   User: thuan
   Date: 2020-11-04
@@ -7,6 +8,8 @@
 --%>
 <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<jsp:useBean id="post" scope="request" type="server.chat.model.Post"/>
+<jsp:useBean id="attachment" scope="request" type="server.chat.model.Attachment"/>
 
 <html>
 <head>
@@ -39,36 +42,78 @@
         <div class="col-12 mt-2">
             <div class="h3">Manage attachment</div>
             <div>
-                <div>
-                    <div class="h5">Add attachment</div>
-                    <form method="post" action="AttachmentServlet" enctype="multipart/form-data">
-                        <input type="text" name="postId" value="${param.postId}" />
-                        <input type="text" name="action" value="post" />
-                        <input type="file" id="addAttachment" name="attachment" >
+                <c:choose>
+                    <c:when test="${requestScope.post.attID == null}">
                         <div>
-                            <button type="submit" class="btn btn-primary mt-2 mi">Upload</button>
+                            <div class="h5">Add attachment</div>
+                            <form method="post" action="AttachmentServlet" enctype="multipart/form-data">
+                                <input type="text" name="postId" value="${param.postId}" hidden/>
+                                <input type="text" name="action" value="post" hidden/>
+                                <div class="form-group">
+                                    <input type="file" id="addAttachment" name="attachment" >
+                                </div>
+                                <div>
+                                    <button type="submit" class="btn btn-primary mt-2 mi">Upload</button>
+                                </div>
+                            </form>
                         </div>
-                    </form>
-                </div>
-
-                <div>
-                    <div class="h5">Update attachment</div>
-                    <form method="post" action="AttachmentServlet" enctype="multipart/form-data">
-                        <input type="file" id="attachment" name="attachment" >
+                    </c:when>
+                    <c:otherwise>
+                        <div class="h5">Attachment information</div>
                         <div>
-                            <button type="submit" class="btn btn-primary mt-2 mi">Update</button>
+                            <div>
+                                <span></span>
+                                <div class="alert alert-primary" role="alert">
+                                    <div>
+                                        <span class="font-weight-bold">File name:</span>
+                                        <span>
+                                            <c:out value="${attachment.filename}"/>
+                                        </span>
+                                    </div>
+                                    <div>
+                                        <span class="font-weight-bold">File size:</span>
+                                        <span>
+                                            <c:out value="${attachment.filesize}"/> bytes
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="d-inline-block">
+                                    <form method="get" action="AttachmentServlet" enctype="multipart/form-data">
+                                        <input type="text" name="attachmentId" value="${post.attID}" hidden/>
+                                        <input type="text" name="action" value="get" hidden/>
+                                        <div>
+                                            <button type="submit" class="btn btn-primary mt-2 mi">Download</button>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="d-inline-block">
+                                    <form method="get" action="AttachmentServlet" enctype="multipart/form-data">
+                                        <input type="text" name="postId" value="${post.postID}" hidden/>
+                                        <input type="text" name="attachmentId" value="${post.attID}" hidden/>
+                                        <input type="text" name="action" value="delete" hidden/>
+                                        <button type="submit" class="btn btn-danger mt-2 mi"><i class="fas fa-trash mr-2"></i>Delete</button>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="h5">Change attachment</div>
+                            <div>
+                                <form method="post" action="AttachmentServlet" enctype="multipart/form-data">
+                                    <input type="text" name="postId" value="${post.postID}" hidden/>
+                                    <input type="text" name="attachmentId" value="${post.attID}" hidden/>
+                                    <input type="text" name="action" value="put" hidden/>
+                                    <div class="form-group">
+                                        <input type="file" id="attachment" name="attachment" >
+                                    </div>
+                                    <div>
+                                        <button type="submit" class="btn btn-primary">Update</button>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
-                    </form>
-                </div>
-
-                <div>
-                    <div class="h5">Delete attachment</div>
-                    <form method="get" action="AttachmentServlet" enctype="multipart/form-data">
-                        <input type="text" name="postId" value="${param.postId}" hidden/>
-                        <input type="text" name="action" value="delete" hidden/>
-                        <button type="submit" class="btn btn-danger mt-2 mi"><i class="fas fa-trash mr-2"></i>Delete</button>
-                    </form>
-                </div>
+                    </c:otherwise>
+                </c:choose>
             </div>
         </div>
     </div>

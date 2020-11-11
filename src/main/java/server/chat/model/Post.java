@@ -1,4 +1,4 @@
-package server.chat;
+package server.chat.model;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -53,7 +53,8 @@ public class Post implements java.io.Serializable {
         this("Anonymous", message);
     }
 
-    public Post(){}
+    public Post(){
+    }
 
     public int getPostID() { return postID; }
 
