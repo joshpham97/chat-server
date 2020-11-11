@@ -17,29 +17,29 @@
     <title>Create post</title>
 </head>
 <body>
-    <nav class="navbar navbar-dark bg-dark">
-        <span class="navbar-brand mb-0 h1">Simple Message Board</span>
-        <a class="btn btn-primary mb-0 h1" href="index.jsp"><i class="fas fa-eye mr-2"></i>View posts</a>
-    </nav>
-    <div class="container">
-        <div class="col-12 mt-2">
-            <div class="h4">Create New Post</div>
-            <form action="Servlet" method="post">
-                <div class="form-group">
-                    <label for="postContent"></label>
-                    <input type="text" name="action" value="post" hidden/>
-                    <textarea id="postTitle" name="title" class="form-control" rows="1" placeholder="Title" required></textarea>
-                    <textarea id="postContent" name="message" class="form-control" rows="2" placeholder="Type your post here..." required></textarea>
-                </div>
-                <div class="custom-file">
-                    <input type="file" class="custom-file-input" id="attachment">
-                    <label class="custom-file-label" for="attachment">Add attachment</label>
-                </div>
-                <div class="col text-center">
-                    <button type="submit" class="btn btn-primary mt-2 mi">Create Post</button>
-                </div>
-            </form>
-        </div>
+<nav class="navbar navbar-dark bg-dark">
+    <span class="navbar-brand mb-0 h1">Simple Message Board</span>
+    <a class="btn btn-primary mb-0 h1" href="index.jsp"><i class="fas fa-eye mr-2"></i>View posts</a>
+</nav>
+<div class="container">
+    <div class="col-12 mt-2">
+        <div class="h4">Create New Post</div>
+        <form action="PostServlet" method="post">
+            <div class="form-group">
+                <label for="postContent"></label>
+                <input type="text" name="action" value="post" hidden/>
+                <textarea id="postTitle" name="title" class="form-control" rows="1" placeholder="Title" required></textarea>
+                <textarea id="postContent" name="message" class="form-control" rows="2" placeholder="Type your post here..." required></textarea>
+            </div>
+            <div class="custom-file">
+                <input type="file" class="custom-file-input" id="attachment">
+                <label class="custom-file-label" for="attachment">Add attachment</label>
+            </div>
+            <div class="col text-center">
+                <button type="submit" class="btn btn-primary mt-2 mi">Create Post</button>
+            </div>
+        </form>
     </div>
+</div>
 </body>
 </html>

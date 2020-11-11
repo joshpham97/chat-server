@@ -1,7 +1,8 @@
-import server.chat.daoimpl.UserFileDaoImpl;
-import server.chat.model.User;
+package app;
 
-import javax.servlet.http.HttpServletRequest;
+import server.dabatase.daoimpl.UserFileDaoImpl;
+import server.dabatase.model.User;
+
 import javax.servlet.http.HttpSession;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

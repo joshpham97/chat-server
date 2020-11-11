@@ -1,15 +1,15 @@
+package app;
+
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import server.chat.Post;
-import server.chat.daoimpl.PostDAO;
+import server.dabatase.daoimpl.AttachmentDAO;
+import server.dabatase.daoimpl.PostDAO;
+import server.dabatase.model.Post;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 public class PostManager {
@@ -35,10 +35,9 @@ public class PostManager {
         messages = new ArrayList<Post>();
     }
 
-    public Post insertPost(String username,String title, String message)
+    public static Post insertPost(String username,String title, String message)
     {
-        PostDAO postDao = new PostDAO();
-        Post post = postDao.createPost(username, title, message);
+        Post post = PostDAO.createPost(username, title, message);
 
         int postID = post.getPostID();
 
@@ -106,10 +105,13 @@ public class PostManager {
         }
     }
 
-    public Post updatePost(int postId, String uname, String title, String message)
+    public static Post getPostById(int postId){
+        return PostDAO.selectPostById(postId);
+    }
+    
+    public static Post updatePost(int postId, String uname, String title, String message)
     {
-        PostDAO postDao = new PostDAO();
-        Post post = postDao.updatePostDatabase(postId, uname, title, message);
+        Post post = PostDAO.updatePostDatabase(postId, uname, title, message);
 
         HashtagManager htManager = new HashtagManager();
         htManager.createHashTag(postId, message);
@@ -117,9 +119,8 @@ public class PostManager {
     }
 
     public static boolean deletePost(int postId) {
-        PostDAO postDao = new PostDAO();
         boolean deleted = false;
-        if(postDao.deletePostDatabase(postId))
+        if(PostDAO.deletePostDatabase(postId) && AttachmentDAO.delete(postId))
         {
             deleted = true;
         }

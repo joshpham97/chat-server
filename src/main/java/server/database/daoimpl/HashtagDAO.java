@@ -1,14 +1,13 @@
-package server.chat.daoimpl;
+package server.database.daoimpl;
 
-import server.chat.db.DBConnection;
-
+import server.dabatase.db.DBConnection;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
 public class HashtagDAO {
-    public void insertHashtag(int postID, String hashtagWord) {
+    public static void insertHashtag(int postID, String hashtagWord) {
         try {
             int hashtagID = 0;
             Connection conn = DBConnection.getConnection();
@@ -36,7 +35,7 @@ public class HashtagDAO {
         }
     }
 
-    public void insertPostHashTag(Connection conn, int postID, int hashtagID) {
+    public static void insertPostHashTag(Connection conn, int postID, int hashtagID) {
         try {
             String query3 = "INSERT INTO Post_Hashtag (post_id, hashtag_id)" + " values (?,?)";
             PreparedStatement pstmt = conn.prepareStatement(query3);

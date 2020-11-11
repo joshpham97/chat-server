@@ -27,7 +27,7 @@
         <div>
             <div>
                 <div class="h5">Update Post</div>
-                <form action="Servlet" method="post">
+                <form action="PostServlet" method="post">
                     <div class="form-group">
                         <label for="postContent"></label>
                         <input type="text" name="action" value="update" hidden/>

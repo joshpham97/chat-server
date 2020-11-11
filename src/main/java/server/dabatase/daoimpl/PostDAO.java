@@ -1,7 +1,7 @@
-package server.chat.daoimpl;
+package server.dabatase.daoimpl;
 
-import server.chat.Post;
-import server.chat.db.DBConnection;
+import server.dabatase.model.Post;
+import server.dabatase.db.DBConnection;
 
 import java.sql.*;
 import java.time.LocalDateTime;
@@ -14,7 +14,7 @@ public class PostDAO extends DBConnection {
         return null;
     }
 
-    public Post createPost(String username, String title, String message) {
+    public static Post createPost(String username, String title, String message) {
         Post post = new Post();
         try {
             Connection conn = DBConnection.getConnection();
@@ -105,7 +105,7 @@ public class PostDAO extends DBConnection {
         return post;
     }
 
-    public boolean deletePostDatabase(int postId) {
+    public static boolean deletePostDatabase(int postId) {
         boolean success = false;
         try {
             Connection conn = DBConnection.getConnection();
@@ -131,7 +131,7 @@ public class PostDAO extends DBConnection {
         return success;
     }
 
-    public boolean existsInPostHashtag(Connection conn, int postId) {
+    public static boolean existsInPostHashtag(Connection conn, int postId) {
         boolean exists = false;
         try {
             String sql = "SELECT * from post_hashtag where post_id=?";
@@ -151,7 +151,7 @@ public class PostDAO extends DBConnection {
         return exists;
     }
 
-    public Post updatePostDatabase(int postId, String uname, String title, String message) {
+    public static Post updatePostDatabase(int postId, String uname, String title, String message) {
         Post post = new Post();
 
         LocalDateTime localDate = LocalDateTime.now();
@@ -184,5 +184,90 @@ public class PostDAO extends DBConnection {
             System.err.println(e.getMessage());
         }
         return post;
+    }
+
+    public static Post selectPostById(int postId){
+        Post post = null;
+
+        try{
+            Connection conn = DBConnection.getConnection();
+            String sql = "SELECT * FROM post_info WHERE post_id = ?";
+            PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setInt(1, postId);
+
+            ResultSet rs = statement.executeQuery();
+
+
+            if(rs.next()) {
+                post = new Post();
+                post.setPostID(rs.getInt("post_id"));
+                post.setUsername(rs.getString("username"));
+                post.setTitle(rs.getString("title"));
+                post.setDatePosted(rs.getTimestamp("date_posted").toLocalDateTime());
+                post.setDateModified(rs.getTimestamp("date_modified").toLocalDateTime());
+                post.setMessage(rs.getString("message"));
+
+                Integer attachmentId = rs.getInt("att_id");
+                if(rs.wasNull())
+                    post.setAttID(null);
+                else
+                    post.setAttID(attachmentId);
+            }
+        }catch (SQLException ex) {
+            ex.printStackTrace();
+        }finally {
+            DBConnection.closeConnection();
+        }
+
+        return post;
+    }
+
+    public static boolean updateAttachmentId(int postId, Integer attachmentId){
+        try{
+            Connection conn = DBConnection.getConnection();
+            String sql = "UPDATE post_info SET att_id = ? WHERE post_id = ? ";
+            PreparedStatement statement = conn.prepareStatement(sql);
+            LocalDateTime modifiedDate = LocalDateTime.now();
+
+            if(attachmentId != null)
+                statement.setInt(1, attachmentId);
+            else
+                statement.setNull(1, Types.INTEGER);
+            statement.setInt(2, postId);
+
+            int row = statement.executeUpdate();
+            if (row > 0) {
+                return true;
+            }
+        }catch (SQLException ex){
+            ex.printStackTrace();
+        }finally {
+            DBConnection.closeConnection();
+        }
+
+        return false;
+    }
+
+    public static boolean updateModifiedDate(int postId){
+        try{
+            Connection conn = DBConnection.getConnection();
+            String sql = "UPDATE post_info SET date_modified = ? WHERE post_id = ? ";
+            PreparedStatement statement = conn.prepareStatement(sql);
+            LocalDateTime modifiedDate = LocalDateTime.now();
+
+            statement.setTimestamp(1, Timestamp.valueOf(modifiedDate));
+            statement.setInt(2, postId);
+
+            int row = statement.executeUpdate();
+            if (row > 0) {
+                return true;
+            }
+        }catch (SQLException ex){
+            ex.printStackTrace();
+        }finally {
+            DBConnection.closeConnection();
+        }
+
+        return false;
     }
 }
