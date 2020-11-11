@@ -1,7 +1,6 @@
 package app;
 
-import server.chat.daoimpl.HashtagDAO;
-
+import server.database.daoimpl.HashtagDAO;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;

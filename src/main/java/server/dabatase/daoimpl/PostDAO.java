@@ -185,8 +185,6 @@ public class PostDAO extends DBConnection {
         }
         return post;
     }
-    public static Set<Post> getRecentPosts() { return null; }
-    public static Set<Post> getRecentNPosts(int n) { return null; }
 
     public static Post selectPostById(int postId){
         Post post = null;

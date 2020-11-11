@@ -1,7 +1,6 @@
-package server.chat.daoimpl;
+package server.database.daoimpl;
 
-import server.chat.db.DBConnection;
-
+import server.dabatase.db.DBConnection;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
