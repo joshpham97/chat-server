@@ -128,8 +128,8 @@ public class PostDAO extends DBConnection {
         post.setPostID(rs.getInt("post_id"));
         post.setUsername(rs.getString("username"));
         post.setTitle(rs.getString("title"));
-        post.setDatePosted(rs.getDate("date_posted").toLocalDate().atStartOfDay());
-        post.setDatePosted(rs.getDate("date_modified").toLocalDate().atStartOfDay());
+        post.setDatePosted(rs.getTimestamp("date_posted").toLocalDateTime());
+        post.setDatePosted(rs.getTimestamp("date_modified").toLocalDateTime());
         post.setMessage((rs.getString("message")));
         post.setAttID(attID);
 

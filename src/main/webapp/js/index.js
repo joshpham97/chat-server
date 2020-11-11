@@ -51,12 +51,12 @@ function buildQueryString(includePage = true) {
 }
 
 function displayPagination(pages, currentPage) {
-    if(pages == 1) // No need for pagination
+    if(pages == 0) // No need for pagination
         return;
 
     const queryString = buildQueryString(false); // To preserve the query string (i.e. filter)
-    const previousDisabled = (currentPage == 1) ? ' disabled' : '';
-    const nextDisabled = (currentPage == pages) ? ' disabled' : '';
+    const previousDisabled = (currentPage == 1) ? ' disabled' : ''; // For disabling prev nav
+    const nextDisabled = (currentPage == pages) ? ' disabled' : ''; // For disabling next nav
 
     // Previous nav
     $("#pagination").append(
