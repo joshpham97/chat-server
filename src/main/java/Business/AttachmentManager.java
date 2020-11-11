@@ -14,6 +14,7 @@ public class AttachmentManager {
             attachment = AttachmentDAO.insert(attachment, filePart.getInputStream());
             if (attachment != null){
                 PostDAO.updateAttachmentId(postId, attachment.getAttachmentId());
+                PostDAO.updateModifiedDate(postId);
                 return true;
             }
         }catch (IOException ex){
@@ -24,7 +25,7 @@ public class AttachmentManager {
     }
 
     public static boolean deleteAttachment(int postId, int attachmentId) {
-        if (PostDAO.updateAttachmentId(postId, null)){
+        if (PostDAO.updateAttachmentId(postId, null) && PostDAO.updateModifiedDate(postId)){
             AttachmentDAO.delete(attachmentId);
             return true;
         }
@@ -39,7 +40,10 @@ public class AttachmentManager {
     public static boolean updateAttachment(Part filePart, int postId, int attachmentId){
         try{
             Attachment attachment = constructAttachmentFromPart(filePart, postId, attachmentId);
-            return AttachmentDAO.update(attachment, filePart.getInputStream());
+
+            if(AttachmentDAO.update(attachment, filePart.getInputStream())){
+                return PostDAO.updateModifiedDate(postId);
+            }
         }catch (IOException ex){
             ex.printStackTrace();
         }

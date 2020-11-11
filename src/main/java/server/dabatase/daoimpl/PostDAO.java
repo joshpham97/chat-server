@@ -141,11 +141,35 @@ public class PostDAO extends DBConnection {
             Connection conn = DBConnection.getConnection();
             String sql = "UPDATE post_info SET att_id = ? WHERE post_id = ? ";
             PreparedStatement statement = conn.prepareStatement(sql);
+            LocalDateTime modifiedDate = LocalDateTime.now();
 
             if(attachmentId != null)
                 statement.setInt(1, attachmentId);
             else
                 statement.setNull(1, Types.INTEGER);
+            statement.setInt(2, postId);
+
+            int row = statement.executeUpdate();
+            if (row > 0) {
+                return true;
+            }
+        }catch (SQLException ex){
+            ex.printStackTrace();
+        }finally {
+            DBConnection.closeConnection();
+        }
+
+        return false;
+    }
+
+    public static boolean updateModifiedDate(int postId){
+        try{
+            Connection conn = DBConnection.getConnection();
+            String sql = "UPDATE post_info SET date_modified = ? WHERE post_id = ? ";
+            PreparedStatement statement = conn.prepareStatement(sql);
+            LocalDateTime modifiedDate = LocalDateTime.now();
+
+            statement.setTimestamp(1, Timestamp.valueOf(modifiedDate));
             statement.setInt(2, postId);
 
             int row = statement.executeUpdate();
