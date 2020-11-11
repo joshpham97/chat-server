@@ -36,10 +36,9 @@ public class PostManager {
         messages = new ArrayList<Post>();
     }
 
-    public Post insertPost(String username,String title, String message)
+    public static Post insertPost(String username,String title, String message)
     {
-        PostDAO postDao = new PostDAO();
-        Post post = postDao.createPost(username, title, message);
+        Post post = PostDAO.createPost(username, title, message);
 
         int postID = post.getPostID();
 
@@ -111,10 +110,9 @@ public class PostManager {
         return PostDAO.selectPostById(postId);
     }
     
-    public Post updatePost(int postId, String uname, String title, String message)
+    public static Post updatePost(int postId, String uname, String title, String message)
     {
-        PostDAO postDao = new PostDAO();
-        Post post = postDao.updatePostDatabase(postId, uname, title, message);
+        Post post = PostDAO.updatePostDatabase(postId, uname, title, message);
 
         HashtagManager htManager = new HashtagManager();
         htManager.createHashTag(postId, message);
@@ -122,9 +120,8 @@ public class PostManager {
     }
 
     public static boolean deletePost(int postId) {
-        PostDAO postDao = new PostDAO();
         boolean deleted = false;
-        if(postDao.deletePostDatabase(postId))
+        if(PostDAO.deletePostDatabase(postId) && AttachmentDAO.delete(postId))
         {
             deleted = true;
         }

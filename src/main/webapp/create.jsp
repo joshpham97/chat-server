@@ -23,24 +23,18 @@
 </nav>
 <div class="container">
     <div class="col-12 mt-2">
-        <div class="h3">Manage Posts</div>
-        <div>
-            <div>
-                <div class="h5">Update Post</div>
-                <form action="Servlet" method="post">
-                    <div class="form-group">
-                        <label for="postContent"></label>
-                        <input type="text" name="action" value="update" hidden/>
-                        <input type="text" name="postId" value="${param.postId}" hidden/>
-                        <textarea id="postTitle" name="title" class="form-control" rows="1" placeholder="Title" required></textarea>
-                        <textarea id="postContent" name="message" class="form-control" rows="2" placeholder="Type your post here..." required></textarea>
-                    </div>
-                    <div class="col text-center">
-                        <button type="submit" class="btn btn-primary mt-2 mi">Update Post</button>
-                    </div>
-                </form>
+        <div class="h4">Create New Post</div>
+        <form action="PostServlet" method="post">
+            <div class="form-group">
+                <label for="postContent"></label>
+                <input type="text" name="action" value="post" hidden/>
+                <textarea id="postTitle" name="title" class="form-control" rows="1" placeholder="Title" required></textarea>
+                <textarea id="postContent" name="message" class="form-control" rows="2" placeholder="Type your post here..." required></textarea>
             </div>
-        </div>
+            <div class="col text-center">
+                <button type="submit" class="btn btn-primary mt-2 mi">Create Post</button>
+            </div>
+        </form>
     </div>
 </div>
 </body>

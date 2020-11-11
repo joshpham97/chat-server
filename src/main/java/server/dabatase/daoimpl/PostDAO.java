@@ -14,7 +14,7 @@ public class PostDAO extends DBConnection {
         return null;
     }
 
-    public Post createPost(String username, String title, String message) {
+    public static Post createPost(String username, String title, String message) {
         Post post = new Post();
         try {
             Connection conn = DBConnection.getConnection();
@@ -105,7 +105,7 @@ public class PostDAO extends DBConnection {
         return post;
     }
 
-    public boolean deletePostDatabase(int postId) {
+    public static boolean deletePostDatabase(int postId) {
         boolean success = false;
         try {
             Connection conn = DBConnection.getConnection();
@@ -131,7 +131,7 @@ public class PostDAO extends DBConnection {
         return success;
     }
 
-    public boolean existsInPostHashtag(Connection conn, int postId) {
+    public static boolean existsInPostHashtag(Connection conn, int postId) {
         boolean exists = false;
         try {
             String sql = "SELECT * from post_hashtag where post_id=?";
@@ -151,7 +151,7 @@ public class PostDAO extends DBConnection {
         return exists;
     }
 
-    public Post updatePostDatabase(int postId, String uname, String title, String message) {
+    public static Post updatePostDatabase(int postId, String uname, String title, String message) {
         Post post = new Post();
 
         LocalDateTime localDate = LocalDateTime.now();
