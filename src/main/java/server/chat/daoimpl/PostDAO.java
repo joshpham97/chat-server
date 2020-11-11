@@ -13,10 +13,10 @@ public class PostDAO extends DBConnection {
     public static Blob getAttachmentByPostId(int postId) {
         return null;
     }
-    public Post createPost(String username, String title, String message)
-    {
+
+    public Post createPost(String username, String title, String message) {
         Post post = new Post();
-        try{
+        try {
             Connection conn = DBConnection.getConnection();
 
             LocalDateTime localDate = LocalDateTime.now();
@@ -34,7 +34,7 @@ public class PostDAO extends DBConnection {
             stmt.setString(5, message);
             stmt.execute();
             ResultSet rs = stmt.getGeneratedKeys();
-            int generatedKey =0;
+            int generatedKey = 0;
             if (rs.next()) {
                 generatedKey = rs.getInt(1);
             }
@@ -43,16 +43,15 @@ public class PostDAO extends DBConnection {
             post.setTitle(title);
             post.setMessage(message);
             post.setDatePosted(date.toLocalDate().atStartOfDay());
-        }
-        catch (Exception e)
-        {
+            post.setDateModified(date.toLocalDate().atStartOfDay());
+        } catch (Exception e) {
             System.err.println("Got an exception! ");
             System.err.println(e.getMessage());
         }
         return post;
     }
-    public void insertHashtag(int postID, String hashtagWord)
-    {
+
+    public void insertHashtag(int postID, String hashtagWord) {
         try {
             int hashtagID = 0;
             Connection conn = DBConnection.getConnection();
@@ -62,9 +61,7 @@ public class PostDAO extends DBConnection {
 
             if (r.next()) {
                 hashtagID = r.getInt(1);
-            }
-            else
-            {
+            } else {
                 String query2 = "INSERT INTO Hashtag (hashtag)" + " value (?)";
                 PreparedStatement ps1 = conn.prepareStatement(query2, Statement.RETURN_GENERATED_KEYS);
                 ps1.setString(1, hashtagWord);
@@ -76,28 +73,25 @@ public class PostDAO extends DBConnection {
                 }
             }
             insertPostHashTag(conn, postID, hashtagID);
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             System.err.println("Got an exception! ");
             System.err.println(e.getMessage());
         }
     }
-    public void insertPostHashTag(Connection conn, int postID, int hashtagID)
-    {
+
+    public void insertPostHashTag(Connection conn, int postID, int hashtagID) {
         try {
             String query3 = "INSERT INTO Post_Hashtag (post_id, hashtag_id)" + " values (?,?)";
             PreparedStatement pstmt = conn.prepareStatement(query3);
             pstmt.setInt(1, postID);
             pstmt.setInt(2, hashtagID);
             pstmt.execute();
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             System.err.println("Got an exception! ");
             System.err.println(e.getMessage());
         }
     }
+
     public static ArrayList<Post> getRecentPosts() {
         //return null;
         // Get query result
@@ -106,7 +100,11 @@ public class PostDAO extends DBConnection {
 
         return getPostsHelper(sql);
     }
-    public static Set<Post> getRecentNPosts(int n) { return null; }
+
+    public static Set<Post> getRecentNPosts(int n) {
+        return null;
+    }
+
     private static ArrayList<Post> getPostsHelper(String sql) {
         ArrayList<Post> posts = new ArrayList<>();
 
@@ -118,9 +116,9 @@ public class PostDAO extends DBConnection {
             ResultSet rs = ps.executeQuery();
 
             // For each element of query result
-            while(rs.next())
+            while (rs.next())
                 posts.add(resultSetToPost(rs));
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         } finally {
             DBConnection.closeConnection();
@@ -128,10 +126,11 @@ public class PostDAO extends DBConnection {
 
         return posts;
     }
+
     private static Post resultSetToPost(ResultSet rs) throws SQLException {
         Post post = new Post();
         Integer attID = rs.getInt("att_id");
-        if(attID == 0) { // Means that db field was null
+        if (attID == 0) { // Means that db field was null
             attID = null;
         }
 
@@ -145,13 +144,12 @@ public class PostDAO extends DBConnection {
 
         return post;
     }
-    public boolean deletePostDatabase(int postId)
-    {
+
+    public boolean deletePostDatabase(int postId) {
         boolean success = false;
         try {
             Connection conn = DBConnection.getConnection();
-            if(existsInPostHashtag(conn, postId))
-            {
+            if (existsInPostHashtag(conn, postId)) {
                 String query1 = "DELETE from post_hashtag where post_id=?";
                 PreparedStatement pstmt = conn.prepareStatement(query1);
                 pstmt.setInt(1, postId);
@@ -164,19 +162,16 @@ public class PostDAO extends DBConnection {
             ps.setInt(1, postId);
             ps.executeUpdate();
 
-            System.out.println("Record has been deleted!");
             success = true;
 
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             System.err.println("Got an exception! ");
             System.err.println(e.getMessage());
         }
         return success;
     }
-    public boolean existsInPostHashtag(Connection conn, int postId)
-    {
+
+    public boolean existsInPostHashtag(Connection conn, int postId) {
         boolean exists = false;
         try {
             String sql = "SELECT * from post_hashtag where post_id=?";
@@ -188,9 +183,7 @@ public class PostDAO extends DBConnection {
             if (r.next()) {
                 exists = true;
             }
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             System.err.println("Got an exception! ");
             System.err.println(e.getMessage());
         }
@@ -198,4 +191,38 @@ public class PostDAO extends DBConnection {
         return exists;
     }
 
+    public Post updatePostDatabase(int postId, String uname, String title, String message) {
+        Post post = new Post();
+
+        LocalDateTime localDate = LocalDateTime.now();
+        java.sql.Date date = java.sql.Date.valueOf(localDate.toLocalDate());
+        try {
+            Connection conn = DBConnection.getConnection();
+            if (existsInPostHashtag(conn, postId)) {
+                String query1 = "DELETE from post_hashtag where post_id=?";
+                PreparedStatement pstmt = conn.prepareStatement(query1);
+                pstmt.setInt(1, postId);
+                pstmt.executeUpdate();
+            }
+            String sql = "UPDATE post_info SET username = ?, title = ?, date_modified = ?, message = ? WHERE post_id = ?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, uname);
+            ps.setString(2, title);
+            ps.setDate(3, date);
+            ps.setString(4, message);
+            ps.setInt(5, postId);
+            ps.executeUpdate();
+
+            post.setPostID(postId);
+            post.setUsername(uname);
+            post.setTitle(title);
+            post.setMessage(message);
+            post.setDateModified(date.toLocalDate().atStartOfDay());
+
+        } catch (Exception e) {
+            System.err.println("Got an exception! ");
+            System.err.println(e.getMessage());
+        }
+        return post;
+    }
 }

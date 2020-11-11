@@ -119,12 +119,25 @@ public class PostManager {
             }
         }
     }
-    /**
-    public Post updatePost(String username,String title, String message)
-    {
 
+    public Post updatePost(int postId, String uname, String title, String message)
+    {
+        PostDAO postDao = new PostDAO();
+        Post post = postDao.updatePostDatabase(postId, uname, title, message);
+
+        Set<String> hashtags = getHashtags(message);
+        Iterator<String> it = hashtags.iterator();
+
+        if(!hashtags.isEmpty()) {
+            while(it.hasNext()) {
+                String hashtagWord = it.next();
+                postDao.insertHashtag(postId, hashtagWord);
+            }
+        }
+
+        return post;
     }
-     */
+
     public static boolean deletePost(int postId) {
         PostDAO postDao = new PostDAO();
         boolean deleted = false;

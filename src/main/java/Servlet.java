@@ -60,19 +60,25 @@ public class Servlet extends HttpServlet {
         String uname = (String)request.getSession(false).getAttribute("username");
         String message = request.getParameter("message");
         String title = request.getParameter("title");
-        String postID = request.getParameter("postId");
+        String strPostID = request.getParameter("postId");
+        /**
+        if(strPostID != null && !strPostID.trim().isEmpty()) {
+            int postID = Integer.parseInt(strPostID);
+        }
+         */
 
         Post post = null;
-        System.out.println("Deleting post id: " + postID);
         if(action.equals("post"))
         {
             post = chatManager.insertPost(uname,title, message);
             chatManager.postMessage(uname, message);
             response.sendRedirect("post.jsp");
         }
-        if(action.equals("update"))
+        else if(action.equals("update"))
         {
-            System.out.println("Post ID: " + postID);
+            int postID = Integer.parseInt(strPostID);
+            post = chatManager.updatePost(postID,uname, title, message);
+            response.sendRedirect("index.jsp");
             //post = chatManager.updatePost(uname,title, message);
         }
         if(request.getHeader("referer") != null) {
@@ -110,6 +116,10 @@ public class Servlet extends HttpServlet {
             boolean isSuccess = PostManager.deletePost(postID);
             System.out.println("GET Deleting post id: " + postID);
             response.sendRedirect(String.format("index.jsp?postId=%d&success=%b", postID, isSuccess));
+        }
+        if(action.equals("update"))
+        {
+            response.sendRedirect(String.format("post.jsp?postId=%d", postID));
         }
 
         /**
