@@ -16,11 +16,6 @@ public class Post implements java.io.Serializable {
     private String datePostedStr; // Helps with displaying date on frontend
     private String dateModifiedStr;
 
-    public Post()
-    {
-
-    }
-
     // NEEDED FOR TESTING WITHOUT DAO
     public Post(int postID, String username, String title, String message, LocalDateTime datePosted, LocalDateTime dateModified, Integer attID) {
         this.postID = postID;
@@ -57,6 +52,8 @@ public class Post implements java.io.Serializable {
     public Post(String message) {
         this("Anonymous", message);
     }
+
+    public Post(){}
 
     public int getPostID() { return postID; }
 
@@ -118,5 +115,4 @@ public class Post implements java.io.Serializable {
     private String formatDate(LocalDateTime date) {
         return date.getMonth().toString().toLowerCase() + " " + date.getDayOfMonth() + ", " + date.getYear();
     }
-
 }

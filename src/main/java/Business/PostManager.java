@@ -44,29 +44,16 @@ public class PostManager {
 
         int postID = post.getPostID();
 
-        Set<String> hashtags = getHashtags(message);
-        Iterator<String> it = hashtags.iterator();
+        HashtagManager htManager = new HashtagManager();
 
-        if(!hashtags.isEmpty()) {
-            while(it.hasNext()) {
-                String hashtagWord = it.next();
-                postDao.insertHashtag(postID, hashtagWord);
-            }
-        }
+        htManager.createHashTag(postID, message);
+
         return post;
     }
-    public static Set<String> getHashtags(String message) {
-        String[] words = message.split("\\s+");
-        Set<String> hashtags = new HashSet<String>();
-        for (String word : words) {
-            if (word.startsWith("#")) {
-                hashtags.add(word.substring(1));
-            }
-        }
-        return hashtags;
-    }
+
 
     public static ArrayList<Post> getRecentPosts() {
+        /**
         // TEMPORARY HARDCODING: waiting for PostDao and Post
         ArrayList<Post> tempPosts = new ArrayList<>();
         tempPosts.add(new Post(1, "username1", "title1", "message1", 1));
@@ -75,6 +62,9 @@ public class PostManager {
         ArrayList<Post> posts = tempPosts;
 
 //        ArrayList<Post> posts = (ArrayList<Post>) PostDAO.getRecentNPosts(NUMBER_OF_POSTS);
+        return posts;
+         */
+        ArrayList<Post> posts = PostDAO.getRecentPosts();
         return posts;
     }
 
@@ -120,5 +110,30 @@ public class PostManager {
 
     public static Post getPostById(int postId){
         return PostDAO.selectPostById(postId);
+    }
+    
+    public Post updatePost(int postId, String uname, String title, String message)
+    {
+        PostDAO postDao = new PostDAO();
+        Post post = postDao.updatePostDatabase(postId, uname, title, message);
+
+        HashtagManager htManager = new HashtagManager();
+        htManager.createHashTag(postId, message);
+        return post;
+    }
+
+    public static boolean deletePost(int postId) {
+        PostDAO postDao = new PostDAO();
+        boolean deleted = false;
+        if(postDao.deletePostDatabase(postId))
+        {
+            deleted = true;
+        }
+        else
+        {
+            deleted = false;
+        }
+        return deleted;
+        //return AttachmentDAO.delete(postId);
     }
 }

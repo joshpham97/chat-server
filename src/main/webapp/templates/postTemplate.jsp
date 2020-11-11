@@ -25,13 +25,14 @@
                 <%
                     }
                 %>
-                <a href="/AttachmentServlet"><i class="fas fa-edit mr-2"></i></a>
-                <a href="/AttachmentServlet"><i class="fas fa-trash mr-2"></i></a>
+                <a href="Servlet?action=update&postID=<%= post.get("postID") %>"><i class="fas fa-edit mr-2"></i></a>
+                <a href="Servlet?action=delete&postID=<%= post.get("postID") %>"><i class="fas fa-trash mr-2"></i></a>
             </div>
         </div>
 
         <div>
             <div class="card-body ">
+                <div>Postid: <%= post.get("postID") %></div>
                 <div><%= post.get("message") %></div>
                 <div class="float-right">
                 </div>

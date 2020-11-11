@@ -6,16 +6,17 @@ import server.dabatase.db.DBConnection;
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.sql.Blob;
+import java.util.ArrayList;
 import java.util.Set;
 
 public class PostDAO extends DBConnection {
     public static Blob getAttachmentByPostId(int postId) {
         return null;
     }
-    public Post createPost(String username, String title, String message)
-    {
+
+    public Post createPost(String username, String title, String message) {
         Post post = new Post();
-        try{
+        try {
             Connection conn = DBConnection.getConnection();
 
             LocalDateTime localDate = LocalDateTime.now();
@@ -33,7 +34,7 @@ public class PostDAO extends DBConnection {
             stmt.setString(5, message);
             stmt.execute();
             ResultSet rs = stmt.getGeneratedKeys();
-            int generatedKey =0;
+            int generatedKey = 0;
             if (rs.next()) {
                 generatedKey = rs.getInt(1);
             }
@@ -42,60 +43,147 @@ public class PostDAO extends DBConnection {
             post.setTitle(title);
             post.setMessage(message);
             post.setDatePosted(date.toLocalDate().atStartOfDay());
-        }
-        catch (Exception e)
-        {
+            post.setDateModified(date.toLocalDate().atStartOfDay());
+        } catch (Exception e) {
             System.err.println("Got an exception! ");
             System.err.println(e.getMessage());
         }
         return post;
     }
-    public void insertHashtag(int postID, String hashtagWord)
-    {
+
+
+    public static ArrayList<Post> getRecentPosts() {
+        //return null;
+        // Get query result
+        String sql = "SELECT * FROM post_info " +
+                "ORDER BY date_modified DESC, date_posted DESC, post_id DESC";
+
+        return getPostsHelper(sql);
+    }
+
+    public static Set<Post> getRecentNPosts(int n) {
+        return null;
+    }
+
+    private static ArrayList<Post> getPostsHelper(String sql) {
+        ArrayList<Post> posts = new ArrayList<>();
+
         try {
-            int hashtagID = 0;
             Connection conn = DBConnection.getConnection();
-            PreparedStatement ps = conn.prepareStatement("SELECT * FROM Hashtag WHERE hashtag = ?");
-            ps.setString(1, hashtagWord);
+
+            // Get query result
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+
+            // For each element of query result
+            while (rs.next())
+                posts.add(resultSetToPost(rs));
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            DBConnection.closeConnection();
+        }
+
+        return posts;
+    }
+
+    private static Post resultSetToPost(ResultSet rs) throws SQLException {
+        Post post = new Post();
+        Integer attID = rs.getInt("att_id");
+        if (attID == 0) { // Means that db field was null
+            attID = null;
+        }
+
+        post.setPostID(rs.getInt("post_id"));
+        post.setUsername(rs.getString("username"));
+        post.setTitle(rs.getString("title"));
+        post.setDatePosted(rs.getDate("date_posted").toLocalDate().atStartOfDay());
+        post.setDatePosted(rs.getDate("date_modified").toLocalDate().atStartOfDay());
+        post.setMessage((rs.getString("message")));
+        post.setAttID(attID);
+
+        return post;
+    }
+
+    public boolean deletePostDatabase(int postId) {
+        boolean success = false;
+        try {
+            Connection conn = DBConnection.getConnection();
+            if (existsInPostHashtag(conn, postId)) {
+                String query1 = "DELETE from post_hashtag where post_id=?";
+                PreparedStatement pstmt = conn.prepareStatement(query1);
+                pstmt.setInt(1, postId);
+                pstmt.executeUpdate();
+            }
+
+            String sql = "DELETE from post_info where post_id=?";
+
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, postId);
+            ps.executeUpdate();
+
+            success = true;
+
+        } catch (Exception e) {
+            System.err.println("Got an exception! ");
+            System.err.println(e.getMessage());
+        }
+        return success;
+    }
+
+    public boolean existsInPostHashtag(Connection conn, int postId) {
+        boolean exists = false;
+        try {
+            String sql = "SELECT * from post_hashtag where post_id=?";
+
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, postId);
             ResultSet r = ps.executeQuery();
 
             if (r.next()) {
-                hashtagID = r.getInt(1);
+                exists = true;
             }
-            else
-            {
-                String query2 = "INSERT INTO Hashtag (hashtag)" + " value (?)";
-                PreparedStatement ps1 = conn.prepareStatement(query2, Statement.RETURN_GENERATED_KEYS);
-                ps1.setString(1, hashtagWord);
-                ps1.execute();
-                ResultSet result = ps1.getGeneratedKeys();
+        } catch (Exception e) {
+            System.err.println("Got an exception! ");
+            System.err.println(e.getMessage());
+        }
 
-                if (result.next()) {
-                    hashtagID = result.getInt(1);
-                }
-            }
-            insertPostHashTag(conn, postID, hashtagID);
-        }
-        catch (Exception e)
-        {
-            System.err.println("Got an exception! ");
-            System.err.println(e.getMessage());
-        }
+        return exists;
     }
-    public void insertPostHashTag(Connection conn, int postID, int hashtagID)
-    {
+
+    public Post updatePostDatabase(int postId, String uname, String title, String message) {
+        Post post = new Post();
+
+        LocalDateTime localDate = LocalDateTime.now();
+        java.sql.Date date = java.sql.Date.valueOf(localDate.toLocalDate());
         try {
-            String query3 = "INSERT INTO Post_Hashtag (post_id, hashtag_id)" + " values (?,?)";
-            PreparedStatement pstmt = conn.prepareStatement(query3);
-            pstmt.setInt(1, postID);
-            pstmt.setInt(2, hashtagID);
-            pstmt.execute();
-        }
-        catch (Exception e)
-        {
+            Connection conn = DBConnection.getConnection();
+            if (existsInPostHashtag(conn, postId)) {
+                String query1 = "DELETE from post_hashtag where post_id=?";
+                PreparedStatement pstmt = conn.prepareStatement(query1);
+                pstmt.setInt(1, postId);
+                pstmt.executeUpdate();
+            }
+            String sql = "UPDATE post_info SET username = ?, title = ?, date_modified = ?, message = ? WHERE post_id = ?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, uname);
+            ps.setString(2, title);
+            ps.setDate(3, date);
+            ps.setString(4, message);
+            ps.setInt(5, postId);
+            ps.executeUpdate();
+
+            post.setPostID(postId);
+            post.setUsername(uname);
+            post.setTitle(title);
+            post.setMessage(message);
+            post.setDateModified(date.toLocalDate().atStartOfDay());
+
+        } catch (Exception e) {
             System.err.println("Got an exception! ");
             System.err.println(e.getMessage());
         }
+        return post;
     }
     public static Set<Post> getRecentPosts() { return null; }
     public static Set<Post> getRecentNPosts(int n) { return null; }
