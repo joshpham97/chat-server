@@ -38,7 +38,7 @@
                         <a class="mb-0 nav-link active" href="index.jsp"><i class="fas fa-home mr-2"></i>Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="mb-0 nav-link" href="create.jsp"><i class="fas fa-plus mr-2"></i>New Post</a>
+                        <a class="mb-0 nav-link" href="edit.jsp"><i class="fas fa-plus mr-2"></i>New Post</a>
                     </li>
                     <li class="nav-item">
                         <a class="mb-0 nav-link" href="search.jsp"><i class="fas fa-filter mr-2"></i>Filter</a>

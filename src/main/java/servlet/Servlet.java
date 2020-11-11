@@ -108,7 +108,7 @@ public class Servlet extends HttpServlet {
         }
         if(action.equals("update"))
         {
-            response.sendRedirect(String.format("edit.jsp?postId=%d", postID));
+            response.sendRedirect(String.format("create.jsp?postId=%d", postID));
         }
     }
   

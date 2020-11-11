@@ -2,7 +2,9 @@ package app;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import server.dabatase.daoimpl.AttachmentDAO;
 import server.dabatase.daoimpl.PostDAO;
+import server.dabatase.model.Attachment;
 import server.dabatase.model.Post;
 
 import java.io.InputStream;
