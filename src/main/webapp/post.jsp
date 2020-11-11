@@ -28,11 +28,12 @@
     </nav>
     <div class="container">
         <div class="col-12 mt-2">
-            <div class="h3">Edit post</div>
-            <form method="post" action="AttachmentServlet" enctype="multipart/form-data">
+            <div class="h4">Create New Post</div>
+            <form action="Servlet" method="post">
                 <div class="form-group">
-                    <label for="message">Post message</label>
-                    <textarea id="message" name="message" class="form-control" rows="2" placeholder="Type your post here..." required></textarea>
+                    <label for="postContent"></label>
+                    <textarea id="postTitle" name="title" class="form-control" rows="1" placeholder="Title" required></textarea>
+                    <textarea id="postContent" name="message" class="form-control" rows="2" placeholder="Type your post here..." required></textarea>
                 </div>
                 <div>
                     <button type="submit" class="btn btn-primary mt-2 mi">Edit post</button>
