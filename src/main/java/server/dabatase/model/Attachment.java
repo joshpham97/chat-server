@@ -1,4 +1,4 @@
-package server.chat.model;
+package server.dabatase.model;
 
 import java.sql.Blob;
 

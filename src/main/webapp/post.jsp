@@ -1,5 +1,5 @@
-<%@ page import="server.chat.daoimpl.PostDAO" %>
-<%@ page import="server.chat.model.Post" %><%--
+<%@ page import="server.dabatase.daoimpl.PostDAO" %>
+<%@ page import="server.dabatase.model.Post" %><%--
   Created by IntelliJ IDEA.
   User: thuan
   Date: 2020-11-04
@@ -8,8 +8,8 @@
 --%>
 <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<jsp:useBean id="post" scope="request" type="server.chat.model.Post"/>
-<jsp:useBean id="attachment" scope="request" type="server.chat.model.Attachment"/>
+<jsp:useBean id="post" scope="request" type="server.dabatase.model.Post"/>
+<jsp:useBean id="attachment" scope="request" type="server.dabatase.model.Attachment"/>
 
 <html>
 <head>

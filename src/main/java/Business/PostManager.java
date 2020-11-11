@@ -2,8 +2,8 @@ package Business;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import server.chat.daoimpl.PostDAO;
-import server.chat.model.Post;
+import server.dabatase.daoimpl.PostDAO;
+import server.dabatase.model.Post;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;

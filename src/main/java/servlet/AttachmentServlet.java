@@ -1,8 +1,7 @@
 package servlet;
 
-import server.chat.AttachmentManager;
-import server.chat.daoimpl.AttachmentDAO;
-import server.chat.model.Attachment;
+import Business.AttachmentManager;
+import server.dabatase.model.Attachment;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -12,7 +11,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 import java.io.*;
-import java.sql.Blob;
 import java.sql.SQLException;
 
 @WebServlet(name = "servlet.AttachmentServlet")

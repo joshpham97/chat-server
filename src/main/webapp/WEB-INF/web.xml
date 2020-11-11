@@ -5,7 +5,7 @@
          version="4.0">
     <servlet>
         <servlet-name>AuthServlet</servlet-name>
-        <servlet-class>AuthServlet</servlet-class>
+        <servlet-class>servlet.AuthServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>AuthServlet</servlet-name>
@@ -13,7 +13,7 @@
     </servlet-mapping>
     <servlet>
         <servlet-name>PostServlet</servlet-name>
-        <servlet-class>PostServlet</servlet-class>
+        <servlet-class>servlet.PostServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>PostServlet</servlet-name>

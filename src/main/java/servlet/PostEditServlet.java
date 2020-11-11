@@ -1,10 +1,9 @@
 package servlet;
 
 import Business.PostManager;
-import server.chat.AttachmentManager;
-import server.chat.daoimpl.PostDAO;
-import server.chat.model.Attachment;
-import server.chat.model.Post;
+import Business.AttachmentManager;
+import server.dabatase.model.Attachment;
+import server.dabatase.model.Post;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;

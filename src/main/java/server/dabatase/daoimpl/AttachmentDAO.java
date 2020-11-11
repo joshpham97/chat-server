@@ -1,7 +1,7 @@
-package server.chat.daoimpl;
+package server.dabatase.daoimpl;
 
-import server.chat.db.DBConnection;
-import server.chat.model.Attachment;
+import server.dabatase.db.DBConnection;
+import server.dabatase.model.Attachment;
 
 import java.io.InputStream;
 import java.sql.*;

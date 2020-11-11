@@ -1,10 +1,8 @@
-package server.chat.dao;
+package server.dabatase.dao;
 
-import server.chat.model.User;
+import server.dabatase.model.User;
 
-import java.util.Set;
-
-public interface UserFileDAO {
+public interface UserDAO {
 //    Set<User> getAllUsers();
     User getUser(int userID);
     User getUserByUsername(String username);

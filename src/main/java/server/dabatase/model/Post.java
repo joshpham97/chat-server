@@ -1,4 +1,4 @@
-package server.chat.model;
+package server.dabatase.model;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -56,9 +56,6 @@ public class Post implements java.io.Serializable {
     // KEEPING FOR PREVIOUS ASSIGNMENT SERVLET
     public Post(String message) {
         this("Anonymous", message);
-    }
-
-    public Post(){
     }
 
     public int getPostID() { return postID; }

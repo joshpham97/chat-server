@@ -1,7 +1,7 @@
-package server.chat.daoimpl;
+package server.dabatase.daoimpl;
 
-import server.chat.model.Post;
-import server.chat.db.DBConnection;
+import server.dabatase.model.Post;
+import server.dabatase.db.DBConnection;
 
 import java.sql.*;
 import java.time.LocalDateTime;

@@ -1,29 +1,25 @@
-import com.google.gson.Gson;
-import server.chat.Post;
-import server.chat.dao.UserDAO;
-import server.chat.dao.UserFileDAO;
-import server.chat.daoimpl.UserFileDaoImpl;
-import server.chat.model.User;
+package servlet;
 
-import javax.servlet.RequestDispatcher;
+import Business.FileFormat;
+import Business.PostManager;
+import com.google.gson.Gson;
+import server.dabatase.model.Post;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.stream.Stream;
 
-@WebServlet(name = "Servlet")
-public class Servlet extends HttpServlet {
+@WebServlet(name = "servlet.PostServlet")
+public class PostServlet extends HttpServlet {
     private enum Parameters {
         FROM("from"),
         TO("to"),
@@ -56,15 +52,6 @@ public class Servlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         PrintWriter responseWriter = response.getWriter();
 
-        String uname = (String)request.getSession(false).getAttribute("username");
-        String message = request.getParameter("message");
-        String title = request.getParameter("title");
-
-        Post post = null;
-        post = chatManager.insertPost(uname,title, message);
-        chatManager.postMessage(uname, message);
-        response.sendRedirect("post.jsp");
-       
         if(request.getHeader("referer") != null) {
             String messageParam= request.getParameter(Parameters.MESSAGE.toString());
 
@@ -80,7 +67,6 @@ public class Servlet extends HttpServlet {
                 String jsonMessage = gson.toJson(newMessage);
                 responseWriter.append(jsonMessage);
             }
-
         }
         else {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -92,6 +78,7 @@ public class Servlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         PrintWriter responseWriter = response.getWriter();
+
         try{
             if(request.getHeader("referer") != null){
                 String strFrom = request.getParameter(Parameters.FROM.toString());
@@ -132,7 +119,7 @@ public class Servlet extends HttpServlet {
 
         responseWriter.close();
     }
-  
+
     protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         PrintWriter responseWriter = response.getWriter();
 

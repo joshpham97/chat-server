@@ -1,8 +1,8 @@
-package server.chat;
+package Business;
 
-import server.chat.daoimpl.AttachmentDAO;
-import server.chat.daoimpl.PostDAO;
-import server.chat.model.Attachment;
+import server.dabatase.daoimpl.AttachmentDAO;
+import server.dabatase.daoimpl.PostDAO;
+import server.dabatase.model.Attachment;
 
 import javax.servlet.http.Part;
 import java.io.IOException;
