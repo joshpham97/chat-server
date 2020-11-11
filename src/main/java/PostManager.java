@@ -42,27 +42,13 @@ public class PostManager {
 
         int postID = post.getPostID();
 
-        Set<String> hashtags = getHashtags(message);
-        Iterator<String> it = hashtags.iterator();
+        HashtagManager htManager = new HashtagManager();
 
-        if(!hashtags.isEmpty()) {
-            while(it.hasNext()) {
-                String hashtagWord = it.next();
-                postDao.insertHashtag(postID, hashtagWord);
-            }
-        }
+        htManager.createHashTag(postID, message);
+
         return post;
     }
-    public static Set<String> getHashtags(String message) {
-        String[] words = message.split("\\s+");
-        Set<String> hashtags = new HashSet<String>();
-        for (String word : words) {
-            if (word.startsWith("#")) {
-                hashtags.add(word.substring(1));
-            }
-        }
-        return hashtags;
-    }
+
 
     public static ArrayList<Post> getRecentPosts() {
         /**
@@ -125,16 +111,8 @@ public class PostManager {
         PostDAO postDao = new PostDAO();
         Post post = postDao.updatePostDatabase(postId, uname, title, message);
 
-        Set<String> hashtags = getHashtags(message);
-        Iterator<String> it = hashtags.iterator();
-
-        if(!hashtags.isEmpty()) {
-            while(it.hasNext()) {
-                String hashtagWord = it.next();
-                postDao.insertHashtag(postId, hashtagWord);
-            }
-        }
-
+        HashtagManager htManager = new HashtagManager();
+        htManager.createHashTag(postId, message);
         return post;
     }
 

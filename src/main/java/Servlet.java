@@ -67,7 +67,7 @@ public class Servlet extends HttpServlet {
         {
             post = chatManager.insertPost(uname,title, message);
             chatManager.postMessage(uname, message);
-            response.sendRedirect("post.jsp");
+            response.sendRedirect("index.jsp");
         }
         else if(action.equals("update"))
         {
