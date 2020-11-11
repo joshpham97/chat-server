@@ -28,6 +28,13 @@
     </nav>
     <div class="container">
         <div class="col-12 mt-2">
+            <c:if test="${param.success == false}">
+                <div class="alert alert-danger">
+                    An error has occur. Please try again or contact support.
+                </div>
+            </c:if>
+        </div>
+        <div class="col-12 mt-2">
             <div class="h4">Create New Post</div>
             <form action="Servlet" method="post">
                 <div class="form-group">
