@@ -17,7 +17,24 @@ public class HashtagDAO extends DBConnection {
         String sql = "SELECT hashtag_id FROM hashtag " +
                 "WHERE hashtag = '" + hashtag + "'";
 
-        return getIdHelper(sql, "hashtag_id");
+        Integer id = null;
+        try {
+            Connection conn = DBConnection.getConnection();
+
+            // Get query result
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+
+            // For each element of query result
+            while(rs.next())
+                id = rs.getInt("hashtag_id");
+        } catch(Exception e) {
+            e.printStackTrace();
+        } finally {
+            DBConnection.closeConnection();
+        }
+
+        return id;
     }
 
     public static ArrayList<Integer> getPostIDsByHashtags(List<String> hashtags) {
@@ -34,34 +51,7 @@ public class HashtagDAO extends DBConnection {
                     "WHERE hashtag IN (" + hashtagStr + ")" +
                 ")";
 
-        return getIdsHelper(sql, "post_id");
-    }
-
-    public static Integer getIdHelper(String sql, String idField) {
-        Integer id = null;
-
-        try {
-            Connection conn = DBConnection.getConnection();
-
-            // Get query result
-            PreparedStatement ps = conn.prepareStatement(sql);
-            ResultSet rs = ps.executeQuery();
-
-            // For each element of query result
-            while(rs.next())
-                id = rs.getInt(idField);
-        } catch(Exception e) {
-            e.printStackTrace();
-        } finally {
-            DBConnection.closeConnection();
-        }
-
-        return id;
-    }
-
-    public static ArrayList<Integer> getIdsHelper(String sql, String idField) {
         ArrayList<Integer> ids = new ArrayList<>();
-
         try {
             Connection conn = DBConnection.getConnection();
 
@@ -71,7 +61,7 @@ public class HashtagDAO extends DBConnection {
 
             // For each element of query result
             while(rs.next())
-                ids.add(rs.getInt(idField));
+                ids.add(rs.getInt("post_id"));
         } catch(Exception e) {
             e.printStackTrace();
         } finally {

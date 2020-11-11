@@ -4,6 +4,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <%
+    String currentUsername = (String) session.getAttribute("username");
+
     JSONParser parser = new JSONParser();
     JSONArray posts = (JSONArray) parser.parse(request.getParameter("posts"));
 
@@ -21,19 +23,27 @@
                 <%
                     if(post.get("attID") != null) {
                 %>
-                    <a href="/AttachmentServlet"><i class="fas fa-paperclip mr-2" title="Download attachment"></i></a>
+                        <a href="/AttachmentServlet"><i class="fas fa-paperclip mr-2" title="Download attachment"></i></a>
+                <%
+                    }
+                    if(currentUsername.equals(post.get("username"))) {
+                %>
+                        <a href="/AttachmentServlet"><i class="fas fa-edit mr-2"></i></a>
+                        <a href="/AttachmentServlet"><i class="fas fa-trash mr-2"></i></a>
                 <%
                     }
                 %>
-                <a href="/AttachmentServlet"><i class="fas fa-edit mr-2"></i></a>
-                <a href="/AttachmentServlet"><i class="fas fa-trash mr-2"></i></a>
             </div>
         </div>
 
         <div>
             <div class="card-body ">
-                <div><%= post.get("message") %></div>
-                <div class="float-right">
+                <div>
+                    <u><%= post.get("title") %></u>
+                </div>
+
+                <div class="mt-4">
+                    <%= post.get("message") %>
                 </div>
             </div>
         </div>

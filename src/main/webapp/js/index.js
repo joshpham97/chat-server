@@ -1,4 +1,4 @@
-function getRecentPosts() {
+function getPosts() {
     // Build the query string
     let query = buildQueryString();
 
@@ -54,47 +54,43 @@ function displayPagination(pages, currentPage) {
     if(pages == 1) // No need for pagination
         return;
 
-    let queryString = buildQueryString(false);
+    const queryString = buildQueryString(false); // To preserve the query string (i.e. filter)
+    const previousDisabled = (currentPage == 1) ? ' disabled' : '';
+    const nextDisabled = (currentPage == pages) ? ' disabled' : '';
 
     // Previous nav
-    if(currentPage == 1) { // First page: disable previous nav
-        $("#pagination").append(
-            "<li class=\"page-item disabled\"><a class=\"page-link\" href=\"#\">Previous</a></li>"
-        );
-    }
-    else {
-        $("#pagination").append(
-            "<li class=\"page-item\"><a class=\"page-link\" href=\"?" + queryString + "page=" + (currentPage - 1) + "\">Previous</a></li>"
-        );
-    }
+    $("#pagination").append(
+        "<span class=\"page-item" + previousDisabled + "\">" +
+            "<a class=\"page-link\" href=\"?" + queryString + "page=" + (currentPage - 1) + "\">Previous</a>" +
+        "</span>"
+    );
 
     // Page number navs
     for (let i = 1; i <= pages; i++) {
         if(i == currentPage) { // Active page
             $("#pagination").append(
-                "<li class=\"page-item active\"><a class=\"page-link\">" + i + "</a></li>"
+                "<span class=\"page-item active\">" +
+                    "<a class=\"page-link\">" + i + "</a>" +
+                "</span>"
             );
         }
         else {
             $("#pagination").append(
-                "<li class=\"page-item\"><a class=\"page-link\" href=\"?" + queryString + "page=" + i + "\">" + i + "</a></li>"
+                "<span class=\"page-item\">" +
+                    "<a class=\"page-link\" href=\"?" + queryString + "page=" + i + "\">" + i + "</a>" +
+                "</span>"
             );
         }
     }
 
     // Next nav button
-    if(currentPage == pages) { // Last page: disable next nav
-        $("#pagination").append(
-            "<li class=\"page-item disabled\"><a class=\"page-link\" href=\"#\">Next</a></li>"
-        );
-    }
-    else {
-        $("#pagination").append(
-            "<li class=\"page-item\"><a class=\"page-link\" href=\"?" + queryString + "page=" + (currentPage + 1) + "\">Next</a></li>"
-        );
-    }
+    $("#pagination").append(
+        "<span class=\"page-item" + nextDisabled + "\">" +
+            "<a class=\"page-link\" href=\"?" + queryString + "page=" + (currentPage + 1) + "\">Next</a>" +
+        "</span>"
+    );
 }
 
 $(document).ready(function() {
-    getRecentPosts();
+    getPosts();
 });

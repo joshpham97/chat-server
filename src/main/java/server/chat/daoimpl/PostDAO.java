@@ -14,33 +14,38 @@ public class PostDAO extends DBConnection {
         return null;
     }
 
-    public static ArrayList<Post> getRecentPosts() {
-        // Get query result
-        String sql = "SELECT * FROM post_info " +
-                     "ORDER BY date_modified DESC, date_posted DESC, post_id DESC";
-
+    public static ArrayList<Post> searchNPostsWithOffset(String username, LocalDateTime from, LocalDateTime to,
+                                                         List<String> hashtags, Integer n, Integer o) {
+        String sql = searchPostsQueryBuilder(username, from, to, hashtags, n, o, "*");
         return getPostsHelper(sql);
     }
 
-    public static ArrayList<Post> getRecentNPosts(int n) {
-        String sql = "SELECT * FROM post_info " +
-                     "ORDER BY date_modified DESC, date_posted DESC, post_id DESC " +
-                     "LIMIT " + n;
+    public static int countPosts(String username, LocalDateTime from, LocalDateTime to, List<String> hashtags) {
+        String sql = searchPostsQueryBuilder(username, from, to, hashtags, null, null, "COUNT(post_id) AS count");
 
-        return getPostsHelper(sql);
+        int count = -1; // Signals an error
+        try {
+            Connection conn = DBConnection.getConnection();
+
+            // Get query result
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+
+            if(rs.next())
+                count = rs.getInt("count");
+        } catch(Exception e) {
+            e.printStackTrace();
+        } finally {
+            DBConnection.closeConnection();
+        }
+
+        return count;
     }
 
-    public static ArrayList<Post> getRecentNPostsWithOffset(int n, int o) {
-        String sql = "SELECT * FROM post_info " +
-                "ORDER BY date_modified DESC, date_posted DESC, post_id DESC " +
-                "LIMIT " + n + " OFFSET " + o;
-
-        return getPostsHelper(sql);
-    }
-
-    // General search: builds query based on arguments
-    public static ArrayList<Post> searchNPostsWithOffset(String username, LocalDateTime from, LocalDateTime to, List<String> hashtags, int n, int o) {
-        String sql = "SELECT * FROM post_info";
+    // Builds query based on arguments
+    private static String searchPostsQueryBuilder(String username, LocalDateTime from, LocalDateTime to,
+                                                 List<String> hashtags, Integer n, Integer o, String fields) {
+        String sql = "SELECT " + fields + " FROM post_info";
 
         // Conjunctions for WHERE clause (for query building)
         String[] conj = new String[]{"WHERE", "AND"};
@@ -83,73 +88,12 @@ public class PostDAO extends DBConnection {
             conjNumb = 1;
         }
 
-        sql += " ORDER BY date_modified DESC, date_posted DESC, post_id DESC" +
-                " LIMIT " + n + " OFFSET " + o;
+        sql += " ORDER BY date_modified DESC, date_posted DESC, post_id DESC";
 
-        return getPostsHelper(sql);
-    }
+        if(n != null && o != null)
+                sql += " LIMIT " + n + " OFFSET " + o;
 
-    public static int countPosts(String username, LocalDateTime from, LocalDateTime to, List<String> hashtags) {
-        String sql = "SELECT COUNT(post_id) AS count FROM post_info";
-
-        // Conjunctions for WHERE clause (for query building)
-        String[] conj = new String[]{"WHERE", "AND"};
-        int conjNumb = 0; // First conjunction is WHERE
-
-        // Username filtering
-        if(username != null) {
-            sql += " " + conj[conjNumb] + " username LIKE \'%" + username + "%\'";
-            conjNumb = 1;
-        }
-
-        // Date filtering (lower bound)
-        if(from != null) {
-            sql += " " + conj[conjNumb] + " date_modified >= \'" + from.toLocalDate() + "\'";
-            conjNumb = 1;
-        }
-
-        // Date filtering (upper bound)
-        if(to != null) {
-            sql += " " + conj[conjNumb] + " date_modified < \'" + to.toLocalDate() + "\'";
-            conjNumb = 1;
-        }
-
-        // Hashtag filtering
-        if(hashtags != null && hashtags.size() != 0) {
-            // Get the post ids
-            ArrayList<Integer> postIDs = HashtagDAO.getPostIDsByHashtags(hashtags);
-
-            if(postIDs.size() == 0) {
-                return 0;
-            }
-
-            // Build a string of comma separated post ids
-            String postIDsStr = "";
-            for (Integer i : postIDs)
-                postIDsStr += i + ", ";
-            postIDsStr = postIDsStr.substring(0, postIDsStr.length() - 2);
-
-            sql += " " + conj[conjNumb] + " post_id IN (" + postIDsStr + ")";
-            conjNumb = 1;
-        }
-
-        int count = -1;
-        try {
-            Connection conn = DBConnection.getConnection();
-
-            // Get query result
-            PreparedStatement ps = conn.prepareStatement(sql);
-            ResultSet rs = ps.executeQuery();
-
-            if(rs.next())
-                count = rs.getInt("count");
-        } catch(Exception e) {
-            e.printStackTrace();
-        } finally {
-            DBConnection.closeConnection();
-        }
-
-        return count;
+        return sql;
     }
 
     private static ArrayList<Post> getPostsHelper(String sql) {
@@ -195,11 +139,8 @@ public class PostDAO extends DBConnection {
     // Quick testing: to be removed later
 //    public static void main(String[] args) {
 //        ArrayList<Post> posts;
-//        posts = getRecentPosts();
-//        posts = getRecentNPosts(3);
-//        posts = getRecentNPostsWithOffset(3, 1);
-//        posts = searchPosts("1", LocalDateTime.now().minusDays(10), LocalDateTime.now().minusDays(1), Arrays.asList("one", "three"));
-//        System.out.println(countPosts());
+//        posts = searchNPostsWithOffset(null, null, null, null, null, null);
+//        System.out.println(countPosts(null, null, null, null));
 //
 //        for (Post p: posts)
 //            System.out.println(p.getPostID());

@@ -33,11 +33,6 @@ public class PostManager {
         messages = new ArrayList<Post>();
     }
 
-    public static ArrayList<Post> getRecentPosts() {
-        ArrayList<Post> posts = PostDAO.getRecentPosts();
-        return posts;
-    }
-
     public static ArrayList<Post> searchPostsWithPagination(String username, LocalDateTime from, LocalDateTime to, List<String> hashtags, int pageNumb) {
         int limit = NUMBER_OF_POSTS;
         int offset = NUMBER_OF_POSTS * (pageNumb - 1);
