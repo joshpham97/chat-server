@@ -61,11 +61,6 @@ public class Servlet extends HttpServlet {
         String message = request.getParameter("message");
         String title = request.getParameter("title");
         String strPostID = request.getParameter("postId");
-        /**
-        if(strPostID != null && !strPostID.trim().isEmpty()) {
-            int postID = Integer.parseInt(strPostID);
-        }
-         */
 
         Post post = null;
         if(action.equals("post"))
@@ -119,7 +114,7 @@ public class Servlet extends HttpServlet {
         }
         if(action.equals("update"))
         {
-            response.sendRedirect(String.format("post.jsp?postId=%d", postID));
+            response.sendRedirect(String.format("edit.jsp?postId=%d", postID));
         }
 
         /**
