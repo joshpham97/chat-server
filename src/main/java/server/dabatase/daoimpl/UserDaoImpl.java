@@ -1,8 +1,8 @@
-package server.chat.daoimpl;
+package server.dabatase.daoimpl;
 
-import server.chat.dao.UserDAO;
-import server.chat.db.DBConnection;
-import server.chat.model.User;
+import server.dabatase.dao.UserDAO;
+import server.dabatase.db.DBConnection;
+import server.dabatase.model.User;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

@@ -1,4 +1,4 @@
-package server.chat.model;
+package server.dabatase.model;
 
 public class User {
     private int userID;

@@ -38,7 +38,7 @@
                         <a class="mb-0 nav-link active" href="index.jsp"><i class="fas fa-home mr-2"></i>Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="mb-0 nav-link" href="post.jsp"><i class="fas fa-plus mr-2"></i>New Post</a>
+                        <a class="mb-0 nav-link" href="create.jsp"><i class="fas fa-plus mr-2"></i>New Post</a>
                     </li>
                     <li class="nav-item">
                         <a class="mb-0 nav-link" href="search.jsp"><i class="fas fa-filter mr-2"></i>Filter</a>
@@ -114,7 +114,7 @@
                                 messages that are from the start or to the end date will be downloaded. You can choose to
                                 save the messages as plain text, or get them in XML format.
                             </div>
-                            <form action="Servlet" class="customForm">
+                            <form action="servlet.PostServlet" class="customForm">
                                 <div>
                                     <label for="archiveMessage_from">From: </label>
                                     <input id="archiveMessage_from" name="from" type="date" class="form-control"/>
@@ -158,7 +158,7 @@
                                 selected, all messages will be cleared. If there is either a start date or end date,
                                 messages that are from the start or to the end date will be deleted.
                             </div>
-                            <form action="Servlet" method="post" class="customForm">
+                            <form action="servlet.PostServlet" method="post" class="customForm">
                                 <div>
                                     <label for="deleteMessage_from">From: </label>
                                     <input id="deleteMessage_from" name="from" type="date" class="form-control" />

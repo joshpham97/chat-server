@@ -1,15 +1,16 @@
+package app;
+
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import server.chat.Post;
-import server.chat.daoimpl.PostDAO;
+import server.dabatase.daoimpl.AttachmentDAO;
+import server.dabatase.daoimpl.PostDAO;
+import server.dabatase.model.Attachment;
+import server.dabatase.model.Post;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 public class PostManager {
@@ -35,36 +36,22 @@ public class PostManager {
         messages = new ArrayList<Post>();
     }
 
-    public Post insertPost(String username,String title, String message)
+    public static Post insertPost(String username,String title, String message)
     {
-        PostDAO postDao = new PostDAO();
-        Post post = postDao.createPost(username, title, message);
+        Post post = PostDAO.createPost(username, title, message);
 
         int postID = post.getPostID();
 
-        Set<String> hashtags = getHashtags(message);
-        Iterator<String> it = hashtags.iterator();
+        HashtagManager htManager = new HashtagManager();
 
-        if(!hashtags.isEmpty()) {
-            while(it.hasNext()) {
-                String hashtagWord = it.next();
-                postDao.insertHashtag(postID, hashtagWord);
-            }
-        }
+        htManager.createHashTag(postID, message);
+
         return post;
     }
-    public static Set<String> getHashtags(String message) {
-        String[] words = message.split("\\s+");
-        Set<String> hashtags = new HashSet<String>();
-        for (String word : words) {
-            if (word.startsWith("#")) {
-                hashtags.add(word.substring(1));
-            }
-        }
-        return hashtags;
-    }
+
 
     public static ArrayList<Post> getRecentPosts() {
+        /**
         // TEMPORARY HARDCODING: waiting for PostDao and Post
         ArrayList<Post> tempPosts = new ArrayList<>();
         tempPosts.add(new Post(1, "username1", "title1", "message1", 1));
@@ -73,6 +60,9 @@ public class PostManager {
         ArrayList<Post> posts = tempPosts;
 
 //        ArrayList<Post> posts = (ArrayList<Post>) PostDAO.getRecentNPosts(NUMBER_OF_POSTS);
+        return posts;
+         */
+        ArrayList<Post> posts = PostDAO.getRecentPosts();
         return posts;
     }
 
@@ -114,5 +104,31 @@ public class PostManager {
                 i--;
             }
         }
+    }
+
+    public static Post getPostById(int postId){
+        return PostDAO.selectPostById(postId);
+    }
+    
+    public static Post updatePost(int postId, String uname, String title, String message)
+    {
+        Post post = PostDAO.updatePostDatabase(postId, uname, title, message);
+
+        HashtagManager.createHashTag(postId, message);
+        return post;
+    }
+
+    public static boolean deletePost(int postId) {
+        boolean deleted = false;
+        if(PostDAO.deletePostDatabase(postId) && AttachmentDAO.delete(postId))
+        {
+            deleted = true;
+        }
+        else
+        {
+            deleted = false;
+        }
+        return deleted;
+        //return AttachmentDAO.delete(postId);
     }
 }

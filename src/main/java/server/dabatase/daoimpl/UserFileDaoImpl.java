@@ -1,15 +1,14 @@
-package server.chat.daoimpl;
+package server.dabatase.daoimpl;
 
 //import jdk.internal.util.xml.impl.Input;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import server.chat.dao.UserFileDAO;
-import server.chat.model.User;
+import server.dabatase.dao.UserFileDAO;
+import server.dabatase.model.User;
 
 import java.io.*;
 import java.util.Optional;
-import java.util.stream.Stream;
 
 public class UserFileDaoImpl implements UserFileDAO {
     private final String USERS_FILE = "users.json";
