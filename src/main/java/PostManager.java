@@ -2,6 +2,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import server.chat.Post;
 import server.chat.daoimpl.PostDAO;
+import server.chat.model.PostList;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -36,12 +37,12 @@ public class PostManager {
         messages = new ArrayList<Post>();
     }
 
-    public static ArrayList<Post> searchPostsWithPagination(String username, LocalDateTime from, LocalDateTime to, List<String> hashtags, int pageNumb) {
+    public static PostList searchPostsWithPagination(String username, LocalDateTime from, LocalDateTime to, List<String> hashtags, int pageNumb) {
         int limit = NUMBER_OF_POSTS;
         int offset = NUMBER_OF_POSTS * (pageNumb - 1);
 
         ArrayList<Post> posts = PostDAO.searchNPostsWithOffset(username, from, to, hashtags, limit, offset);
-        return posts;
+        return new PostList(posts);
     }
 
     public Post insertPost(String username,String title, String message)

@@ -5,7 +5,9 @@
   Time: 10:21 p.m.
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+
 <html>
 <head>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous" />
@@ -26,22 +28,22 @@
             <form action="index.jsp">
                 <div class="form-group">
                     <label for="username">By username</label>
-                    <input type="text" placeholder="Username"  id="username" class="form-control" name="username" />
+                    <input type="text" placeholder="Username"  id="username" class="form-control" name="username" value="${param.username}" />
                 </div>
 
                 <div class="form-group">
                     <label for="from">From date</label>
-                    <input type="date" id="from" class="form-control" name="from" />
+                    <input type="date" id="from" class="form-control" name="from" value="${param.from}" />
                 </div>
 
                 <div class="form-group">
                     <label for="to">To date</label>
-                    <input type="date" id="to" class="form-control" name="to" />
+                    <input type="date" id="to" class="form-control" name="to" value="${param.to}" />
                 </div>
 
                 <div class="form-group">
                     <label for="hashtags">By hashtags</label>
-                    <input type="text" placeholder="Hashtag1 Hashtag2 ..." id="hashtags" class="form-control" name="hashtags" />
+                    <input type="text" placeholder="Hashtag1 Hashtag2 ..." id="hashtags" class="form-control" name="hashtags" value="${param.hashtags}" />
                 </div>
 
                 <div class="text-center">

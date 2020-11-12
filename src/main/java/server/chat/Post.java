@@ -70,6 +70,10 @@ public class Post implements java.io.Serializable {
 
     public LocalDateTime getDateModified() { return dateModified; }
 
+    public String getDatePostedStr() { return datePostedStr; }
+
+    public String getDateModifiedStr() { return dateModifiedStr; }
+
     public String getMessage() {
         return message;
     }
