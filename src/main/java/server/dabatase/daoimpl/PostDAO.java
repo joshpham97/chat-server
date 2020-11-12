@@ -97,8 +97,8 @@ public class PostDAO extends DBConnection {
         post.setPostID(rs.getInt("post_id"));
         post.setUsername(rs.getString("username"));
         post.setTitle(rs.getString("title"));
-        post.setDatePosted(rs.getDate("date_posted").toLocalDate().atStartOfDay());
-        post.setDatePosted(rs.getDate("date_modified").toLocalDate().atStartOfDay());
+        post.setDatePosted(rs.getTimestamp("date_posted").toLocalDateTime());
+        post.setDatePosted(rs.getTimestamp("date_modified").toLocalDateTime());
         post.setMessage((rs.getString("message")));
         post.setAttID(attID);
 
@@ -154,8 +154,9 @@ public class PostDAO extends DBConnection {
     public static Post updatePostDatabase(int postId, String uname, String title, String message) {
         Post post = new Post();
 
-        LocalDateTime localDate = LocalDateTime.now();
-        java.sql.Date date = java.sql.Date.valueOf(localDate.toLocalDate());
+        //LocalDateTime localDate = LocalDateTime.now();
+        //java.sql.Date date = java.sql.Date.valueOf(localDate.toLocalDate());
+
         try {
             Connection conn = DBConnection.getConnection();
             if (existsInPostHashtag(conn, postId)) {
@@ -168,16 +169,18 @@ public class PostDAO extends DBConnection {
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1, uname);
             ps.setString(2, title);
-            ps.setDate(3, date);
+            ps.setTimestamp(3, Timestamp.valueOf(LocalDateTime.now()));
             ps.setString(4, message);
             ps.setInt(5, postId);
             ps.executeUpdate();
 
-            post.setPostID(postId);
+            /*.setPostID(postId);
             post.setUsername(uname);
             post.setTitle(title);
             post.setMessage(message);
-            post.setDateModified(date.toLocalDate().atStartOfDay());
+            post.setDateModified(date.toLocalDate().atStartOfDay());*/
+
+            post = resultSetToPost(ps.getResultSet());
 
         } catch (Exception e) {
             System.err.println("Got an exception! ");

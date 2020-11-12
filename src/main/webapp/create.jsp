@@ -25,10 +25,13 @@
     <div class="col-12 mt-2">
         <div class="h4">Create New Post</div>
         <form action="PostServlet" method="post">
+            <input type="text" name="action" value="post" hidden/>
             <div class="form-group">
-                <label for="postContent"></label>
-                <input type="text" name="action" value="post" hidden/>
-                <textarea id="postTitle" name="title" class="form-control" rows="1" placeholder="Title" required></textarea>
+                <label for="postTitle">Title</label>
+                <input id="postTitle" name="title" class="form-control" rows="1" placeholder="Title" required />
+            </div>
+            <div class="form-group">
+                <label for="postContent">Message</label>
                 <textarea id="postContent" name="message" class="form-control" rows="2" placeholder="Type your post here..." required></textarea>
             </div>
             <div class="col text-center">

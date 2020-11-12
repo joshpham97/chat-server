@@ -114,8 +114,7 @@ public class PostManager {
     {
         Post post = PostDAO.updatePostDatabase(postId, uname, title, message);
 
-        HashtagManager htManager = new HashtagManager();
-        htManager.createHashTag(postId, message);
+        HashtagManager.createHashTag(postId, message);
         return post;
     }
 

@@ -37,14 +37,17 @@
         <div class="col-12 mt-2">
             <div class="h3">Update Post</div>
                 <form action="PostServlet" method="post">
+                    <input type="text" name="action" value="update" hidden/>
+                    <input type="text" name="postId" value="${param.postId}" hidden/>
                     <div class="form-group">
-                        <label for="postContent"></label>
-                        <input type="text" name="action" value="update" hidden/>
-                        <input type="text" name="postId" value="${param.postId}" hidden/>
+                        <label for="postTitle">Title</label>
                         <input id="postTitle" name="title" class="form-control" rows="1" placeholder="Title" value="${post.title}" required/>
+                    </div>
+                    <div class="form-group">
+                        <label for="postContent">Message</label>
                         <textarea id="postContent" name="message" class="form-control" rows="2" required><c:out value="${post.message}" /></textarea>
                     </div>
-                    <div class="col text-center">
+                    <div class="form-group">
                         <button type="submit" class="btn btn-primary mt-2 mi">Update Post</button>
                     </div>
                 </form>

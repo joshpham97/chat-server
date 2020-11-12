@@ -13,7 +13,8 @@
     <div class="card mb-2">
         <div class="card-header">
             <div class="float-left text-muted">
-                <span><%= post.get("username") %></span>
+                <span class="font-weight-bold"><%= post.get("title") %></span>
+                <span>by <%= post.get("username") %></span>
                 <small><i class="far fa-clock pr-1"></i><%= post.get("datePostedStr") %></small>
             </div>
 
@@ -21,7 +22,7 @@
                 <%
                     if(post.get("attID") != null) {
                 %>
-                    <a href="/AttachmentServlet"><i class="fas fa-paperclip mr-2" title="Download attachment"></i></a>
+                    <a href="AttachmentServlet?action=get&attachmentId=<%= post.get("attID") %>"><i class="fas fa-paperclip mr-2" title="Download attachment"></i></a>
                 <%
                     }
                 %>
@@ -32,7 +33,6 @@
 
         <div>
             <div class="card-body ">
-                <div>Postid: <%= post.get("postID") %></div>
                 <div><%= post.get("message") %></div>
                 <div class="float-right">
                 </div>
