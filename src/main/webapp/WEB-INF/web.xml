@@ -5,35 +5,43 @@
          version="4.0">
     <servlet>
         <servlet-name>AuthServlet</servlet-name>
-        <servlet-class>AuthServlet</servlet-class>
+        <servlet-class>servlet.AuthServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>AuthServlet</servlet-name>
         <url-pattern>/AuthServlet</url-pattern>
     </servlet-mapping>
     <servlet>
-        <servlet-name>Servlet</servlet-name>
-        <servlet-class>Servlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>Servlet</servlet-name>
-        <url-pattern>/Servlet</url-pattern>
-    </servlet-mapping>
-    <servlet>
         <servlet-name>PostServlet</servlet-name>
-        <servlet-class>PostServlet</servlet-class>
+        <servlet-class>servlet.PostServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>PostServlet</servlet-name>
         <url-pattern>/PostServlet</url-pattern>
     </servlet-mapping>
     <servlet>
+        <servlet-name>Servlet</servlet-name>
+        <servlet-class>servlet.Servlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Servlet</servlet-name>
+        <url-pattern>/Servlet</url-pattern>
+    </servlet-mapping>
+    <servlet>
         <servlet-name>AttachmentServlet</servlet-name>
-        <servlet-class>AttachmentServlet</servlet-class>
+        <servlet-class>servlet.AttachmentServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>AttachmentServlet</servlet-name>
         <url-pattern>/AttachmentServlet</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>PostEditServlet</servlet-name>
+        <servlet-class>servlet.PostEditServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>PostEditServlet</servlet-name>
+        <url-pattern>/PostEditServlet</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>login.jsp</welcome-file>

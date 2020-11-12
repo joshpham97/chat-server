@@ -1,6 +1,6 @@
 package server.chat.model;
 
-import server.chat.Post;
+import server.database.model.Post;
 
 import java.util.ArrayList;
 

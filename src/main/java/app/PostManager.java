@@ -1,17 +1,18 @@
+package app;
+
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import server.chat.Post;
-import server.chat.daoimpl.PostDAO;
+import server.database.dao.PostDAO;
 import server.chat.model.PostList;
+import server.database.dao.AttachmentDAO;
+import server.database.model.Post;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -45,22 +46,16 @@ public class PostManager {
         return new PostList(posts);
     }
 
-    public Post insertPost(String username,String title, String message)
+    public static Post insertPost(String username,String title, String message)
     {
-        PostDAO postDao = new PostDAO();
-        Post post = postDao.createPost(username, title, message);
+        Post post = PostDAO.createPost(username, title, message);
 
         int postID = post.getPostID();
 
-        Set<String> hashtags = getHashtags(message);
-        Iterator<String> it = hashtags.iterator();
+        HashtagManager htManager = new HashtagManager();
 
-        if(!hashtags.isEmpty()) {
-            while(it.hasNext()) {
-                String hashtagWord = it.next();
-                postDao.insertHashtag(postID, hashtagWord);
-            }
-        }
+        htManager.createHashTag(postID, message);
+
         return post;
     }
 
@@ -77,7 +72,7 @@ public class PostManager {
 
     public static int getNumberOfPages(String username, LocalDateTime from, LocalDateTime to, List<String> hashtags) {
         int postCount = PostDAO.countPosts(username, from, to, hashtags);
-        int pages = (int) Math.ceil(((double) postCount)/NUMBER_OF_POSTS);
+        int pages = (int) Math.ceil(((double) postCount) / NUMBER_OF_POSTS);
         return pages;
     }
 
@@ -119,5 +114,31 @@ public class PostManager {
                 i--;
             }
         }
+    }
+
+    public static Post getPostById(int postId){
+        return PostDAO.selectPostById(postId);
+    }
+    
+    public static Post updatePost(int postId, String uname, String title, String message)
+    {
+        Post post = PostDAO.updatePostDatabase(postId, uname, title, message);
+
+        HashtagManager.createHashTag(postId, message);
+        return post;
+    }
+
+    public static boolean deletePost(int postId) {
+        boolean deleted = false;
+        if(PostDAO.deletePostDatabase(postId) && AttachmentDAO.delete(postId))
+        {
+            deleted = true;
+        }
+        else
+        {
+            deleted = false;
+        }
+        return deleted;
+        //return AttachmentDAO.delete(postId);
     }
 }

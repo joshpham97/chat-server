@@ -1,20 +1,17 @@
-package server.chat.daoimpl;
+package server.database.dao;
 
-//import jdk.internal.util.xml.impl.Input;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import server.chat.dao.UserFileDAO;
-import server.chat.model.User;
+import server.database.db.DBConnection;
+import server.database.model.User;
 
 import java.io.*;
 import java.util.Optional;
-import java.util.stream.Stream;
 
-public class UserFileDaoImpl implements UserFileDAO {
+public class UserFileDAO extends DBConnection {
     private final String USERS_FILE = "users.json";
 
-    @Override
     public User getUser(int userID) {
         JSONArray ja;
         User user = null;
@@ -41,7 +38,6 @@ public class UserFileDaoImpl implements UserFileDAO {
         return user;
     }
 
-    @Override
     public User getUserByUsername(String username) {
         JSONArray ja;
         User user = null;
@@ -92,11 +88,4 @@ public class UserFileDaoImpl implements UserFileDAO {
 
         return user;
     }
-
-    // Quick testing: to be removed later
-//    public static void main(String[] args) {
-//        UserFileDaoImpl test = new UserFileDaoImpl();
-//        System.out.println(test.getUser(1));
-//        System.out.println(test.getUserByUsername("username2"));
-//    }
 }

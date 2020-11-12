@@ -41,7 +41,7 @@
                         <a class="mb-0 nav-link active" href="index.jsp"><i class="fas fa-home mr-2"></i>Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="mb-0 nav-link" href="post.jsp"><i class="fas fa-plus mr-2"></i>New Post</a>
+                        <a class="mb-0 nav-link" href="create.jsp"><i class="fas fa-plus mr-2"></i>New Post</a>
                     </li>
                     <li class="nav-item">
                         <a class="mb-0 nav-link" href="filter.jsp?${requestScope.queryString}"><i class="fas fa-filter mr-2"></i>Filter</a>
@@ -74,30 +74,25 @@
                                 <div class="card mb-2">
                                     <div class="card-header">
                                         <div class="float-left text-muted">
-                                            <span>${post.getUsername()}</span>
+                                            <span class="font-weight-bold">${post.getTitle()}</span>
+                                            <span>by ${post.getUsername()}</span>
                                             <small><i class="far fa-clock pr-1"></i>${post.getDatePostedStr()}</small>
                                         </div>
 
                                         <div class="float-right">
                                             <c:if test="${post.getAttID() != null}">
-                                                    <a href="/AttachmentServlet"><i class="fas fa-paperclip mr-2" title="Download attachment"></i></a>
+                                                    <a href="AttachmentServlet?action=get&attachmentId=${post.getAttID()}"><i class="fas fa-paperclip mr-2" title="Download attachment"></i></a>
                                             </c:if>
                                             <c:if test="${post.getUsername().equals(sessionScope.username)}">
-                                                <a href="/AttachmentServlet"><i class="fas fa-edit mr-2"></i></a>
-                                                <a href="/AttachmentServlet"><i class="fas fa-trash mr-2"></i></a>
+                                                <a href="PostEditServlet?postId=${post.getPostID()}"><i class="fas fa-edit mr-2"></i></a>
+                                                <a href="PostServlet?action=delete&postID=${post.getPostID()}"><i class="fas fa-trash mr-2"></i></a>
                                             </c:if>
                                         </div>
                                     </div>
 
                                     <div>
                                         <div class="card-body ">
-                                            <div>
-                                                <u>${post.getTitle()}</u>
-                                            </div>
-
-                                            <div class="mt-4">
-                                                ${post.getMessage()}
-                                            </div>
+                                            <div>${post.getMessage()}</div>
                                         </div>
                                     </div>
                                 </div>
@@ -157,116 +152,5 @@
                 </div>
             </c:if>
         </div>
-
-        <!--<div id="mainUI">
-            <div id="chatUI" class="bgSecondary rounded">
-                <div id="messagesContainer" class="overflow-auto rounded">
-                    <div id="noMessagePlaceholder" class="textSecondary">
-                        <i class="far fa-comment-alt"></i>
-                        <span>Send a message to start the chat!</span>
-                    </div>
-                </div>
-
-                <div>
-                    <div id="usernameChatUI">
-                        <span>Sending messages as</span>
-                        <span id="usernameDisplay" class="textSecondary">Anonymous</span>
-                    </div>
-
-                    <input id="usernameHidden" name="username" type="text" class="form-control" placeholder="Anonymous" style="display: none"/>
-                    <div>
-                        <textarea id="message" name="message" class="form-control" rows="2" placeholder="Enter your message here..."></textarea>
-                        <div id="btnPostMessageContainer">
-                            <div class="btn btn-primary" onclick="sendMessage()">
-                                <i class="fas fa-paper-plane mr-1"></i>
-                                <span>Send</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div id="utilitiesUI">
-                <div class="card mb-2">
-                    <div class="card-header bgPrimary textPrimary bgHighlight">
-                        <a class="btn" data-toggle="collapse" data-target="#downloadCardBody">
-                            <i class="fas fa-download mr-1"></i>
-                            <span>Archive Messages</span>
-                        </a>
-                    </div>
-                    <div class="collapse" id="downloadCardBody">
-                        <div class="card-body bgSecondary">
-                            <div class="divInfo bgTertiary textInfo rounded mb-3 p-2">
-                                To download the messages, specify a start date or end date. If no start or end date is
-                                selected, all messages will be downloaded. If there is either a start date or end date,
-                                messages that are from the start or to the end date will be downloaded. You can choose to
-                                save the messages as plain text, or get them in XML format.
-                            </div>
-                            <form action="Servlet" class="customForm">
-                                <div>
-                                    <label for="archiveMessage_from">From: </label>
-                                    <input id="archiveMessage_from" name="from" type="date" class="form-control"/>
-                                </div>
-
-                                <div>
-                                    <label for="archiveMessage_to">To: </label>
-                                    <input id="archiveMessage_to" name="to" type="date" class="form-control" />
-                                </div>
-
-                                <div>
-                                    <label for="archiveMessage_to">Format: </label>
-                                    <span class="radio">
-                                            <input type="radio" name="fileFormat" value="TEXT" checked="checked"/> TEXT
-                                        </span>
-                                    <span class="radio">
-                                            <input type="radio" name="fileFormat" value="XML" /> XML
-                                        </span>
-                                </div>
-
-                                <div class="utilitiesUIBtnContainer">
-                                    <button type="submit" class="btn btn-primary">
-                                        <i class="fas fa-download mr-1"></i>Download
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-header bgPrimary bgHighlight">
-                        <a class="btn" data-toggle="collapse" data-target="#deleteCardBody">
-                            <i class="fas fa-trash-alt mr-1 textPrimary"></i>
-                            <span class="textPrimary">Clear Messages</span>
-                        </a>
-                    </div>
-                    <div class="collapse" id="deleteCardBody">
-                        <div class="card-body bgSecondary">
-                            <div class="divInfo bgTertiary textInfo rounded mb-3 p-2">
-                                To clear the messages, specify a start date or end date. If no start or end date is
-                                selected, all messages will be cleared. If there is either a start date or end date,
-                                messages that are from the start or to the end date will be deleted.
-                            </div>
-                            <form action="Servlet" method="post" class="customForm">
-                                <div>
-                                    <label for="deleteMessage_from">From: </label>
-                                    <input id="deleteMessage_from" name="from" type="date" class="form-control" />
-                                </div>
-
-                                <div>
-                                    <label for="deleteMessage_to">To: </label>
-                                    <input id="deleteMessage_to" name="to" type="date" class="form-control" />
-                                </div>
-
-                                <div class="utilitiesUIBtnContainer">
-                                    <button id="deleteMessagesBtn" type="submit" name="clearChat" class="btn btn-primary">
-                                        <i class="fas fa-trash-alt mr-1"></i>Delete
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>-->
     </body>
 </html>

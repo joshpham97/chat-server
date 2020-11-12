@@ -1,4 +1,4 @@
-package server.chat;
+package server.database.model;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -122,5 +122,4 @@ public class Post implements java.io.Serializable {
     private String formatDate(LocalDateTime date) {
         return date.getMonth().toString().toLowerCase() + " " + date.getDayOfMonth() + ", " + date.getYear();
     }
-
 }

@@ -1,7 +1,8 @@
-import server.chat.daoimpl.UserFileDaoImpl;
-import server.chat.model.User;
+package app;
 
-import javax.servlet.http.HttpServletRequest;
+import server.database.dao.UserFileDAO;
+import server.database.model.User;
+
 import javax.servlet.http.HttpSession;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -13,7 +14,7 @@ public class UserManager {
 
         String generatedPassword = encryptPassword(password);
 
-        UserFileDaoImpl userDao = new UserFileDaoImpl();
+        UserFileDAO userDao = new UserFileDAO();
 
         User user = userDao.getUserByUsername(username);
 
