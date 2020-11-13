@@ -5,6 +5,6 @@
   "dbUser": "test",
   "dbPassword": "QwErT1@3",
   "postConfig": {
-    "numberOfPosts": "10"
+    "numberOfPosts": "3"
   }
 }

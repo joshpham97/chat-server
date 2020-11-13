@@ -1,7 +1,7 @@
 package app;
 
-import server.dabatase.daoimpl.UserFileDaoImpl;
-import server.dabatase.model.User;
+import server.database.dao.UserFileDAO;
+import server.database.model.User;
 
 import javax.servlet.http.HttpSession;
 import java.security.MessageDigest;
@@ -14,7 +14,7 @@ public class UserManager {
 
         String generatedPassword = encryptPassword(password);
 
-        UserFileDaoImpl userDao = new UserFileDaoImpl();
+        UserFileDAO userDao = new UserFileDAO();
 
         User user = userDao.getUserByUsername(username);
 

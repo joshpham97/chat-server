@@ -2,7 +2,7 @@ package servlet;
 
 import app.PostManager;
 import com.google.gson.Gson;
-import server.dabatase.model.Post;
+import server.database.model.Post;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

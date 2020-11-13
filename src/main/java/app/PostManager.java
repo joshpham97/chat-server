@@ -2,15 +2,18 @@ package app;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import server.dabatase.daoimpl.AttachmentDAO;
-import server.dabatase.daoimpl.PostDAO;
-import server.dabatase.model.Attachment;
-import server.dabatase.model.Post;
+import server.database.dao.PostDAO;
+import server.chat.model.PostList;
+import server.database.dao.AttachmentDAO;
+import server.database.model.Post;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class PostManager {
@@ -29,11 +32,18 @@ public class PostManager {
     }
 
     private static final int NUMBER_OF_POSTS = Integer.parseInt((String) jo.get("numberOfPosts"));
-    //private static PostDaoImpl postDao = new PostDaoImpl();
     private ArrayList<Post> messages;
   
     public PostManager() {
         messages = new ArrayList<Post>();
+    }
+
+    public static PostList searchPostsWithPagination(String username, LocalDateTime from, LocalDateTime to, List<String> hashtags, int pageNumb) {
+        int limit = NUMBER_OF_POSTS;
+        int offset = NUMBER_OF_POSTS * (pageNumb - 1);
+
+        ArrayList<Post> posts = PostDAO.searchNPostsWithOffset(username, from, to, hashtags, limit, offset);
+        return new PostList(posts);
     }
 
     public static Post insertPost(String username,String title, String message)
@@ -49,21 +59,21 @@ public class PostManager {
         return post;
     }
 
+    public static Set<String> getHashtags(String message) {
+        String[] words = message.split("\\s+");
+        Set<String> hashtags = new HashSet<String>();
+        for (String word : words) {
+            if (word.startsWith("#")) {
+                hashtags.add(word.substring(1));
+            }
+        }
+        return hashtags;
+    }
 
-    public static ArrayList<Post> getRecentPosts() {
-        /**
-        // TEMPORARY HARDCODING: waiting for PostDao and Post
-        ArrayList<Post> tempPosts = new ArrayList<>();
-        tempPosts.add(new Post(1, "username1", "title1", "message1", 1));
-        tempPosts.add(new Post(2, "username2", "title2", "message2", null));
-        tempPosts.add(new Post(3, "username3", "title3", "message3", 2));
-        ArrayList<Post> posts = tempPosts;
-
-//        ArrayList<Post> posts = (ArrayList<Post>) PostDAO.getRecentNPosts(NUMBER_OF_POSTS);
-        return posts;
-         */
-        ArrayList<Post> posts = PostDAO.getRecentPosts();
-        return posts;
+    public static int getNumberOfPages(String username, LocalDateTime from, LocalDateTime to, List<String> hashtags) {
+        int postCount = PostDAO.countPosts(username, from, to, hashtags);
+        int pages = (int) Math.ceil(((double) postCount) / NUMBER_OF_POSTS);
+        return pages;
     }
 
     public Post postMessage(String username, String message)
