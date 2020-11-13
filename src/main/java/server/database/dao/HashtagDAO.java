@@ -1,9 +1,11 @@
-package server.dabatase.daoimpl;
+package server.database.dao;
 
-import server.dabatase.db.DBConnection;
-import server.dabatase.model.Hashtag;
+import server.database.model.Hashtag;
+import server.database.db.DBConnection;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class HashtagDAO {
     private static Hashtag mapResultSetToHashtag(ResultSet resultSet){
@@ -48,13 +50,6 @@ public class HashtagDAO {
         Integer hashtagID = null;
         try {
             conn = DBConnection.getConnection();
-            /*PreparedStatement selectHashTagQuery = conn.prepareStatement("SELECT * FROM Hashtag WHERE hashtag = ?");
-            selectHashTagQuery.setString(1, hashtagWord);
-            ResultSet r = selectHashTagQuery.executeQuery();
-
-            if (r.next()) {
-                hashtagID = r.getInt("hashtag_id");
-            } else {*/
             PreparedStatement insertHashTagQuery = conn.prepareStatement("INSERT INTO Hashtag (hashtag) value (?)", Statement.RETURN_GENERATED_KEYS);
             insertHashTagQuery.setString(1, hashtagWord);
             insertHashTagQuery.execute();
@@ -63,8 +58,6 @@ public class HashtagDAO {
             if (generatedKeys.next()) {
                 hashtagID = generatedKeys.getInt(1);
             }
-            //}
-            //return insertPostHashTag(conn, postID, hashtagID);
         } catch (Exception e) {
             System.err.println("There was an issue inserting the hash tag.");
             System.err.println(e.getMessage());
@@ -150,4 +143,63 @@ public class HashtagDAO {
 
         return success;
     }
+
+    public static Integer getHashtagID(String hashtag) {
+        String sql = "SELECT hashtag_id FROM hashtag " +
+                "WHERE hashtag = '" + hashtag + "'";
+
+        Integer id = null;
+        try {
+            Connection conn = DBConnection.getConnection();
+
+            // Get query result
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+
+            // For each element of query result
+            while(rs.next())
+                id = rs.getInt("hashtag_id");
+        } catch(Exception e) {
+            e.printStackTrace();
+        } finally {
+            DBConnection.closeConnection();
+        }
+
+        return id;
+    }
+
+    public static ArrayList<Integer> getPostIDsByHashtags(List<String> hashtags) {
+        // Build a string of comma separated hashtags
+        String hashtagStr = "";
+        for (String h: hashtags)
+            hashtagStr += "'" + h + "', ";
+        hashtagStr = hashtagStr.substring(0, hashtagStr.length() - 2);
+
+        // Get the post ids
+        String sql = "SELECT DISTINCT post_id FROM post_hashtag " +
+                "WHERE hashtag_id IN (SELECT hashtag_id " +
+                "FROM hashtag " +
+                "WHERE hashtag IN (" + hashtagStr + ")" +
+                ")";
+
+        ArrayList<Integer> ids = new ArrayList<>();
+        try {
+            Connection conn = DBConnection.getConnection();
+
+            // Get query result
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+
+            // For each element of query result
+            while(rs.next())
+                ids.add(rs.getInt("post_id"));
+        } catch(Exception e) {
+            e.printStackTrace();
+        } finally {
+            DBConnection.closeConnection();
+        }
+
+        return ids;
+    }
+
 }

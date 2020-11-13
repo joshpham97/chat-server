@@ -1,6 +1,8 @@
 package app;
 
 import server.database.dao.HashtagDAO;
+import server.database.model.Hashtag;
+
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;

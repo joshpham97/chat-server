@@ -7,8 +7,9 @@ import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
-public class PostDAO extends DBConnection {
+public class PostDAO {
     public static ArrayList<Post> searchNPostsWithOffset(String username, LocalDateTime from, LocalDateTime to,
                                                          List<String> hashtags, Integer n, Integer o) {
         String sql = searchPostsQueryBuilder(username, from, to, hashtags, n, o, "*");
@@ -144,9 +145,9 @@ public class PostDAO extends DBConnection {
             ResultSet rs = ps.executeQuery();
 
             // For each element of query result
-            while (rs.next())
-                posts.add(mapResultSetToPost(rs));
-        } catch (Exception e) {
+            while(rs.next())
+                posts.add(resultSetToPost(rs));
+        } catch(Exception e) {
             e.printStackTrace();
         } finally {
             DBConnection.closeConnection();
@@ -292,28 +293,6 @@ public class PostDAO extends DBConnection {
         }
 
         return false;
-    }
-
-    private static ArrayList<Post> getPostsHelper(String sql) {
-        ArrayList<Post> posts = new ArrayList<>();
-
-        try {
-            Connection conn = DBConnection.getConnection();
-
-            // Get query result
-            PreparedStatement ps = conn.prepareStatement(sql);
-            ResultSet rs = ps.executeQuery();
-
-            // For each element of query result
-            while(rs.next())
-                posts.add(resultSetToPost(rs));
-        } catch(Exception e) {
-            e.printStackTrace();
-        } finally {
-            DBConnection.closeConnection();
-        }
-
-        return posts;
     }
 
     private static Post resultSetToPost(ResultSet rs) throws SQLException {

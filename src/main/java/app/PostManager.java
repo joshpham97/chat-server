@@ -2,6 +2,7 @@ package app;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import server.database.dao.HashtagDAO;
 import server.database.dao.PostDAO;
 import server.chat.model.PostList;
 import server.database.dao.AttachmentDAO;
