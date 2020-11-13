@@ -3,8 +3,9 @@ package app;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import server.dabatase.daoimpl.AttachmentDAO;
+import server.dabatase.daoimpl.HashtagDAO;
 import server.dabatase.daoimpl.PostDAO;
-import server.dabatase.model.Attachment;
+import server.dabatase.model.Hashtag;
 import server.dabatase.model.Post;
 
 import java.io.InputStream;
@@ -36,19 +37,17 @@ public class PostManager {
         messages = new ArrayList<Post>();
     }
 
-    public static Post insertPost(String username,String title, String message)
+    public static Integer createPost(String username, String title, String message)
     {
-        Post post = PostDAO.createPost(username, title, message);
+        Integer postId = PostDAO.insert(username, title, message);
 
-        int postID = post.getPostID();
+        if(postId != null){
+            HashtagManager.createHashTag(postId, message);
+            return postId;
+        }
 
-        HashtagManager htManager = new HashtagManager();
-
-        htManager.createHashTag(postID, message);
-
-        return post;
+        return null;
     }
-
 
     public static ArrayList<Post> getRecentPosts() {
         /**
@@ -64,23 +63,6 @@ public class PostManager {
          */
         ArrayList<Post> posts = PostDAO.getRecentPosts();
         return posts;
-    }
-
-    public Post postMessage(String username, String message)
-    {
-        Post msg;
-
-        if(username.isEmpty()) //If username is empty, they post as Anonymous.
-        {
-            msg = new Post(message);
-        }
-        else
-        {
-            msg = new Post(username, message);
-        }
-
-        messages.add(msg);
-        return msg;
     }
 
     public ArrayList<Post> listMessages(LocalDateTime from, LocalDateTime to) {
@@ -110,25 +92,42 @@ public class PostManager {
         return PostDAO.selectPostById(postId);
     }
     
-    public static Post updatePost(int postId, String uname, String title, String message)
+    public static boolean updatePost(int postId, String uname, String title, String message)
     {
-        Post post = PostDAO.updatePostDatabase(postId, uname, title, message);
+        boolean success = false;
 
-        HashtagManager.createHashTag(postId, message);
-        return post;
+        //Remove all hashtags
+        if (HashtagDAO.existsInPostHashtag(postId))
+            success = HashtagDAO.deletePostHashTag(postId);
+        else
+            success = true;
+
+        //Update the post
+        if (success)
+            success = PostDAO.updatePostDatabase(postId, uname, title, message);
+
+        //Reinserts the hashtag - old and new
+        if (success)
+            success = HashtagManager.createHashTag(postId, message));
+
+        return success;
     }
 
     public static boolean deletePost(int postId) {
         boolean deleted = false;
-        if(PostDAO.deletePostDatabase(postId) && AttachmentDAO.delete(postId))
-        {
-            deleted = true;
-        }
+
+        if (HashtagDAO.existsInPostHashtag(postId))
+            deleted = HashtagDAO.deletePostHashTag(postId);
         else
-        {
-            deleted = false;
-        }
+            deleted = true;
+
+        Post post = PostDAO.selectPostById(postId);
+        if (deleted)
+            deleted = PostDAO.deletePostDatabase(postId);
+
+        if(post.getAttID() != null && deleted)
+            deleted = AttachmentDAO.delete(post.getAttID());
+
         return deleted;
-        //return AttachmentDAO.delete(postId);
     }
 }

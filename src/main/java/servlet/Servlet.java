@@ -48,7 +48,7 @@ public class Servlet extends HttpServlet {
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        PrintWriter responseWriter = response.getWriter();
+        /*PrintWriter responseWriter = response.getWriter();
 
         String action = request.getParameter("action");
         String uname = (String)request.getSession(false).getAttribute("username");
@@ -59,7 +59,7 @@ public class Servlet extends HttpServlet {
         Post post = null;
         if(action.equals("post"))
         {
-            post = chatManager.insertPost(uname,title, message);
+            post = PostManager.createPost(uname,title, message);
             chatManager.postMessage(uname, message);
             response.sendRedirect("index.jsp");
         }
@@ -92,7 +92,7 @@ public class Servlet extends HttpServlet {
             responseWriter.append("Invalid request. No Referrer found.");
         }
 
-        responseWriter.close();
+        responseWriter.close();*/
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
