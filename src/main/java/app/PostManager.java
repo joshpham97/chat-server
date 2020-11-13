@@ -30,12 +30,6 @@ public class PostManager {
     }
 
     private static final int NUMBER_OF_POSTS = Integer.parseInt((String) jo.get("numberOfPosts"));
-    //private static PostDaoImpl postDao = new PostDaoImpl();
-    private ArrayList<Post> messages;
-  
-    public PostManager() {
-        messages = new ArrayList<Post>();
-    }
 
     public static Integer createPost(String username, String title, String message)
     {
@@ -65,29 +59,6 @@ public class PostManager {
         return posts;
     }
 
-    public ArrayList<Post> listMessages(LocalDateTime from, LocalDateTime to) {
-        final LocalDateTime finalFrom = (from == null) ? LocalDateTime.MIN : from;
-        final LocalDateTime finalTo = (to == null) ? LocalDateTime.MAX : to;
-
-        return messages.stream()
-                .filter(m -> (m.getDatePosted().compareTo(finalFrom) >= 0 && m.getDatePosted().compareTo(finalTo) < 0))
-                .collect(Collectors.toCollection(ArrayList::new));
-    }
-
-    public void clearChat(LocalDateTime from, LocalDateTime to) {
-        LocalDateTime finalFrom = (from == null) ? LocalDateTime.MIN : from;
-        LocalDateTime finalTo = (to == null) ? LocalDateTime.MAX : to;
-
-        for(int i = 0; i < messages.size(); i++) {
-            LocalDateTime messageDate = messages.get(i).getDatePosted();
-
-            if(messageDate.compareTo(finalFrom) >= 0 && messageDate.compareTo(finalTo) <= 0) {
-                messages.remove(i);
-                i--;
-            }
-        }
-    }
-
     public static Post getPostById(int postId){
         return PostDAO.selectPostById(postId);
     }
@@ -108,7 +79,7 @@ public class PostManager {
 
         //Reinserts the hashtag - old and new
         if (success)
-            success = HashtagManager.createHashTag(postId, message));
+            success = HashtagManager.createHashTag(postId, message);
 
         return success;
     }
