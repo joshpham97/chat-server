@@ -1,12 +1,6 @@
 package app;
 
-import server.dabatase.daoimpl.HashtagDAO;
-import server.dabatase.db.DBConnection;
-import server.dabatase.model.Hashtag;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import server.database.dao.HashtagDAO;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;

@@ -1,7 +1,7 @@
-package server.dabatase.daoimpl;
+package server.database.dao;
 
-import server.dabatase.db.DBConnection;
-import server.dabatase.model.Attachment;
+import server.database.db.DBConnection;
+import server.database.model.Attachment;
 
 import java.io.InputStream;
 import java.sql.*;

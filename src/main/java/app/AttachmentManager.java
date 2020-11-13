@@ -1,8 +1,8 @@
 package app;
 
-import server.dabatase.daoimpl.AttachmentDAO;
-import server.dabatase.daoimpl.PostDAO;
-import server.dabatase.model.Attachment;
+import server.database.dao.AttachmentDAO;
+import server.database.dao.PostDAO;
+import server.database.model.Attachment;
 
 import javax.servlet.http.Part;
 import java.io.IOException;

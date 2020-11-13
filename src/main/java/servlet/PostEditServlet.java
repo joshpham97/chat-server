@@ -2,8 +2,8 @@ package servlet;
 
 import app.PostManager;
 import app.AttachmentManager;
-import server.dabatase.model.Attachment;
-import server.dabatase.model.Post;
+import server.database.model.Attachment;
+import server.database.model.Post;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;

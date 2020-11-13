@@ -1,4 +1,4 @@
-package server.dabatase.model;
+package server.database.model;
 
 import java.sql.Blob;
 

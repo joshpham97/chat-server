@@ -1,4 +1,4 @@
-package server.dabatase.db;
+package server.database.db;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;

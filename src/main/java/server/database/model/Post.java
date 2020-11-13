@@ -1,4 +1,4 @@
-package server.dabatase.model;
+package server.database.model;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -15,6 +15,11 @@ public class Post implements java.io.Serializable {
     private Integer attID; // Integer instead of int to simulate nullable fields
     private String datePostedStr; // Helps with displaying date on frontend
     private String dateModifiedStr;
+
+    // Needed for DAO implementation
+    public Post() {
+
+    }
 
     // NEEDED FOR TESTING WITHOUT DAO
     public Post(int postID, String username, String title, String message, LocalDateTime datePosted, LocalDateTime dateModified, Integer attID) {
@@ -53,8 +58,6 @@ public class Post implements java.io.Serializable {
         this("Anonymous", message);
     }
 
-    public Post(){}
-
     public int getPostID() { return postID; }
 
     public String getUsername() {
@@ -66,6 +69,10 @@ public class Post implements java.io.Serializable {
     public LocalDateTime getDatePosted() { return datePosted; }
 
     public LocalDateTime getDateModified() { return dateModified; }
+
+    public String getDatePostedStr() { return datePostedStr; }
+
+    public String getDateModifiedStr() { return dateModifiedStr; }
 
     public String getMessage() {
         return message;

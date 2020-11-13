@@ -1,7 +1,7 @@
 package servlet;
 
 import app.AttachmentManager;
-import server.dabatase.model.Attachment;
+import server.database.model.Attachment;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;

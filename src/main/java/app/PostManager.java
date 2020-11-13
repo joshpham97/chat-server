@@ -2,16 +2,18 @@ package app;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import server.dabatase.daoimpl.AttachmentDAO;
-import server.dabatase.daoimpl.HashtagDAO;
-import server.dabatase.daoimpl.PostDAO;
-import server.dabatase.model.Hashtag;
-import server.dabatase.model.Post;
+import server.database.dao.PostDAO;
+import server.chat.model.PostList;
+import server.database.dao.AttachmentDAO;
+import server.database.model.Post;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class PostManager {
@@ -43,6 +45,14 @@ public class PostManager {
         return null;
     }
 
+    public static PostList searchPostsWithPagination(String username, LocalDateTime from, LocalDateTime to, List<String> hashtags, int pageNumb) {
+        int limit = NUMBER_OF_POSTS;
+        int offset = NUMBER_OF_POSTS * (pageNumb - 1);
+
+        ArrayList<Post> posts = PostDAO.searchNPostsWithOffset(username, from, to, hashtags, limit, offset);
+        return new PostList(posts);
+    }
+
     public static ArrayList<Post> getRecentPosts() {
         /**
         // TEMPORARY HARDCODING: waiting for PostDao and Post
@@ -57,6 +67,12 @@ public class PostManager {
          */
         ArrayList<Post> posts = PostDAO.getRecentPosts();
         return posts;
+    }
+
+    public static int getNumberOfPages(String username, LocalDateTime from, LocalDateTime to, List<String> hashtags) {
+        int postCount = PostDAO.countPosts(username, from, to, hashtags);
+        int pages = (int) Math.ceil(((double) postCount) / NUMBER_OF_POSTS);
+        return pages;
     }
 
     public static Post getPostById(int postId){
