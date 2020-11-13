@@ -18,9 +18,6 @@ import java.util.Map;
 
 @WebServlet(name = "servlet.PostServlet")
 public class PostServlet extends HttpServlet {
-
-    private PostManager chatManager;
-
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         String action = request.getParameter("action");
@@ -32,15 +29,20 @@ public class PostServlet extends HttpServlet {
         Post post = null;
         if(action.equals("post"))
         {
-            post = chatManager.insertPost(uname,title, message);
-            response.sendRedirect("index.jsp");
+            Integer postId = PostManager.createPost(uname, title, message);
+            if (postId != null)
+                response.sendRedirect(String.format("PostEditServlet?postId=%d", postId));
+            else
+                response.sendRedirect("index.jsp?success=false");
         }
         else if(action.equals("update"))
         {
             int postID = Integer.parseInt(strPostID);
-            post = chatManager.updatePost(postID,uname, title, message);
-            response.sendRedirect("index.jsp");
-            //post = chatManager.updatePost(uname,title, message);
+            boolean success = PostManager.updatePost(postID,uname, title, message);
+            if (success)
+                response.sendRedirect(String.format("PostEditServlet?postId=%d", postID));
+            else
+                response.sendRedirect("index.jsp?success=false");
         }
     }
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -53,7 +55,6 @@ public class PostServlet extends HttpServlet {
             int postID = Integer.parseInt(strPostID);
             if(action.equals("delete"))
             {
-
                 boolean isSuccess = PostManager.deletePost(postID);
                 response.sendRedirect(String.format("index.jsp?postId=%d&success=%b", postID, isSuccess));
             }

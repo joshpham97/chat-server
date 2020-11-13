@@ -2,6 +2,7 @@ package app;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import server.database.dao.HashtagDAO;
 import server.database.dao.PostDAO;
 import server.chat.model.PostList;
 import server.database.dao.AttachmentDAO;
@@ -32,10 +33,17 @@ public class PostManager {
     }
 
     private static final int NUMBER_OF_POSTS = Integer.parseInt((String) jo.get("numberOfPosts"));
-    private ArrayList<Post> messages;
-  
-    public PostManager() {
-        messages = new ArrayList<Post>();
+
+    public static Integer createPost(String username, String title, String message)
+    {
+        Integer postId = PostDAO.insert(username, title, message);
+
+        if(postId != null){
+            HashtagManager.createHashTag(postId, message);
+            return postId;
+        }
+
+        return null;
     }
 
     public static PostList searchPostsWithPagination(String username, LocalDateTime from, LocalDateTime to, List<String> hashtags, int pageNumb) {
@@ -46,28 +54,20 @@ public class PostManager {
         return new PostList(posts);
     }
 
-    public static Post insertPost(String username,String title, String message)
-    {
-        Post post = PostDAO.createPost(username, title, message);
+    public static ArrayList<Post> getRecentPosts() {
+        /**
+        // TEMPORARY HARDCODING: waiting for PostDao and Post
+        ArrayList<Post> tempPosts = new ArrayList<>();
+        tempPosts.add(new Post(1, "username1", "title1", "message1", 1));
+        tempPosts.add(new Post(2, "username2", "title2", "message2", null));
+        tempPosts.add(new Post(3, "username3", "title3", "message3", 2));
+        ArrayList<Post> posts = tempPosts;
 
-        int postID = post.getPostID();
-
-        HashtagManager htManager = new HashtagManager();
-
-        htManager.createHashTag(postID, message);
-
-        return post;
-    }
-
-    public static Set<String> getHashtags(String message) {
-        String[] words = message.split("\\s+");
-        Set<String> hashtags = new HashSet<String>();
-        for (String word : words) {
-            if (word.startsWith("#")) {
-                hashtags.add(word.substring(1));
-            }
-        }
-        return hashtags;
+//        ArrayList<Post> posts = (ArrayList<Post>) PostDAO.getRecentNPosts(NUMBER_OF_POSTS);
+        return posts;
+         */
+        ArrayList<Post> posts = PostDAO.getRecentPosts();
+        return posts;
     }
 
     public static int getNumberOfPages(String username, LocalDateTime from, LocalDateTime to, List<String> hashtags) {
@@ -76,69 +76,46 @@ public class PostManager {
         return pages;
     }
 
-    public Post postMessage(String username, String message)
-    {
-        Post msg;
-
-        if(username.isEmpty()) //If username is empty, they post as Anonymous.
-        {
-            msg = new Post(message);
-        }
-        else
-        {
-            msg = new Post(username, message);
-        }
-
-        messages.add(msg);
-        return msg;
-    }
-
-    public ArrayList<Post> listMessages(LocalDateTime from, LocalDateTime to) {
-        final LocalDateTime finalFrom = (from == null) ? LocalDateTime.MIN : from;
-        final LocalDateTime finalTo = (to == null) ? LocalDateTime.MAX : to;
-
-        return messages.stream()
-                .filter(m -> (m.getDatePosted().compareTo(finalFrom) >= 0 && m.getDatePosted().compareTo(finalTo) < 0))
-                .collect(Collectors.toCollection(ArrayList::new));
-    }
-
-    public void clearChat(LocalDateTime from, LocalDateTime to) {
-        LocalDateTime finalFrom = (from == null) ? LocalDateTime.MIN : from;
-        LocalDateTime finalTo = (to == null) ? LocalDateTime.MAX : to;
-
-        for(int i = 0; i < messages.size(); i++) {
-            LocalDateTime messageDate = messages.get(i).getDatePosted();
-
-            if(messageDate.compareTo(finalFrom) >= 0 && messageDate.compareTo(finalTo) <= 0) {
-                messages.remove(i);
-                i--;
-            }
-        }
-    }
-
     public static Post getPostById(int postId){
         return PostDAO.selectPostById(postId);
     }
     
-    public static Post updatePost(int postId, String uname, String title, String message)
+    public static boolean updatePost(int postId, String uname, String title, String message)
     {
-        Post post = PostDAO.updatePostDatabase(postId, uname, title, message);
+        boolean success = false;
 
-        HashtagManager.createHashTag(postId, message);
-        return post;
+        //Remove all hashtags
+        if (HashtagDAO.existsInPostHashtag(postId))
+            success = HashtagDAO.deletePostHashTag(postId);
+        else
+            success = true;
+
+        //Update the post
+        if (success)
+            success = PostDAO.updatePostDatabase(postId, uname, title, message);
+
+        //Reinserts the hashtag - old and new
+        if (success)
+            success = HashtagManager.createHashTag(postId, message);
+
+        return success;
     }
 
     public static boolean deletePost(int postId) {
         boolean deleted = false;
-        if(PostDAO.deletePostDatabase(postId) && AttachmentDAO.delete(postId))
-        {
-            deleted = true;
-        }
+
+        if (HashtagDAO.existsInPostHashtag(postId))
+            deleted = HashtagDAO.deletePostHashTag(postId);
         else
-        {
-            deleted = false;
-        }
+            deleted = true;
+
+        Post post = PostDAO.selectPostById(postId);
+        if (deleted)
+            deleted = PostDAO.deletePostDatabase(postId);
+
+        if(post.getAttID() != null && deleted)
+            deleted = AttachmentDAO.delete(post.getAttID());
+
         return deleted;
-        //return AttachmentDAO.delete(postId);
     }
 }
