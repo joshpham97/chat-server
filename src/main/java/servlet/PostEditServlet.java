@@ -25,14 +25,19 @@ public class PostEditServlet extends HttpServlet {
             int postId = Integer.parseInt(strPostId);
             Post post = PostManager.getPostById(postId);
 
-            Attachment attachment = new Attachment();
-            if(post.getAttID() != null)
-                attachment = AttachmentManager.getAttachment(post.getAttID());
+            if (post != null){
+                Attachment attachment = new Attachment();
+                if(post.getAttID() != null)
+                    attachment = AttachmentManager.getAttachment(post.getAttID());
 
-            request.setAttribute("post", post);
-            request.setAttribute("attachment", attachment);
-            RequestDispatcher rd = getServletContext().getRequestDispatcher("/edit.jsp");
-            rd.forward(request, response);
+                request.setAttribute("post", post);
+                request.setAttribute("attachment", attachment);
+                RequestDispatcher rd = getServletContext().getRequestDispatcher("/edit.jsp");
+                rd.forward(request, response);
+            }else{
+                response.sendRedirect("index.jsp?success=false");
+            }
+
         }
     }
 }

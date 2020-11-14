@@ -28,7 +28,7 @@
 <body>
     <nav class="navbar navbar-dark bg-dark">
         <span class="navbar-brand mb-0 h1">Simple Message Board</span>
-        <button class="btn btn-primary" onclick="featureNotImplemented()">Sign up</button>
+        <button class="btn btn-primary" onclick="featureNotImplemented()"><i class="fas fa-user-plus mr-2"></i>Sign up</button>
     </nav>
     <div class="container">
         <div class="row mt-2">
@@ -66,7 +66,7 @@
                         <input id="password" type="password" class="form-control" name="password" placeholder="Password">
                     </div>
                     <div class="text-center">
-                        <input type="submit" class="btn btn-primary" value="login"/>
+                        <button type="submit" class="btn btn-primary"><i class="fas fa-sign-in-alt mr-2"></i>Login</button>
                     </div>
                 </form>
             </div>
