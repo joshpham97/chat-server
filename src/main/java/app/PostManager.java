@@ -2,9 +2,8 @@ package app;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import server.database.dao.HashtagDAO;
 import server.database.dao.PostDAO;
-import server.chat.model.PostList;
+import server.database.model.PostList;
 import server.database.dao.AttachmentDAO;
 import server.database.model.Post;
 
@@ -13,9 +12,6 @@ import java.io.InputStreamReader;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 public class PostManager {
     // Read config file
@@ -85,8 +81,8 @@ public class PostManager {
         boolean success = false;
 
         //Remove all hashtags
-        if (HashtagDAO.existsInPostHashtag(postId))
-            success = HashtagDAO.deletePostHashTag(postId);
+        if (HashtagManager.existsInPostHashtag(postId))
+            success = HashtagManager.deletePostHashTag(postId);
         else
             success = true;
 
@@ -104,8 +100,8 @@ public class PostManager {
     public static boolean deletePost(int postId) {
         boolean deleted = false;
 
-        if (HashtagDAO.existsInPostHashtag(postId))
-            deleted = HashtagDAO.deletePostHashTag(postId);
+        if (HashtagManager.existsInPostHashtag(postId))
+            deleted = HashtagManager.deletePostHashTag(postId);
         else
             deleted = true;
 
@@ -114,8 +110,16 @@ public class PostManager {
             deleted = PostDAO.deletePostDatabase(postId);
 
         if(post.getAttID() != null && deleted)
-            deleted = AttachmentDAO.delete(post.getAttID());
+            deleted = AttachmentManager.deleteAttachment(post.getAttID());
 
         return deleted;
+    }
+
+    public static boolean updateAttachmentId(int postId, Integer attachmentId){
+        return PostDAO.updateAttachmentId(postId, attachmentId);
+    }
+
+    public static boolean updateModifiedDate(int postId){
+        return PostDAO.updateModifiedDate(postId);
     }
 }

@@ -1,5 +1,6 @@
 package server.database.dao;
 
+import app.HashtagManager;
 import server.database.model.Post;
 import server.database.db.DBConnection;
 
@@ -68,7 +69,7 @@ public class PostDAO {
         // Hashtag filtering
         if(hashtags != null && hashtags.size() != 0) {
             // Get the post ids
-            ArrayList<Integer> postIDs = HashtagDAO.getPostIDsByHashtags(hashtags);
+            ArrayList<Integer> postIDs = HashtagManager.getPostIDsByHashtags(hashtags);
 
             if(postIDs.size() == 0) {
                 return null;

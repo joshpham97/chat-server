@@ -2,6 +2,7 @@ package servlet;
 
 import app.PostManager;
 import server.database.model.Post;
+import server.database.model.PostList;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -26,7 +27,7 @@ public class PostServlet extends HttpServlet {
         String title = request.getParameter("title");
         String strPostID = request.getParameter("postId");
 
-        Post post = null;
+        //Post post = null;
         if(action.equals("post"))
         {
             Integer postId = PostManager.createPost(uname, title, message);
@@ -47,7 +48,7 @@ public class PostServlet extends HttpServlet {
     }
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String action = request.getParameter("action");
-        PrintWriter responseWriter = response.getWriter();
+        //PrintWriter responseWriter = response.getWriter();
 
         if(action!=null && !action.isEmpty()) {
             String paramName = "postID";
@@ -78,7 +79,7 @@ public class PostServlet extends HttpServlet {
                 List<String> hashtags = (strHashtags == null || strHashtags.isEmpty()) ? null : Arrays.asList(strHashtags.split(" "));
                 int currentPage = (strCurrentPage == null || strCurrentPage.isEmpty()) ? 1 : Integer.parseInt(strCurrentPage);
 
-                server.chat.model.PostList posts = PostManager.searchPostsWithPagination(username, from, to, hashtags, currentPage);
+                PostList posts = PostManager.searchPostsWithPagination(username, from, to, hashtags, currentPage);
                 int pages = PostManager.getNumberOfPages(username, from, to, hashtags);
 
                 String queryString = "";

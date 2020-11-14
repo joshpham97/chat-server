@@ -1,4 +1,4 @@
-package server.chat.model;
+package server.database.model;
 
 import server.database.model.Post;
 

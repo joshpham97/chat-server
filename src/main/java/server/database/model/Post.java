@@ -4,8 +4,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class Post implements java.io.Serializable {
-    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-
     private int postID;
     private String username;
     private String title;
@@ -103,21 +101,6 @@ public class Post implements java.io.Serializable {
     }
 
     public void setAttID(Integer attID) { this.attID = attID; }
-
-    @Override
-    public String toString() {
-        String strDate = datePosted.format(FORMATTER);
-        return strDate + " :: " + this.username + " :: " + this.message;
-    }
-
-    public String toXML(){
-        StringBuilder messageXML = new StringBuilder();
-        return  " <Message>\n" +
-                "  <Date>" + this.getDatePosted() + "</Date>\n" +
-                "  <Username>" + this.getUsername() + "</Username>\n" +
-                "  <Content>" + this.getMessage() + "</Content>\n" +
-                " </Message>\n";
-    }
 
     private String formatDate(LocalDateTime date) {
         return date.getMonth().toString().toLowerCase() + " " + date.getDayOfMonth() + ", " + date.getYear();

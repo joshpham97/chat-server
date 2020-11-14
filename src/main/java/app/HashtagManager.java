@@ -3,9 +3,7 @@ package app;
 import server.database.dao.HashtagDAO;
 import server.database.model.Hashtag;
 
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
+import java.util.*;
 
 public class HashtagManager {
     public static boolean createHashTag(int postID, String message){
@@ -45,4 +43,15 @@ public class HashtagManager {
         return hashtags;
     }
 
+    public static ArrayList<Integer> getPostIDsByHashtags(List<String> hashtags){
+        return HashtagDAO.getPostIDsByHashtags(hashtags);
+    }
+
+    public static boolean existsInPostHashtag(int postId){
+        return HashtagDAO.existsInPostHashtag(postId);
+    }
+
+    public static boolean deletePostHashTag(int postId){
+        return HashtagDAO.deletePostHashTag(postId);
+    }
 }

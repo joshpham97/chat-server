@@ -9,7 +9,7 @@ import server.database.model.User;
 import java.io.*;
 import java.util.Optional;
 
-public class UserFileDAO extends DBConnection {
+public class UserFileDAO {
     private final String USERS_FILE = "users.json";
 
     public User getUser(int userID) {

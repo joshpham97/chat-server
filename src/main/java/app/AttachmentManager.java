@@ -1,7 +1,6 @@
 package app;
 
 import server.database.dao.AttachmentDAO;
-import server.database.dao.PostDAO;
 import server.database.model.Attachment;
 
 import javax.servlet.http.Part;
@@ -13,8 +12,8 @@ public class AttachmentManager {
             Attachment attachment = constructAttachmentFromPart(filePart, postId);
             attachment = AttachmentDAO.insert(attachment, filePart.getInputStream());
             if (attachment != null){
-                PostDAO.updateAttachmentId(postId, attachment.getAttachmentId());
-                PostDAO.updateModifiedDate(postId);
+                PostManager.updateAttachmentId(postId, attachment.getAttachmentId());
+                PostManager.updateModifiedDate(postId);
                 return true;
             }
         }catch (IOException ex){
@@ -25,12 +24,16 @@ public class AttachmentManager {
     }
 
     public static boolean deleteAttachment(int postId, int attachmentId) {
-        if (PostDAO.updateAttachmentId(postId, null) && PostDAO.updateModifiedDate(postId)){
+        if (PostManager.updateAttachmentId(postId, null) && PostManager.updateModifiedDate(postId)){
             AttachmentDAO.delete(attachmentId);
             return true;
         }
         else
             return false;
+    }
+
+    public static boolean deleteAttachment(int attachmentId) {
+        return AttachmentDAO.delete(attachmentId);
     }
 
     public static Attachment getAttachment(int attachmentId){
@@ -42,7 +45,7 @@ public class AttachmentManager {
             Attachment attachment = constructAttachmentFromPart(filePart, postId, attachmentId);
 
             if(AttachmentDAO.update(attachment, filePart.getInputStream())){
-                return PostDAO.updateModifiedDate(postId);
+                return PostManager.updateModifiedDate(postId);
             }
         }catch (IOException ex){
             ex.printStackTrace();
