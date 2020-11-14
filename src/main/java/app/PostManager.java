@@ -3,7 +3,7 @@ package app;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import server.database.dao.PostDAO;
-import server.database.model.PostList;
+import server.chat.model.PostList;
 import server.database.dao.AttachmentDAO;
 import server.database.model.Post;
 
@@ -11,6 +11,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class PostManager {
@@ -46,7 +47,10 @@ public class PostManager {
         int limit = NUMBER_OF_POSTS;
         int offset = NUMBER_OF_POSTS * (pageNumb - 1);
 
-        ArrayList<Post> posts = PostDAO.searchNPostsWithOffset(username, from, to, hashtags, limit, offset);
+        // Get the post ids
+        ArrayList<Integer> postIDs = HashtagManager.getPostIDsByHashtags(hashtags);
+
+        ArrayList<Post> posts = PostDAO.searchNPostsWithOffset(username, from, to, formatListToString(postIDs), limit, offset);
         return new PostList(posts);
     }
 
@@ -67,7 +71,10 @@ public class PostManager {
     }
 
     public static int getNumberOfPages(String username, LocalDateTime from, LocalDateTime to, List<String> hashtags) {
-        int postCount = PostDAO.countPosts(username, from, to, hashtags);
+        // Get the post ids
+        ArrayList<Integer> postIDs = HashtagManager.getPostIDsByHashtags(hashtags);
+
+        int postCount = PostDAO.countPosts(username, from, to, formatListToString(postIDs));
         int pages = (int) Math.ceil(((double) postCount) / NUMBER_OF_POSTS);
         return pages;
     }
@@ -75,7 +82,7 @@ public class PostManager {
     public static Post getPostById(int postId){
         return PostDAO.selectPostById(postId);
     }
-    
+
     public static boolean updatePost(int postId, String uname, String title, String message)
     {
         boolean success = false;
@@ -121,5 +128,18 @@ public class PostManager {
 
     public static boolean updateModifiedDate(int postId){
         return PostDAO.updateModifiedDate(postId);
+    }
+
+    private static String formatListToString(ArrayList<Integer> postIDs) {
+        if(postIDs == null || postIDs.size() == 0)
+            return null;
+
+        String postIDsStr = "";
+        // Build a string of comma separated post ids
+        for (Integer i : postIDs)
+            postIDsStr += i + ", ";
+        postIDsStr = postIDsStr.substring(0, postIDsStr.length() - 2);
+
+        return postIDsStr;
     }
 }

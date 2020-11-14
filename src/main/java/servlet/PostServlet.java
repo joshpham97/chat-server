@@ -2,7 +2,7 @@ package servlet;
 
 import app.PostManager;
 import server.database.model.Post;
-import server.database.model.PostList;
+import server.chat.model.PostList;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -93,6 +93,7 @@ public class PostServlet extends HttpServlet {
                 request.setAttribute("pages", pages);
                 request.setAttribute("queryString", queryString);
             } catch(Exception e) {
+                e.printStackTrace();
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             }
         }

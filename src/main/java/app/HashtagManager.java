@@ -44,6 +44,9 @@ public class HashtagManager {
     }
 
     public static ArrayList<Integer> getPostIDsByHashtags(List<String> hashtags){
+        if(hashtags == null || hashtags.size() == 0)
+            return null;
+
         return HashtagDAO.getPostIDsByHashtags(hashtags);
     }
 
