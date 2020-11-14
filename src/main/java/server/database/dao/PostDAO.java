@@ -12,13 +12,13 @@ import java.util.Set;
 
 public class PostDAO {
     public static ArrayList<Post> searchNPostsWithOffset(String username, LocalDateTime from, LocalDateTime to,
-                                                         List<String> hashtags, Integer n, Integer o) {
-        String sql = searchPostsQueryBuilder(username, from, to, hashtags, n, o, "*");
+                                                         String postIdsStr, Integer n, Integer o) {
+        String sql = searchPostsQueryBuilder(username, from, to, postIdsStr, n, o, "*");
         return getPostsHelper(sql);
     }
 
-    public static int countPosts(String username, LocalDateTime from, LocalDateTime to, List<String> hashtags) {
-        String sql = searchPostsQueryBuilder(username, from, to, hashtags, null, null, "COUNT(post_id) AS count");
+    public static int countPosts(String username, LocalDateTime from, LocalDateTime to, String postIDsStr) {
+        String sql = searchPostsQueryBuilder(username, from, to, postIDsStr, null, null, "COUNT(post_id) AS count");
 
         int count = -1; // Signals an error
         try {
@@ -41,7 +41,7 @@ public class PostDAO {
 
     // Builds query based on arguments
     private static String searchPostsQueryBuilder(String username, LocalDateTime from, LocalDateTime to,
-                                                  List<String> hashtags, Integer n, Integer o, String fields) {
+                                                  String postIDsStr, Integer n, Integer o, String fields) {
         String sql = "SELECT " + fields + " FROM post_info";
 
         // Conjunctions for WHERE clause (for query building)
@@ -67,20 +67,7 @@ public class PostDAO {
         }
 
         // Hashtag filtering
-        if(hashtags != null && hashtags.size() != 0) {
-            // Get the post ids
-            ArrayList<Integer> postIDs = HashtagManager.getPostIDsByHashtags(hashtags);
-
-            if(postIDs.size() == 0) {
-                return null;
-            }
-
-            // Build a string of comma separated post ids
-            String postIDsStr = "";
-            for (Integer i : postIDs)
-                postIDsStr += i + ", ";
-            postIDsStr = postIDsStr.substring(0, postIDsStr.length() - 2);
-
+        if(postIDsStr != null && !postIDsStr.isEmpty()) {
             sql += " " + conj[conjNumb] + " post_id IN (" + postIDsStr + ")";
             conjNumb = 1;
         }
