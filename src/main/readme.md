@@ -17,5 +17,7 @@ This application is a simple message board application to post messages. The fol
 To install the application, the following dependencies are required:
 - A Servlet Container is required since application is built using JSP.
 - Java Standard Tag Library need to be installed through Maven (Maven: jstl:jstl:1.2)
+- Json Simple need to be installed through Maven (Maven: com.googlecode.json-simple:json-simple:1.1.1)
 - MySQL Server is required to store post data.
+- Before running the application, runs the db_creation.sql to generate the database in the resource folder.
 
