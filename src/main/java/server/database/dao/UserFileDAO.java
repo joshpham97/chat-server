@@ -3,76 +3,58 @@ package server.database.dao;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import server.database.db.DBConnection;
 import server.database.model.User;
 
 import java.io.*;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 public class UserFileDAO {
     private final String USERS_FILE = "users.json";
 
     public User getUser(int userID) {
-        JSONArray ja;
-        User user = null;
-
         try {
-            // Read users file
-            ja = readUsersFile();
-
             // Get user by id
-            Optional<User> result = ja.stream()
-                    .map(o -> {
-                        JSONObject jo = (JSONObject) o;
-                        return jsonObjectToUser(jo); // Convert to user
-                    })
-                    .filter(u -> (((User) u).getUserID() == userID)).findFirst();
+            Optional<User> result = readUsersFile()
+                    .filter(u -> (u.getUserID() == userID))
+                    .findFirst();
 
             if(result.isPresent())
-                user = result.get();
-
+                return result.get();
         } catch(Exception e) {
             e.printStackTrace();
         }
 
-        return user;
+        return null;
     }
 
     public User getUserByUsername(String username) {
-        JSONArray ja;
-        User user = null;
-
         try {
-            // Read users file
-            ja = readUsersFile();
-
             // Get user by username
-            Optional<User> result = ja.stream()
-                    .map(o -> {
-                        JSONObject jo = (JSONObject) o;
-                        return jsonObjectToUser(jo); // Convert to user
-                    })
-                    .filter(u -> (((User) u).getUsername().equals(username))).findFirst();
+            Optional<User> result = readUsersFile()
+                    .filter(u -> (u.getUsername().equals(username)))
+                    .findFirst();
 
             if(result.isPresent())
-                user = result.get();
-
+                return result.get();
         } catch(Exception e) {
             e.printStackTrace();
         }
 
-        return user;
+        return null;
     }
 
-    // Read users file and return contents as JSONArray
-    private JSONArray readUsersFile() throws Exception {
-        JSONArray ja = null;
-
+    // Read users file and return contents as a Stream of Users
+    private Stream<User> readUsersFile() throws Exception {
         InputStream inputStream = getClass().getClassLoader().getResourceAsStream(USERS_FILE); // Get resource
         Object obj = new JSONParser().parse(new InputStreamReader(inputStream)); // Read file
-        ja = (JSONArray) obj; // Parse object to JSONArray
+        JSONArray ja = (JSONArray) obj; // Parse object to JSONArray
 
-        return ja;
+        return ja.stream()
+                .map(o -> {
+                    JSONObject jo = (JSONObject) o;
+                    return jsonObjectToUser(jo); // Convert to user
+                });
     }
 
     // Convert JSONObject to User
@@ -88,4 +70,11 @@ public class UserFileDAO {
 
         return user;
     }
+
+//    public static void main(String[] args) {
+//        UserFileDAO userDAO = new UserFileDAO();
+//
+//        System.out.println(userDAO.getUser(1));
+//        System.out.println(userDAO.getUserByUsername("john"));
+//    }
 }

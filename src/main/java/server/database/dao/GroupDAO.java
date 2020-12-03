@@ -72,10 +72,10 @@ public class GroupDAO {
         return group;
     }
 
-    public static void main(String[] args) {
-        GroupDAO gd = new GroupDAO();
-
-        System.out.println(gd.getGroup(1));
-        System.out.println(gd.getGroupByName("encs"));
-    }
+//    public static void main(String[] args) {
+//        GroupDAO gd = new GroupDAO();
+//
+//        System.out.println(gd.getGroup(1));
+//        System.out.println(gd.getGroupByName("encs"));
+//    }
 }

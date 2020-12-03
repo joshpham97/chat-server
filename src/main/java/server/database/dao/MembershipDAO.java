@@ -65,10 +65,10 @@ public class MembershipDAO {
         return membership;
     }
 
-    public static void main(String[] args) {
-        MembershipDAO md = new MembershipDAO();
-
+//    public static void main(String[] args) {
+//        MembershipDAO md = new MembershipDAO();
+//
 //        System.out.println(md.geUserMemberships(1).toString());
-        System.out.println(md.getGroupMemberships(1).toString());
-    }
+//        System.out.println(md.getGroupMemberships(1).toString());
+//    }
 }
