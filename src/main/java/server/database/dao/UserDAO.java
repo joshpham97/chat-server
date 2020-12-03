@@ -9,7 +9,7 @@ import java.io.*;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-public class UserFileDAO {
+public class UserDAO {
     private static final String USERS_FILE = "users.json";
 
     public static User getUser(int userID) {
@@ -46,7 +46,7 @@ public class UserFileDAO {
 
     // Read users file and return contents as a Stream of Users
     private static Stream<User> readUsersFile() throws Exception {
-        InputStream inputStream = UserFileDAO.class.getClassLoader().getResourceAsStream(USERS_FILE); // Get resource
+        InputStream inputStream = UserDAO.class.getClassLoader().getResourceAsStream(USERS_FILE); // Get resource
         Object obj = new JSONParser().parse(new InputStreamReader(inputStream)); // Read file
         JSONArray ja = (JSONArray) obj; // Parse object to JSONArray
 
@@ -71,8 +71,8 @@ public class UserFileDAO {
         return user;
     }
 
-    public static void main(String[] args) {
-        System.out.println(UserFileDAO.getUser(1));
-        System.out.println(UserFileDAO.getUserByUsername("john"));
-    }
+//    public static void main(String[] args) {
+//        System.out.println(UserDAO.getUser(1));
+//        System.out.println(UserDAO.getUserByUsername("john"));
+//    }
 }

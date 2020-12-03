@@ -1,6 +1,6 @@
 package app;
 
-import server.database.dao.UserFileDAO;
+import server.database.dao.UserDAO;
 import server.database.model.User;
 
 import javax.servlet.http.HttpSession;
@@ -14,7 +14,7 @@ public class UserManager {
 
         String generatedPassword = encryptPassword(password);
 
-        UserFileDAO userDao = new UserFileDAO();
+        UserDAO userDao = new UserDAO();
 
         User user = userDao.getUserByUsername(username);
 

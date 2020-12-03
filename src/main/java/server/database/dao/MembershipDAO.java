@@ -15,7 +15,7 @@ public class MembershipDAO {
     private static final String MEMBERSHIPS_FILE = "memberships.json";
 
     // Gets all memberships for a user
-    public static ArrayList<Membership> geUserMemberships(int userID) {
+    public static ArrayList<Membership> getUserMemberships(int userID) {
         try {
             return readMembershipsFile()
                     .filter(m -> (m.getUserID() == userID))
@@ -65,8 +65,8 @@ public class MembershipDAO {
         return membership;
     }
 
-    public static void main(String[] args) {
-        System.out.println(MembershipDAO.geUserMemberships(1).toString());
-        System.out.println(MembershipDAO.getGroupMemberships(1).toString());
-    }
+//    public static void main(String[] args) {
+//        System.out.println(MembershipDAO.getUserMemberships(1).toString());
+//        System.out.println(MembershipDAO.getGroupMemberships(1).toString());
+//    }
 }
