@@ -12,10 +12,10 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class MembershipDAO {
-    private final String MEMBERSHIPS_FILE = "memberships.json";
+    private static final String MEMBERSHIPS_FILE = "memberships.json";
 
     // Gets all memberships for a user
-    public ArrayList<Membership> geUserMemberships(int userID) {
+    public static ArrayList<Membership> geUserMemberships(int userID) {
         try {
             return readMembershipsFile()
                     .filter(m -> (m.getUserID() == userID))
@@ -29,7 +29,7 @@ public class MembershipDAO {
     }
 
     // Gets all memberships for a group
-    public ArrayList<Membership> getGroupMemberships(int groupID) {
+    public static ArrayList<Membership> getGroupMemberships(int groupID) {
         try {
             return readMembershipsFile()
                     .filter(m -> (m.getGroupID() == groupID))
@@ -43,8 +43,8 @@ public class MembershipDAO {
     }
 
     // Read groups file and return contents as a Stream of Groups
-    private Stream<Membership> readMembershipsFile() throws Exception {
-        InputStream inputStream = getClass().getClassLoader().getResourceAsStream(MEMBERSHIPS_FILE); // Get resource
+    private static Stream<Membership> readMembershipsFile() throws Exception {
+        InputStream inputStream = MembershipDAO.class.getClassLoader().getResourceAsStream(MEMBERSHIPS_FILE); // Get resource
         Object obj = new JSONParser().parse(new InputStreamReader(inputStream)); // Read file
         JSONArray ja = (JSONArray) obj; // Parse object to JSONArray
 
@@ -56,7 +56,7 @@ public class MembershipDAO {
     }
 
     // Convert JSONObject to Membership
-    private Membership jsonObjectToMembership(JSONObject jo) {
+    private static Membership jsonObjectToMembership(JSONObject jo) {
         Membership membership = new Membership();
 
         membership.setUserID(Integer.parseInt(jo.get("userID").toString()));
@@ -65,10 +65,8 @@ public class MembershipDAO {
         return membership;
     }
 
-//    public static void main(String[] args) {
-//        MembershipDAO md = new MembershipDAO();
-//
-//        System.out.println(md.geUserMemberships(1).toString());
-//        System.out.println(md.getGroupMemberships(1).toString());
-//    }
+    public static void main(String[] args) {
+        System.out.println(MembershipDAO.geUserMemberships(1).toString());
+        System.out.println(MembershipDAO.getGroupMemberships(1).toString());
+    }
 }

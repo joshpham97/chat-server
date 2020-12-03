@@ -11,9 +11,9 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 public class GroupDAO {
-    private final String GROUPS_FILE = "groups.json";
+    private static final String GROUPS_FILE = "groups.json";
 
-    public Group getGroup(int groupID) {
+    public static Group getGroup(int groupID) {
         try {
             Optional<Group> result = readGroupsFile()
                     .filter(g -> (((Group) g).getGroupID() == groupID))
@@ -28,7 +28,7 @@ public class GroupDAO {
         return null;
     }
 
-    public Group getGroupByName(String groupName) {
+    public static Group getGroupByName(String groupName) {
         try {
             Optional<Group> result = readGroupsFile()
                     .filter(g -> (g.getGroupName().equals(groupName)))
@@ -44,8 +44,8 @@ public class GroupDAO {
     }
 
     // Read groups file and return contents as a Stream of Groups
-    private Stream<Group> readGroupsFile() throws Exception {
-        InputStream inputStream = getClass().getClassLoader().getResourceAsStream(GROUPS_FILE); // Get resource
+    private static Stream<Group> readGroupsFile() throws Exception {
+        InputStream inputStream = GroupDAO.class.getClassLoader().getResourceAsStream(GROUPS_FILE); // Get resource
         Object obj = new JSONParser().parse(new InputStreamReader(inputStream)); // Read file
         JSONArray ja = (JSONArray) obj; // Parse object to JSONArray
 
@@ -57,7 +57,7 @@ public class GroupDAO {
     }
 
     // Convert JSONObject to Group
-    private Group jsonObjectToGroup(JSONObject jo) {
+    private static Group jsonObjectToGroup(JSONObject jo) {
         Group group = new Group();
 
         group.setGroupID(Integer.parseInt(jo.get("groupID").toString()));
@@ -73,9 +73,7 @@ public class GroupDAO {
     }
 
 //    public static void main(String[] args) {
-//        GroupDAO gd = new GroupDAO();
-//
-//        System.out.println(gd.getGroup(1));
-//        System.out.println(gd.getGroupByName("encs"));
+//        System.out.println(GroupDAO.getGroup(1));
+//        System.out.println(GroupDAO.getGroupByName("encs"));
 //    }
 }

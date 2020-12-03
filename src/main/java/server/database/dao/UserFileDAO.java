@@ -10,9 +10,9 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 public class UserFileDAO {
-    private final String USERS_FILE = "users.json";
+    private static final String USERS_FILE = "users.json";
 
-    public User getUser(int userID) {
+    public static User getUser(int userID) {
         try {
             // Get user by id
             Optional<User> result = readUsersFile()
@@ -28,7 +28,7 @@ public class UserFileDAO {
         return null;
     }
 
-    public User getUserByUsername(String username) {
+    public static User getUserByUsername(String username) {
         try {
             // Get user by username
             Optional<User> result = readUsersFile()
@@ -45,8 +45,8 @@ public class UserFileDAO {
     }
 
     // Read users file and return contents as a Stream of Users
-    private Stream<User> readUsersFile() throws Exception {
-        InputStream inputStream = getClass().getClassLoader().getResourceAsStream(USERS_FILE); // Get resource
+    private static Stream<User> readUsersFile() throws Exception {
+        InputStream inputStream = UserFileDAO.class.getClassLoader().getResourceAsStream(USERS_FILE); // Get resource
         Object obj = new JSONParser().parse(new InputStreamReader(inputStream)); // Read file
         JSONArray ja = (JSONArray) obj; // Parse object to JSONArray
 
@@ -58,7 +58,7 @@ public class UserFileDAO {
     }
 
     // Convert JSONObject to User
-    private User jsonObjectToUser(JSONObject jo) {
+    private static User jsonObjectToUser(JSONObject jo) {
         User user = new User();
 
         user.setUserID(Integer.parseInt(jo.get("userID").toString()));
@@ -71,10 +71,8 @@ public class UserFileDAO {
         return user;
     }
 
-//    public static void main(String[] args) {
-//        UserFileDAO userDAO = new UserFileDAO();
-//
-//        System.out.println(userDAO.getUser(1));
-//        System.out.println(userDAO.getUserByUsername("john"));
-//    }
+    public static void main(String[] args) {
+        System.out.println(UserFileDAO.getUser(1));
+        System.out.println(UserFileDAO.getUserByUsername("john"));
+    }
 }
