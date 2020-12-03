@@ -1,11 +1,16 @@
 package app;
 
+import server.database.dao.GroupDAO;
+import server.database.dao.MembershipDAO;
 import server.database.dao.UserDAO;
+import server.database.model.Group;
+import server.database.model.Membership;
 import server.database.model.User;
 
 import javax.servlet.http.HttpSession;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 
 public class UserManager {
     public static boolean login(String username, String password, HttpSession session)
@@ -23,6 +28,20 @@ public class UserManager {
         int userID = user.getUserID();
 
         if (user != null && generatedPassword.equals(pass)) {
+            /** RETRIEVE USER MEMBERSHIP */
+            MembershipDAO memberDao = new MembershipDAO();
+            ArrayList<Membership> member = memberDao.getUserMemberships(userID);
+            ArrayList<Integer> groupID = new ArrayList<Integer>();
+            member.forEach((n) -> groupID.add(n.getGroupID()));
+            GroupDAO groupDao = new GroupDAO();
+            ArrayList<Group> group = new ArrayList<Group>();
+            groupID.forEach((n) -> group.add(groupDao.getGroup(n)));
+
+            ArrayList<String> groupName = new ArrayList<String>();
+            group.forEach((n) -> groupName.add(n.getGroupName()));
+            session.setAttribute("membership" , groupName);
+            System.out.println("User is a:" + groupName);
+            /** END */
             String errMsg = (String)session.getAttribute("errorMessage");
             if(errMsg != null)
             {

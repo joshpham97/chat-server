@@ -24,6 +24,10 @@ public class PostEditServlet extends HttpServlet {
         if (strPostId != null && !strPostId.isEmpty()){
             int postId = Integer.parseInt(strPostId);
             Post post = PostManager.getPostById(postId);
+            /** Stefan Code */
+            String postUser = post.getUsername();
+
+            /** End stefan code */
 
             if (post != null){
                 Attachment attachment = new Attachment();
