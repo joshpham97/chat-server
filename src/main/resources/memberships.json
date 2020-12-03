@@ -1,0 +1,15 @@
+[
+  {
+    "userID": "1",
+    "groupID": "1"
+  }, {
+    "userID": "1",
+    "groupID": "2"
+  }, {
+    "userID": "2",
+    "groupID": "3"
+  }, {
+    "userID": "3",
+    "groupID": "5"
+  }
+]
