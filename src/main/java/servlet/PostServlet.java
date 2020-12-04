@@ -61,21 +61,9 @@ public class PostServlet extends HttpServlet {
             {
                 /** MODIFIED BY STEFAN SO ONLY AUTHORIZED USERS CAN DELETE POSTS */
                 HttpSession session=request.getSession(false);
-                String uname = (String)session.getAttribute("username");
-                ArrayList<String> n = (ArrayList<String>)session.getAttribute("membership");
-                String name = n.get(0);
-                Post post = PostManager.getPostById(postID);
 
-                if(name.equals("admins") || post.getUsername().equals(uname))
-                {
-                    isSuccess = PostManager.deletePost(postID);
-                    response.sendRedirect(String.format("index.jsp?postId=%d&success=%b", postID, isSuccess));
-                }
-                else
-                {
-                    isSuccess = false;
-                    response.sendRedirect(String.format("index.jsp?postId=%d&success=%b", postID, isSuccess));
-                }
+                isSuccess = PostManager.deletePost(postID, session);
+                response.sendRedirect(String.format("index.jsp?postId=%d&success=%b", postID, isSuccess));
 
             }
             else if(action.equals("update"))

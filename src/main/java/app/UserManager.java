@@ -29,18 +29,8 @@ public class UserManager {
 
         if (user != null && generatedPassword.equals(pass)) {
             /** RETRIEVE USER MEMBERSHIP */
-            MembershipDAO memberDao = new MembershipDAO();
-            ArrayList<Membership> member = memberDao.getUserMemberships(userID);
-            ArrayList<Integer> groupID = new ArrayList<Integer>();
-            member.forEach((n) -> groupID.add(n.getGroupID()));
-            GroupDAO groupDao = new GroupDAO();
-            ArrayList<Group> group = new ArrayList<Group>();
-            groupID.forEach((n) -> group.add(groupDao.getGroup(n)));
-
-            ArrayList<String> groupName = new ArrayList<String>();
-            group.forEach((n) -> groupName.add(n.getGroupName()));
-            session.setAttribute("membership" , groupName);
-            System.out.println("User is a:" + groupName);
+            ArrayList<String> member = GroupManager.getUserGroups(userID);
+            session.setAttribute("membership" , member);
             /** END */
             String errMsg = (String)session.getAttribute("errorMessage");
             if(errMsg != null)
