@@ -1,11 +1,16 @@
 package app;
 
+import server.database.dao.GroupDAO;
+import server.database.dao.MembershipDAO;
 import server.database.dao.UserDAO;
+import server.database.model.Group;
+import server.database.model.Membership;
 import server.database.model.User;
 
 import javax.servlet.http.HttpSession;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 
 public class UserManager {
     public static boolean login(String username, String password, HttpSession session)
@@ -23,6 +28,10 @@ public class UserManager {
         int userID = user.getUserID();
 
         if (user != null && generatedPassword.equals(pass)) {
+            /** RETRIEVE USER MEMBERSHIP */
+            ArrayList<String> member = GroupManager.getUserGroups(userID);
+            session.setAttribute("membership" , member);
+            /** END */
             String errMsg = (String)session.getAttribute("errorMessage");
             if(errMsg != null)
             {

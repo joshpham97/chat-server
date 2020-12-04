@@ -85,7 +85,7 @@
                                             <c:if test="${post.getAttID() != null}">
                                                     <a href="AttachmentServlet?action=get&attachmentId=${post.getAttID()}"><i class="fas fa-paperclip mr-2" title="Download attachment"></i></a>
                                             </c:if>
-                                            <c:if test="${post.getUsername().equals(sessionScope.username)}">
+                                            <c:if test="${post.getUsername().equals(sessionScope.username) ||sessionScope.membership[0].equals('admins') }">
                                                 <a href="PostEditServlet?postId=${post.getPostID()}"><i class="fas fa-edit mr-2"></i></a>
                                                 <a href="PostServlet?action=delete&postID=${post.getPostID()}"><i class="fas fa-trash mr-2"></i></a>
                                             </c:if>

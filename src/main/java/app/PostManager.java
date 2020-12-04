@@ -7,6 +7,7 @@ import server.chat.model.PostList;
 import server.database.dao.AttachmentDAO;
 import server.database.model.Post;
 
+import javax.servlet.http.HttpSession;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.time.LocalDateTime;
@@ -104,20 +105,34 @@ public class PostManager {
         return success;
     }
 
-    public static boolean deletePost(int postId) {
+    public static boolean deletePost(int postId, HttpSession session) {
         boolean deleted = false;
+        /** Code modified by stefan */
+        String uname = (String)session.getAttribute("username");
+        ArrayList<String> n = (ArrayList<String>)session.getAttribute("membership");
+        String groupName = n.get(0);
+        Post specificPost = PostManager.getPostById(postId);
 
-        if (HashtagManager.existsInPostHashtag(postId))
-            deleted = HashtagManager.deletePostHashTag(postId);
+        if(groupName.equals("admins") || specificPost.getUsername().equals(uname))
+        {
+            if (HashtagManager.existsInPostHashtag(postId))
+                deleted = HashtagManager.deletePostHashTag(postId);
+            else
+                deleted = true;
+
+            Post post = PostDAO.selectPostById(postId);
+            if (deleted)
+                deleted = PostDAO.deletePostDatabase(postId);
+
+            if(post.getAttID() != null && deleted)
+                deleted = AttachmentManager.deleteAttachment(post.getAttID());
+
+        }
         else
-            deleted = true;
+        {
+            deleted = false;
+        }
 
-        Post post = PostDAO.selectPostById(postId);
-        if (deleted)
-            deleted = PostDAO.deletePostDatabase(postId);
-
-        if(post.getAttID() != null && deleted)
-            deleted = AttachmentManager.deleteAttachment(post.getAttID());
 
         return deleted;
     }
