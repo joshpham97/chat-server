@@ -3,7 +3,7 @@ package app;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import server.database.dao.PostDAO;
-import server.chat.model.PostList;
+import server.database.model.PostList;
 import server.database.dao.AttachmentDAO;
 import server.database.model.Post;
 
@@ -41,6 +41,14 @@ public class PostManager {
         }
 
         return null;
+    }
+
+    public static PostList searchPosts(String username, LocalDateTime from, LocalDateTime to, List<String> hashtags) {
+        // Get the post ids
+        ArrayList<Integer> postIDs = HashtagManager.getPostIDsByHashtags(hashtags);
+
+        ArrayList<Post> posts = PostDAO.searchNPostsWithOffset(username, from, to, formatListToString(postIDs), null, null);
+        return new PostList(posts);
     }
 
     public static PostList searchPostsWithPagination(String username, LocalDateTime from, LocalDateTime to, List<String> hashtags, int pageNumb) {

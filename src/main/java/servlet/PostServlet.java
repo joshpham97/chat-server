@@ -2,7 +2,7 @@ package servlet;
 
 import app.PostManager;
 import server.database.model.Post;
-import server.chat.model.PostList;
+import server.database.model.PostList;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

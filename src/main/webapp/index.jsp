@@ -69,6 +69,22 @@
 
         <div class="container mt-2">
             <div class="row mt-2">
+                <div class="col-12">
+                    <c:choose>
+                        <c:when test="<%= request.getQueryString() != null%>">
+                            <a class="btn btn-primary float-right" href="DownloadPostServlet?<%= request.getQueryString() %>">
+                                <i class="fas fa-download mr-2"></i>Download
+                            </a>
+                        </c:when>
+                        <c:otherwise>
+                            <a class="btn btn-primary float-right" href="DownloadPostServlet">
+                                <i class="fas fa-download mr-2"></i>Download
+                            </a>
+                        </c:otherwise>
+                    </c:choose>
+                </div>
+            </div>
+            <div class="row mt-2">
                 <div id="posts" class="col-12">
                     <c:choose>
                         <c:when test="${requestScope.posts.getSize() > 0}">

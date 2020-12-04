@@ -1,9 +1,16 @@
-package server.chat.model;
+package server.database.model;
 
 import server.database.model.Post;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlSeeAlso;
 import java.util.ArrayList;
 
+@XmlRootElement(name = "posts")
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlSeeAlso(ArrayList.class)
 public class PostList implements java.io.Serializable {
     private ArrayList<Post> posts;
 
