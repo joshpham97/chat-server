@@ -4,6 +4,7 @@
   "dbName": "message_board",
   "dbUser": "test",
   "dbPassword": "QwErT1@3",
+  "userManagerImpl": "datamapper.UserManagerImpl",
   "postConfig": {
     "numberOfPosts": "3"
   }
