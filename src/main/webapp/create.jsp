@@ -6,7 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-
+<%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
 <%
     String username = (String) session.getAttribute("username");
     if (null == username) {
@@ -71,6 +71,37 @@
                     <label for="postContent">Message</label>
                     <textarea id="postContent" name="message" class="form-control" rows="2" placeholder="Type your post here..." required></textarea>
                 </div>
+                <c:choose>
+                    <c:when test="${sessionScope.membership[0].equals('admins') || sessionScope.membership[0].equals('concordia')}">
+                        <select name="group">
+                            <option selected = "selected">Public</option>
+                            <option>Concordia</option>
+                            <option>ENCS</option>
+                            <option>COMP</option>
+                            <option>SOEN</option>
+                        </select>
+                    </c:when>
+                    <c:when test="${sessionScope.membership[0].equals('encs')}">
+                        <select name="group">
+                            <option selected = "selected">Public</option>
+                            <option>ENCS</option>
+                            <option>COMP</option>
+                            <option>SOEN</option>
+                        </select>
+                    </c:when>
+                    <c:when test="${sessionScope.membership[0].equals('comp')}">
+                        <select name="group">
+                            <option selected = "selected">Public</option>
+                            <option>COMP</option>
+                        </select>
+                    </c:when>
+                    <c:otherwise>
+                        <select name="group">
+                            <option selected = "selected">Public</option>
+                            <option>SOEN</option>
+                        </select>
+                    </c:otherwise>
+                </c:choose>
                 <div class="col text-center">
                     <button type="submit" class="btn btn-primary mt-2 mi">Create Post</button>
                 </div>
