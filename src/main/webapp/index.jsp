@@ -1,4 +1,4 @@
-<%@ page import="server.chat.model.PostList" %>
+<%@ page import="server.database.model.PostList" %>
 <%--
   Created by IntelliJ IDEA.
   User: Stefan JB
@@ -8,7 +8,7 @@
 --%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
-<jsp:useBean id="posts" scope="request" class="server.chat.model.PostList" />
+<jsp:useBean id="posts" scope="request" class="server.database.model.PostList" />
 <jsp:include page="/PostServlet" />
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -68,6 +68,22 @@
         </nav>
 
         <div class="container mt-2">
+            <div class="row mt-2">
+                <div class="col-12">
+                    <c:choose>
+                        <c:when test="<%= request.getQueryString() != null%>">
+                            <a class="btn btn-primary float-right" href="DownloadPostServlet?<%= request.getQueryString() %>">
+                                <i class="fas fa-download mr-2"></i>Download
+                            </a>
+                        </c:when>
+                        <c:otherwise>
+                            <a class="btn btn-primary float-right" href="DownloadPostServlet">
+                                <i class="fas fa-download mr-2"></i>Download
+                            </a>
+                        </c:otherwise>
+                    </c:choose>
+                </div>
+            </div>
             <div class="row mt-2">
                 <div id="posts" class="col-12">
                     <c:choose>

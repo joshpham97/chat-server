@@ -35,6 +35,14 @@
         <servlet-name>PostEditServlet</servlet-name>
         <url-pattern>/PostEditServlet</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DownloadPostServlet</servlet-name>
+        <url-pattern>/DownloadPostServlet</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>DownloadPostServlet</servlet-name>
+        <servlet-class>servlet.DownloadPostServlet</servlet-class>
+    </servlet>
     <welcome-file-list>
         <welcome-file>login.jsp</welcome-file>
     </welcome-file-list>
