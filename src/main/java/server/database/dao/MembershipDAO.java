@@ -3,6 +3,7 @@ package server.database.dao;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import server.database.model.Group;
 import server.database.model.Membership;
 
 import java.io.InputStream;
@@ -13,6 +14,10 @@ import java.util.stream.Stream;
 
 public class MembershipDAO {
     private static final String MEMBERSHIPS_FILE = "memberships.json";
+
+    static {
+        checkData();
+    }
 
     // Gets all memberships for a user
     public static ArrayList<Membership> getUserMemberships(int userID) {
@@ -59,10 +64,31 @@ public class MembershipDAO {
     private static Membership jsonObjectToMembership(JSONObject jo) {
         Membership membership = new Membership();
 
-        membership.setUserID(Integer.parseInt(jo.get("userID").toString()));
-        membership.setGroupID(Integer.parseInt(jo.get("groupID").toString()));
+        try {
+            membership.setUserID(Integer.parseInt(jo.get("userID").toString()));
+            membership.setGroupID(Integer.parseInt(jo.get("groupID").toString()));
+        } catch(Exception e) {
+            throw new Error("Erroneous Membership data: invalid field");
+        }
 
         return membership;
+    }
+
+    // Checks for erroneous data
+    private static void checkData() {
+        try {
+            Stream<Membership> membs = readMembershipsFile();
+
+            membs.forEach(m -> {
+                if(UserDAO.getUser(m.getUserID()) == null)
+                    throw new Error("Erroneous Membership data: non-existent user");
+                else if(GroupDAO.getGroup(m.getGroupID()) == null)
+                    throw new Error("Erroneous Membership data: non-existent group");
+            });
+
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
     }
 
 //    public static void main(String[] args) {
