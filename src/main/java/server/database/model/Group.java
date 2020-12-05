@@ -24,7 +24,7 @@ public class Group {
         return groupName;
     }
 
-    public int getParent() { return parent; }
+    public Integer getParent() { return parent; }
 
     public void setGroupID(int groupID) {
         this.groupID = groupID;
