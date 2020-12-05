@@ -32,9 +32,9 @@ public class PostManager {
 
     private static final int NUMBER_OF_POSTS = Integer.parseInt((String) jo.get("numberOfPosts"));
 
-    public static Integer createPost(String username, String title, String message)
+    public static Integer createPost(String username, String title, String message, String group)
     {
-        Integer postId = PostDAO.insert(username, title, message);
+        Integer postId = PostDAO.insert(username, title, message, group);
 
         if(postId != null){
             HashtagManager.createHashTag(postId, message);
@@ -84,7 +84,7 @@ public class PostManager {
         return PostDAO.selectPostById(postId);
     }
 
-    public static boolean updatePost(int postId, String title, String message)
+    public static boolean updatePost(int postId, String title, String message, String group)
     {
         boolean success = false;
 
@@ -96,7 +96,7 @@ public class PostManager {
 
         //Update the post
         if (success)
-            success = PostDAO.updatePostDatabase(postId, title, message);
+            success = PostDAO.updatePostDatabase(postId, title, message, group);
 
         //Reinserts the hashtag - old and new
         if (success)

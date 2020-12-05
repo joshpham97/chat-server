@@ -80,11 +80,11 @@ public class PostDAO {
         return sql;
     }
 
-    public static Integer insert(String username, String title, String message) {
+    public static Integer insert(String username, String title, String message, String group) {
         Post post = new Post();
         try {
             Connection conn = DBConnection.getConnection();
-            String query = "INSERT INTO Post_info (username, title, date_posted, date_modified, message)" + " values (?,?,?,?,?)";
+            String query = "INSERT INTO Post_info (username, title, date_posted, date_modified, message, permission_group)" + " values (?,?,?,?,?,?)";
 
             PreparedStatement stmt = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
             stmt.setString(1, username);
@@ -92,6 +92,7 @@ public class PostDAO {
             stmt.setTimestamp(3, Timestamp.valueOf(LocalDateTime.now()));
             stmt.setTimestamp(4, Timestamp.valueOf(LocalDateTime.now()));
             stmt.setString(5, message);
+            stmt.setString(6, group);
             stmt.execute();
 
             ResultSet rs = stmt.getGeneratedKeys();
@@ -188,18 +189,19 @@ public class PostDAO {
         return success;
     }
 
-    public static boolean updatePostDatabase(int postId, String title, String message) {
+    public static boolean updatePostDatabase(int postId, String title, String message, String group) {
         boolean success = false;
 
         try {
             Connection conn = DBConnection.getConnection();
 
-            String sql = "UPDATE post_info SET title = ?, date_modified = ?, message = ? WHERE post_id = ?";
+            String sql = "UPDATE post_info SET title = ?, date_modified = ?, message = ?, permission_group = ? WHERE post_id = ?";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1, title);
             ps.setTimestamp(2, Timestamp.valueOf(LocalDateTime.now()));
             ps.setString(3, message);
-            ps.setInt(4, postId);
+            ps.setString(4, group);
+            ps.setInt(5, postId);
             int row = ps.executeUpdate();
 
             if (row > 0)

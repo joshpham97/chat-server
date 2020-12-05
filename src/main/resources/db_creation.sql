@@ -15,6 +15,7 @@ CREATE TABLE Post_info (
    date_modified DATETIME,
    message VARCHAR(255),
    att_id INT,
+   permission_group VARCHAR(255),
    CONSTRAINT PK_post_id PRIMARY KEY (post_id),
    CONSTRAINT FK_att_id FOREIGN KEY (att_id) REFERENCES Attachments(att_id)
 );
@@ -33,4 +34,3 @@ CREATE TABLE Post_Hashtag(
      CONSTRAINT FK_post_id FOREIGN KEY(post_id) REFERENCES Post_info(post_id),
      CONSTRAINT FK_hashtag_id FOREIGN KEY(hashtag_id) REFERENCES Hashtag(hashtag_id)
 );
- 

@@ -28,11 +28,12 @@ public class PostServlet extends HttpServlet {
         String message = request.getParameter("message");
         String title = request.getParameter("title");
         String strPostID = request.getParameter("postId");
+        String group = request.getParameter("group");
 
         //Post post = null;
         if(action.equals("post"))
         {
-            Integer postId = PostManager.createPost(uname, title, message);
+            Integer postId = PostManager.createPost(uname, title, message, group);
             if (postId != null)
                 response.sendRedirect(String.format("PostEditServlet?postId=%d", postId));
             else
@@ -41,7 +42,7 @@ public class PostServlet extends HttpServlet {
         else if(action.equals("update"))
         {
             int postID = Integer.parseInt(strPostID);
-            boolean success = PostManager.updatePost(postID, title, message);
+            boolean success = PostManager.updatePost(postID, title, message, group);
             if (success)
                 response.sendRedirect(String.format("PostEditServlet?postId=%d", postID));
             else

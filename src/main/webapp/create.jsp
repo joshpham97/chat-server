@@ -74,31 +74,31 @@
                 <c:choose>
                     <c:when test="${sessionScope.membership[0].equals('admins') || sessionScope.membership[0].equals('concordia')}">
                         <select name="group">
-                            <option selected = "selected">Public</option>
-                            <option>Concordia</option>
-                            <option>ENCS</option>
-                            <option>COMP</option>
-                            <option>SOEN</option>
+                            <option value="public" selected = "selected">Public</option>
+                            <option value="concordia">Concordia</option>
+                            <option value="encs">ENCS</option>
+                            <option value="comp">COMP</option>
+                            <option value="soen">SOEN</option>
                         </select>
                     </c:when>
                     <c:when test="${sessionScope.membership[0].equals('encs')}">
                         <select name="group">
-                            <option selected = "selected">Public</option>
-                            <option>ENCS</option>
-                            <option>COMP</option>
-                            <option>SOEN</option>
+                            <option value="public" selected = "selected">Public</option>
+                            <option value="encs">ENCS</option>
+                            <option value="comp">COMP</option>
+                            <option value="soen">SOEN</option>
                         </select>
                     </c:when>
                     <c:when test="${sessionScope.membership[0].equals('comp')}">
                         <select name="group">
-                            <option selected = "selected">Public</option>
-                            <option>COMP</option>
+                            <option value="public" selected = "selected">Public</option>
+                            <option value="comp">COMP</option>
                         </select>
                     </c:when>
                     <c:otherwise>
                         <select name="group">
-                            <option selected = "selected">Public</option>
-                            <option>SOEN</option>
+                            <option value="public" selected = "selected">Public</option>
+                            <option value="soen">SOEN</option>
                         </select>
                     </c:otherwise>
                 </c:choose>
