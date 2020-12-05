@@ -9,10 +9,12 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -54,10 +56,15 @@ public class PostServlet extends HttpServlet {
             String paramName = "postID";
             String strPostID = request.getParameter(paramName);
             int postID = Integer.parseInt(strPostID);
+            boolean isSuccess;
             if(action.equals("delete"))
             {
-                boolean isSuccess = PostManager.deletePost(postID);
+                /** MODIFIED BY STEFAN SO ONLY AUTHORIZED USERS CAN DELETE POSTS */
+                HttpSession session=request.getSession(false);
+
+                isSuccess = PostManager.deletePost(postID, session);
                 response.sendRedirect(String.format("index.jsp?postId=%d&success=%b", postID, isSuccess));
+
             }
             else if(action.equals("update"))
             {

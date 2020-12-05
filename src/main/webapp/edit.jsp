@@ -18,7 +18,7 @@
         response.sendRedirect("login.jsp");
     }
 %>
-
+<c:if test="${post.getUsername().equals(sessionScope.username)||sessionScope.membership[0].equals('admins')}">
 <html>
 <head>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous" />
@@ -168,3 +168,7 @@
     </div>
 </body>
 </html>
+</c:if>
+<c:if test="${!post.getUsername().equals(sessionScope.username) && !sessionScope.membership[0].equals('admins')}">
+    YOU DON'T HAVE ACCESS!
+</c:if>

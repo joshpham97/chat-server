@@ -1,5 +1,6 @@
 package datamapper;
 
+import app.GroupManager;
 import app.UserManager;
 import server.database.dao.UserDAO;
 import server.database.model.User;
@@ -8,9 +9,10 @@ import javax.servlet.http.HttpSession;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 
 public class UserManagerImpl implements UserManager {
-    public  boolean login(String username, String password, HttpSession session)
+    public boolean login(String username, String password, HttpSession session)
     {
         boolean result = false;
 
@@ -25,6 +27,10 @@ public class UserManagerImpl implements UserManager {
         int userID = user.getUserID();
 
         if (user != null && generatedPassword.equals(pass)) {
+            /** RETRIEVE USER MEMBERSHIP */
+            ArrayList<String> member = GroupManager.getUserGroups(userID);
+            session.setAttribute("membership" , member);
+            /** END */
             String errMsg = (String)session.getAttribute("errorMessage");
             if(errMsg != null)
             {
