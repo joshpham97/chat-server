@@ -84,7 +84,7 @@ public class PostManager {
         return PostDAO.selectPostById(postId);
     }
 
-    public static boolean updatePost(int postId, String uname, String title, String message)
+    public static boolean updatePost(int postId, String title, String message)
     {
         boolean success = false;
 
@@ -96,7 +96,7 @@ public class PostManager {
 
         //Update the post
         if (success)
-            success = PostDAO.updatePostDatabase(postId, uname, title, message);
+            success = PostDAO.updatePostDatabase(postId, title, message);
 
         //Reinserts the hashtag - old and new
         if (success)

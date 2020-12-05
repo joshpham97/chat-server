@@ -188,19 +188,18 @@ public class PostDAO {
         return success;
     }
 
-    public static boolean updatePostDatabase(int postId, String uname, String title, String message) {
+    public static boolean updatePostDatabase(int postId, String title, String message) {
         boolean success = false;
 
         try {
             Connection conn = DBConnection.getConnection();
 
-            String sql = "UPDATE post_info SET username = ?, title = ?, date_modified = ?, message = ? WHERE post_id = ?";
+            String sql = "UPDATE post_info SET title = ?, date_modified = ?, message = ? WHERE post_id = ?";
             PreparedStatement ps = conn.prepareStatement(sql);
-            ps.setString(1, uname);
-            ps.setString(2, title);
-            ps.setTimestamp(3, Timestamp.valueOf(LocalDateTime.now()));
-            ps.setString(4, message);
-            ps.setInt(5, postId);
+            ps.setString(1, title);
+            ps.setTimestamp(2, Timestamp.valueOf(LocalDateTime.now()));
+            ps.setString(3, message);
+            ps.setInt(4, postId);
             int row = ps.executeUpdate();
 
             if (row > 0)

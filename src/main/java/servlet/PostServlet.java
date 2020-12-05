@@ -41,7 +41,7 @@ public class PostServlet extends HttpServlet {
         else if(action.equals("update"))
         {
             int postID = Integer.parseInt(strPostID);
-            boolean success = PostManager.updatePost(postID,uname, title, message);
+            boolean success = PostManager.updatePost(postID, title, message);
             if (success)
                 response.sendRedirect(String.format("PostEditServlet?postId=%d", postID));
             else
