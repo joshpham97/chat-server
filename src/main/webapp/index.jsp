@@ -1,4 +1,4 @@
-<%@ page import="server.chat.model.PostList" %>
+<%@ page import="server.database.model.PostList" %>
 <%--
   Created by IntelliJ IDEA.
   User: Stefan JB
