@@ -1,6 +1,8 @@
 package servlet;
 
 import app.UserManager;
+import app.UserManagerFactory;
+import server.database.model.User;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -21,7 +23,8 @@ public class AuthServlet extends HttpServlet {
         String destPage = "login.jsp";
 
         try {
-                if(UserManager.login(uname, password, session))
+            UserManager userManager = UserManagerFactory.getUserManager();
+                if(userManager.login(uname, password, session))
                 {
                     destPage = "index.jsp";
                 }

@@ -58,6 +58,8 @@ public class PostManager {
 
         // Get the post ids
         ArrayList<Integer> postIDs = HashtagManager.getPostIDsByHashtags(hashtags);
+        if(hashtags != null && postIDs.isEmpty())
+            return new PostList();
 
         ArrayList<Post> posts = PostDAO.searchNPostsWithOffset(username, from, to, formatListToString(postIDs), limit, offset);
         return new PostList(posts);
@@ -82,6 +84,8 @@ public class PostManager {
     public static int getNumberOfPages(String username, LocalDateTime from, LocalDateTime to, List<String> hashtags) {
         // Get the post ids
         ArrayList<Integer> postIDs = HashtagManager.getPostIDsByHashtags(hashtags);
+        if(hashtags != null && postIDs.isEmpty())
+            return 0;
 
         int postCount = PostDAO.countPosts(username, from, to, formatListToString(postIDs));
         int pages = (int) Math.ceil(((double) postCount) / NUMBER_OF_POSTS);
