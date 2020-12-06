@@ -110,6 +110,9 @@
 
                                     <div>
                                         <div class="card-body ">
+                                            <div>
+                                                <small><i>${post.getPermissionGroup()}</i></small>
+                                            </div>
                                             <div>${post.getMessage()}</div>
                                         </div>
                                     </div>
