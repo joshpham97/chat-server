@@ -1,5 +1,6 @@
 package servlet;
 
+import app.GroupManager;
 import app.PostManager;
 import app.AttachmentManager;
 import server.database.model.Attachment;

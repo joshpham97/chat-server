@@ -160,6 +160,7 @@ public class PostDAO {
         post.setDateModified(rs.getTimestamp("date_modified").toLocalDateTime());
         post.setMessage((rs.getString("message")));
         post.setAttID(attID);
+        post.setPermissionGroup(rs.getString("permission_group"));
 
         return post;
     }
@@ -298,6 +299,7 @@ public class PostDAO {
         post.setDateModified(rs.getTimestamp("date_modified").toLocalDateTime());
         post.setMessage((rs.getString("message")));
         post.setAttID(attID);
+        post.setPermissionGroup(rs.getString("permission_group"));
 
         return post;
     }

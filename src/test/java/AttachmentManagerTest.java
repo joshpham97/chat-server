@@ -133,7 +133,7 @@ public class AttachmentManagerTest {
     @Test
     public void getAttachment() throws InterruptedException, SQLException, IOException {
         //Arrange
-        Integer postId = PostManager.createPost("john", "Attachment Test", "This is a test for attachments");
+        Integer postId = PostManager.createPost("john", "Attachment Test", "This is a test for attachments", "public");
         boolean success = AttachmentManager.insertAttachment(orginalFile, postId);
         Post post = PostManager.getPostById(postId);
         Integer attId = post.getAttID();
@@ -154,7 +154,7 @@ public class AttachmentManagerTest {
     @Test
     public void insertAttachment() throws InterruptedException {
         //Arrange
-        Integer postId = PostManager.createPost("john", "Attachment Test", "This is a test for attachments");
+        Integer postId = PostManager.createPost("john", "Attachment Test", "This is a test for attachments", "public");
         Thread.sleep(1000);
 
         //Action
@@ -173,7 +173,7 @@ public class AttachmentManagerTest {
     @Test
     public void updateAttachment() throws InterruptedException {
         //Arrange - Create a new post and attach a file
-        Integer postId = PostManager.createPost("john", "Attachment Test", "This is a test for attachments");
+        Integer postId = PostManager.createPost("john", "Attachment Test", "This is a test for attachments", "public");
         AttachmentManager.insertAttachment(orginalFile, postId);
         Post post = PostManager.getPostById(postId);
         Integer attId = post.getAttID();
@@ -199,7 +199,7 @@ public class AttachmentManagerTest {
     @Test
     public void deleteAttachment() throws InterruptedException {
         //Arrange - Create a new post and attach a file
-        Integer postId = PostManager.createPost("john", "Attachment Test", "This is a test for attachments");
+        Integer postId = PostManager.createPost("john", "Attachment Test", "This is a test for attachments", "public");
         AttachmentManager.insertAttachment(orginalFile, postId);
         Post post = PostManager.getPostById(postId);
         Integer attId = post.getAttID();
