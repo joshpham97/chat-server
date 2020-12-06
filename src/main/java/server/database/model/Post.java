@@ -1,9 +1,14 @@
 package server.database.model;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
+@XmlRootElement(name = "post")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Post implements java.io.Serializable {
     private int postID;
     private String username;

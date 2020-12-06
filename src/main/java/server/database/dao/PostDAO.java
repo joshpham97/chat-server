@@ -157,7 +157,7 @@ public class PostDAO {
         post.setUsername(rs.getString("username"));
         post.setTitle(rs.getString("title"));
         post.setDatePosted(rs.getTimestamp("date_posted").toLocalDateTime());
-        post.setDatePosted(rs.getTimestamp("date_modified").toLocalDateTime());
+        post.setDateModified(rs.getTimestamp("date_modified").toLocalDateTime());
         post.setMessage((rs.getString("message")));
         post.setAttID(attID);
         post.setPermissionGroup(rs.getString("permission_group"));
@@ -296,7 +296,7 @@ public class PostDAO {
         post.setUsername(rs.getString("username"));
         post.setTitle(rs.getString("title"));
         post.setDatePosted(rs.getTimestamp("date_posted").toLocalDateTime());
-        post.setDatePosted(rs.getTimestamp("date_modified").toLocalDateTime());
+        post.setDateModified(rs.getTimestamp("date_modified").toLocalDateTime());
         post.setMessage((rs.getString("message")));
         post.setAttID(attID);
         post.setPermissionGroup(rs.getString("permission_group"));
