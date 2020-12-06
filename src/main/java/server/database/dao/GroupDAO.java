@@ -7,7 +7,10 @@ import server.database.model.Group;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class GroupDAO {
@@ -29,9 +32,9 @@ public class GroupDAO {
                     .filter(g -> (((Group) g).getGroupID() == groupID))
                     .findFirst();
 
-            if(result.isPresent())
+            if (result.isPresent())
                 return result.get();
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -44,9 +47,34 @@ public class GroupDAO {
                     .filter(g -> (g.getGroupName().equals(groupName)))
                     .findFirst();
 
-            if(result.isPresent())
+            if (result.isPresent())
                 return result.get();
-        } catch(Exception e) {
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public ArrayList<Group> getChildGroups(List<String> groupNames) {
+        try {
+            ArrayList<Integer> parents = new ArrayList<>();
+            for (String name : groupNames) {
+                parents.add(getGroupByName(name).getGroupID());
+            }
+
+            return readGroupsFile()
+                    .map(g -> {
+                        if (g.getParent() != null && parents.contains(g.getParent())) {
+                            parents.add(g.getGroupID());
+                            return g;
+                        }
+
+                        return null;
+                    })
+                    .filter(g -> (g != null))
+                    .collect(Collectors.toCollection(ArrayList::new));
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -80,7 +108,7 @@ public class GroupDAO {
                 group.setParent(Integer.parseInt(objParent.toString()));
             else
                 group.setParent(null);
-        } catch(Exception e) {
+        } catch (Exception e) {
             throw new Error("Erroneous Group data: invalid field");
         }
 
@@ -95,27 +123,26 @@ public class GroupDAO {
             groups.forEach(g -> {
                 Integer parent = g.getParent();
 
-                if(parent != null) {
+                if (parent != null) {
                     Group parentGroup = getGroup(g.getParent());
 
-                    if(parentGroup == null)
+                    if (parentGroup == null)
                         throw new Error("Erroneous Group data: non-existent parent");
-                    else if(parent >= g.getGroupID()) // Prevents circular parent-child definitions
+                    else if (parent >= g.getGroupID()) // Prevents circular parent-child definitions
                         throw new Error("Erroneous Group data: invalid parent-child definition");
-                    else if(g.getGroupName().isEmpty())
+                    else if (g.getGroupName().isEmpty())
                         throw new Error("Erroneous Group data: empty group name");
                 }
             });
 
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public static void main(String[] args) {
-        GroupDAO groupDAO = new GroupDAO();
-
-        System.out.println(groupDAO.getGroup(1));
+//    public static void main(String[] args) {
+//        System.out.println(GroupDAO.getGroup(1));
 //        System.out.println(GroupDAO.getGroupByName("encs"));
-    }
+//        System.out.println(GroupDAO.getChildGroups("concordia"));
+//    }
 }

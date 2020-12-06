@@ -83,6 +83,27 @@
                         <label for="postContent">Message</label>
                         <textarea id="postContent" name="message" class="form-control" rows="2" required><c:out value="${post.message}" /></textarea>
                     </div>
+                    <select name="group">
+                        <c:choose>
+                            <c:when test="${post.permissionGroup.equals(\"public\")}">
+                                <option value="public" selected>Public</option>
+                            </c:when>
+                            <c:otherwise>
+                                <option value="public">Public</option>
+                            </c:otherwise>
+                        </c:choose>
+
+                        <c:forEach items="${sessionScope.impliedMemberships}" var="membership">
+                            <c:choose>
+                                <c:when test="${post.permissionGroup.equals(membership)}">
+                                    <option value="${membership}" selected>${membership}</option>
+                                </c:when>
+                                <c:otherwise>
+                                    <option value="${membership}">${membership}</option>
+                                </c:otherwise>
+                            </c:choose>
+                        </c:forEach>
+                    </select>
                     <div class="form-group">
                         <button type="submit" class="btn btn-primary mt-2 mi">Update Post</button>
                     </div>
