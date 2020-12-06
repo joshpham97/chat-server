@@ -11,13 +11,19 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 public class GroupDAO {
-    private static final String GROUPS_FILE = "groups.json";
+    private static final String DEFAULT_FILE = "groups.json";
+    private String groups_file;
 
-    static {
+    public GroupDAO(String filePath) {
+        groups_file = filePath;
         checkData();
     }
 
-    public static Group getGroup(int groupID) {
+    public GroupDAO() {
+        this(DEFAULT_FILE);
+    }
+
+    public Group getGroup(int groupID) {
         try {
             Optional<Group> result = readGroupsFile()
                     .filter(g -> (((Group) g).getGroupID() == groupID))
@@ -32,7 +38,7 @@ public class GroupDAO {
         return null;
     }
 
-    public static Group getGroupByName(String groupName) {
+    public Group getGroupByName(String groupName) {
         try {
             Optional<Group> result = readGroupsFile()
                     .filter(g -> (g.getGroupName().equals(groupName)))
@@ -48,8 +54,8 @@ public class GroupDAO {
     }
 
     // Read groups file and return contents as a Stream of Groups
-    private static Stream<Group> readGroupsFile() throws Exception {
-        InputStream inputStream = GroupDAO.class.getClassLoader().getResourceAsStream(GROUPS_FILE); // Get resource
+    private Stream<Group> readGroupsFile() throws Exception {
+        InputStream inputStream = GroupDAO.class.getClassLoader().getResourceAsStream(groups_file); // Get resource
         Object obj = new JSONParser().parse(new InputStreamReader(inputStream)); // Read file
         JSONArray ja = (JSONArray) obj; // Parse object to JSONArray
 
@@ -61,7 +67,7 @@ public class GroupDAO {
     }
 
     // Convert JSONObject to Group
-    private static Group jsonObjectToGroup(JSONObject jo) {
+    private Group jsonObjectToGroup(JSONObject jo) {
         Group group = new Group();
 
         try {
@@ -82,7 +88,7 @@ public class GroupDAO {
     }
 
     // Checks for erroneous data
-    private static void checkData() {
+    private void checkData() {
         try {
             Stream<Group> groups = readGroupsFile();
 
@@ -107,7 +113,9 @@ public class GroupDAO {
     }
 
     public static void main(String[] args) {
-        System.out.println(GroupDAO.getGroup(1));
+        GroupDAO groupDAO = new GroupDAO();
+
+        System.out.println(groupDAO.getGroup(1));
 //        System.out.println(GroupDAO.getGroupByName("encs"));
     }
 }

@@ -9,8 +9,11 @@ import java.util.ArrayList;
 
 // Handles calling MembershipDAO and GroupDAO
 public class GroupManager {
+    private static GroupDAO groupDAO = new GroupDAO();
+    private static MembershipDAO membershipDAO = new MembershipDAO();
+
     public static String getGroupName(int groupID) {
-        Group group = GroupDAO.getGroup(groupID);
+        Group group = groupDAO.getGroup(groupID);
 
         return group == null ? null : group.getGroupName();
     }
@@ -19,9 +22,9 @@ public class GroupManager {
     public static ArrayList<String> getUserGroups(int userID) {
         ArrayList<String> groups = new ArrayList<>();
 
-        ArrayList<Membership> memberships = MembershipDAO.getUserMemberships(userID);
+        ArrayList<Membership> memberships = membershipDAO.getUserMemberships(userID);
         for (Membership m: memberships) {
-            Group group = GroupDAO.getGroup(m.getGroupID());
+            Group group = groupDAO.getGroup(m.getGroupID());
             groups.add(group.getGroupName());
         }
 
