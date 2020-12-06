@@ -2,6 +2,7 @@ package server.database.model;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 
 public class Post implements java.io.Serializable {
     private int postID;
@@ -11,6 +12,7 @@ public class Post implements java.io.Serializable {
     private LocalDateTime dateModified;
     private String message;
     private Integer attID; // Integer instead of int to simulate nullable fields
+    private String permissionGroup;
     private String datePostedStr; // Helps with displaying date on frontend
     private String dateModifiedStr;
 
@@ -78,6 +80,8 @@ public class Post implements java.io.Serializable {
 
     public Integer getAttID() { return attID; }
 
+    public String getPermissionGroup() { return permissionGroup; }
+
     public void setPostID(int postID) { this.postID = postID; }
 
     public void setUsername(String username) {
@@ -101,6 +105,8 @@ public class Post implements java.io.Serializable {
     }
 
     public void setAttID(Integer attID) { this.attID = attID; }
+
+    public void setPermissionGroup(String permissionGroup) { this.permissionGroup = permissionGroup; }
 
     private String formatDate(LocalDateTime date) {
         return date.getMonth().toString().toLowerCase() + " " + date.getDayOfMonth() + ", " + date.getYear();
