@@ -30,6 +30,7 @@ public class UserManagerImpl implements UserManager {
             /** RETRIEVE USER MEMBERSHIP */
             ArrayList<String> member = GroupManager.getUserGroups(userID);
             session.setAttribute("membership" , member);
+            session.setAttribute("impliedMemberships", GroupManager.getImpliedGroupNames(member));
             /** END */
             String errMsg = (String)session.getAttribute("errorMessage");
             if(errMsg != null)
