@@ -75,7 +75,7 @@
                     <option value="public" selected>Public</option>
 
                     <c:forEach items="${sessionScope.impliedMemberships}" var="membership">
-                        <option value="membership">${membership}</option>
+                        <option value="${membership}">${membership}</option>
                     </c:forEach>
                 </select>
                 <div class="col text-center">
