@@ -9,10 +9,12 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -35,8 +37,11 @@ public class DownloadPostServlet extends HttpServlet {
             LocalDateTime from = (strFrom == null || strFrom.isEmpty()) ? null : LocalDate.parse(strFrom).atStartOfDay();
             LocalDateTime to = (strTo == null || strTo.isEmpty()) ? null : LocalDate.parse(strTo).plusDays(1).atStartOfDay();
             List<String> hashtags = (strHashtags == null || strHashtags.isEmpty()) ? null : Arrays.asList(strHashtags.split(" "));
+            HttpSession session = request.getSession();
+            ArrayList<String> groups = (ArrayList<String>) session.getAttribute("impliedMembership");
 
-            PostList posts = PostManager.searchPosts(username, from, to, hashtags);
+
+            PostList posts = PostManager.searchPosts(username, from, to, hashtags, groups);
             String xmlPosts = PostTransformer.toXMLDocument(posts);
 
             PrintWriter responseWriter = response.getWriter();
