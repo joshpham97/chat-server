@@ -19,5 +19,9 @@
     "groupID": "5",
     "groupName": "soen",
     "parent": "3"
+  }, {
+    "groupID": "6",
+    "groupName": "jmsb",
+    "parent": "2"
   }
 ]

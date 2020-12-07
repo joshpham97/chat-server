@@ -12,13 +12,13 @@ import java.util.Set;
 
 public class PostDAO {
     public static ArrayList<Post> searchNPostsWithOffset(String username, LocalDateTime from, LocalDateTime to,
-                                                         String postIdsStr, Integer n, Integer o) {
-        String sql = searchPostsQueryBuilder(username, from, to, postIdsStr, n, o, "*");
+                                                         String postIdsStr, Integer n, Integer o, String groupsStr) {
+        String sql = searchPostsQueryBuilder(username, from, to, postIdsStr, n, o, "*", groupsStr);
         return getPostsHelper(sql);
     }
 
-    public static int countPosts(String username, LocalDateTime from, LocalDateTime to, String postIDsStr) {
-        String sql = searchPostsQueryBuilder(username, from, to, postIDsStr, null, null, "COUNT(post_id) AS count");
+    public static int countPosts(String username, LocalDateTime from, LocalDateTime to, String postIDsStr, String groupsStr) {
+        String sql = searchPostsQueryBuilder(username, from, to, postIDsStr, null, null, "COUNT(post_id) AS count", groupsStr);
 
         int count = -1; // Signals an error
         try {
@@ -41,7 +41,7 @@ public class PostDAO {
 
     // Builds query based on arguments
     private static String searchPostsQueryBuilder(String username, LocalDateTime from, LocalDateTime to,
-                                                  String postIDsStr, Integer n, Integer o, String fields) {
+                                                  String postIDsStr, Integer n, Integer o, String fields, String groupsStr) {
         String sql = "SELECT " + fields + " FROM post_info";
 
         // Conjunctions for WHERE clause (for query building)
@@ -69,6 +69,12 @@ public class PostDAO {
         // Hashtag filtering
         if(postIDsStr != null && !postIDsStr.isEmpty()) {
             sql += " " + conj[conjNumb] + " post_id IN (" + postIDsStr + ")";
+            conjNumb = 1;
+        }
+
+        // Hashtag filtering
+        if(groupsStr != null && !groupsStr.isEmpty()) {
+            sql += " " + conj[conjNumb] + " permission_group IN (" + groupsStr + ")";
             conjNumb = 1;
         }
 

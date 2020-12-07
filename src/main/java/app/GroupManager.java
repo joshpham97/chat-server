@@ -37,6 +37,8 @@ public class GroupManager {
                 .map(g -> (g.getGroupName()))
                 .collect(Collectors.toCollection(ArrayList::new));
 
+        childGroupNames.add("public");
+
         return Stream.concat(groupNames.stream(), childGroupNames.stream())
                 .distinct()
                 .filter(n -> (!n.equals("admins")))
