@@ -1,5 +1,7 @@
 import app.UserManager;
 import app.UserManagerFactory;
+import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import javax.servlet.ServletContext;
@@ -12,8 +14,13 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class UserManagerTest {
-    private static HttpSession mock(Class<HttpSession> httpSessionClass) {
-        return new HttpSession() {
+    private static UserManager userManager;
+    private static HttpSession session;
+
+    @BeforeClass
+    public static void init() {
+        userManager = UserManagerFactory.getUserManager();
+        session =  new HttpSession() {
             private Map<String, Object> sessionList = new HashMap<>();
 
             @Override
@@ -83,7 +90,7 @@ public class UserManagerTest {
 
             @Override
             public void removeAttribute(String name) {
-
+                sessionList.remove(name);
             }
 
             @Override
@@ -103,11 +110,14 @@ public class UserManagerTest {
         };
     }
 
+    @Before
+    public void clearSession() {
+        session.removeAttribute("username");
+    }
+
     @Test
     public void loginSuccess() throws InterruptedException {
         // Arrange
-        UserManager userManager = UserManagerFactory.getUserManager();
-        HttpSession session = mock(HttpSession.class);
         String username = "john";
         String password = "password1";
 
@@ -123,8 +133,6 @@ public class UserManagerTest {
     @Test
     public void loginFail() throws InterruptedException {
         // Arrange
-        UserManager userManager = UserManagerFactory.getUserManager();
-        HttpSession session = mock(HttpSession.class);
         String username = "john";
         String password = "incorrect_password";
 
@@ -140,7 +148,6 @@ public class UserManagerTest {
     @Test
     public void encryptPassword() {
         // Arrange
-        UserManager userManager = UserManagerFactory.getUserManager();
         String password = "password1";
         String validHashed = "7c6a180b36896a0a8c02787eeafb0e4c";
 
