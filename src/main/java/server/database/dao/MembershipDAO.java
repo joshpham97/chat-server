@@ -5,6 +5,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import server.database.model.Membership;
 
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -54,7 +55,13 @@ public class MembershipDAO {
 
     // Read groups file and return contents as a Stream of Groups
     private Stream<Membership> readMembershipsFile() throws Exception {
-        InputStream inputStream = MembershipDAO.class.getClassLoader().getResourceAsStream(memberships_file); // Get resource
+        InputStream inputStream;
+
+        if(memberships_file.equals(DEFAULT_FILE))
+            inputStream = GroupDAO.class.getClassLoader().getResourceAsStream(memberships_file); // Get resource
+        else
+            inputStream = new FileInputStream(memberships_file);
+
         Object obj = new JSONParser().parse(new InputStreamReader(inputStream)); // Read file
         JSONArray ja = (JSONArray) obj; // Parse object to JSONArray
 
@@ -87,9 +94,9 @@ public class MembershipDAO {
 
             membs.forEach(m -> {
                 if(UserDAO.getUser(m.getUserID()) == null)
-                    throw new Error("Erroneous Membership data: non-existent user");
+                    throw new Error("Erroneous Membership data: undefined user");
                 else if(groupDAO.getGroup(m.getGroupID()) == null)
-                    throw new Error("Erroneous Membership data: non-existent group");
+                    throw new Error("Erroneous Membership data: undefined group");
             });
 
         } catch(Exception e) {

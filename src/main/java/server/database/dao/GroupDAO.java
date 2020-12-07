@@ -5,6 +5,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import server.database.model.Group;
 
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -83,7 +84,13 @@ public class GroupDAO {
 
     // Read groups file and return contents as a Stream of Groups
     private Stream<Group> readGroupsFile() throws Exception {
-        InputStream inputStream = GroupDAO.class.getClassLoader().getResourceAsStream(groups_file); // Get resource
+        InputStream inputStream;
+
+        if(groups_file.equals(DEFAULT_FILE))
+            inputStream = GroupDAO.class.getClassLoader().getResourceAsStream(groups_file); // Get resource
+        else
+            inputStream = new FileInputStream(groups_file);
+
         Object obj = new JSONParser().parse(new InputStreamReader(inputStream)); // Read file
         JSONArray ja = (JSONArray) obj; // Parse object to JSONArray
 
@@ -127,7 +134,7 @@ public class GroupDAO {
                     Group parentGroup = getGroup(g.getParent());
 
                     if (parentGroup == null)
-                        throw new Error("Erroneous Group data: non-existent parent");
+                        throw new Error("Erroneous Group data: undefined parent");
                     else if (parent >= g.getGroupID()) // Prevents circular parent-child definitions
                         throw new Error("Erroneous Group data: invalid parent-child definition");
                     else if (g.getGroupName().isEmpty())
