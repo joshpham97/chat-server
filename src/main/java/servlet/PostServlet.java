@@ -94,8 +94,11 @@ public class PostServlet extends HttpServlet {
                 List<String> hashtags = (strHashtags == null || strHashtags.isEmpty()) ? null : Arrays.asList(strHashtags.split(" "));
                 int currentPage = (strCurrentPage == null || strCurrentPage.isEmpty()) ? 1 : Integer.parseInt(strCurrentPage);
 
-                PostList posts = PostManager.searchPostsWithPagination(username, from, to, hashtags, currentPage);
-                int pages = PostManager.getNumberOfPages(username, from, to, hashtags);
+                HttpSession session = request.getSession();
+                ArrayList<String> groups = (ArrayList<String>) session.getAttribute("impliedMemberships");
+
+                PostList posts = PostManager.searchPostsWithPagination(username, from, to, hashtags, currentPage, groups);
+                int pages = PostManager.getNumberOfPages(username, from, to, hashtags, groups);
 
                 String queryString = "";
                 for (Map.Entry<String, String[]> p: request.getParameterMap().entrySet()) {

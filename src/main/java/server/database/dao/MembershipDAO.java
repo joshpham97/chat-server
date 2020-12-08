@@ -3,7 +3,6 @@ package server.database.dao;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import server.database.model.Group;
 import server.database.model.Membership;
 
 import java.io.FileInputStream;
@@ -24,10 +23,6 @@ public class MembershipDAO {
 
     public MembershipDAO() {
         this(DEFAULT_FILE);
-    }
-
-    static {
-        checkData();
     }
 
     // Gets all memberships for a user
