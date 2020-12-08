@@ -5,7 +5,8 @@
   Time: 12:10 p.m.
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <html>
 <head>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous" />
@@ -18,13 +19,6 @@
     <title>Login Page</title>
 </head>
 
-<%
-    String username = (String) session.getAttribute("username");
-    if (null != username) {
-        response.sendRedirect("index.jsp");
-    }
-%>
-
 <body>
     <nav class="navbar navbar-dark bg-dark">
         <span class="navbar-brand mb-0 h1">Simple Message Board</span>
@@ -34,28 +28,13 @@
         <div class="row mt-2">
             <div class="col-12">
                 <h4>Login</h4>
-                <%--    3 defined users
-                    username: username1
-                    passsword password1
 
-                    username: username2
-                    password: password2
+                <c:if test="${sessionScope.errorMessage != null}">
+                    <div class="alert alert-danger" role="alert">
+                        ${sessionScope.errorMessage}
+                    </div>
+                </c:if>
 
-                    username: username3
-                    password: password3
-
-                --%>
-                <%
-                    Object objErrorMessage = session.getAttribute("errorMessage");
-                    String errorMessage = objErrorMessage == null ? "" : (String) objErrorMessage;
-                    if(!errorMessage.isEmpty()) {
-                %>
-                        <div class="alert alert-danger" role="alert">
-                            <%= errorMessage %>
-                        </div>
-                <%
-                    }
-                %>
                 <form action="AuthServlet" method="post">
                     <div class="form-group">
                         <label for="username">Username</label>
