@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+
 public class PostManager {
     // Read config file
     private static final String CONFIG_FILE = "config.json";
