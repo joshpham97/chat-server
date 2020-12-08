@@ -10,7 +10,6 @@ import server.database.model.Post;
 import javax.servlet.http.HttpSession;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.lang.reflect.Array;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -45,38 +44,46 @@ public class PostManager {
         return null;
     }
 
-    public static PostList searchPosts(String username, LocalDateTime from, LocalDateTime to, List<String> hashtags, ArrayList<String> groups) {
+    public static PostList searchPosts(String username, LocalDateTime from, LocalDateTime to, List<String> hashtags) {
         // Get the post ids
         ArrayList<Integer> postIDs = HashtagManager.getPostIDsByHashtags(hashtags);
 
-        ArrayList<Post> posts = PostDAO.searchNPostsWithOffset(username, from, to, formatListToString(postIDs), null, null, formatStringListToString(groups));
+        ArrayList<Post> posts = PostDAO.searchNPostsWithOffset(username, from, to, formatListToString(postIDs), null, null);
         return new PostList(posts);
     }
 
-    public static PostList searchPostsWithPagination(String username, LocalDateTime from, LocalDateTime to, List<String> hashtags, int pageNumb, ArrayList<String> groups) {
+    public static PostList searchPostsWithPagination(String username, LocalDateTime from, LocalDateTime to, List<String> hashtags, int pageNumb) {
         int limit = NUMBER_OF_POSTS;
         int offset = NUMBER_OF_POSTS * (pageNumb - 1);
 
-        System.out.println("User permissions");
-        System.out.println(groups.size());
-        System.out.println(formatStringListToString(groups));
-
         // Get the post ids
         ArrayList<Integer> postIDs = HashtagManager.getPostIDsByHashtags(hashtags);
-        if(hashtags != null && postIDs.isEmpty())
-            return new PostList();
 
-        ArrayList<Post> posts = PostDAO.searchNPostsWithOffset(username, from, to, formatListToString(postIDs), limit, offset, formatStringListToString(groups));
+        ArrayList<Post> posts = PostDAO.searchNPostsWithOffset(username, from, to, formatListToString(postIDs), limit, offset);
         return new PostList(posts);
     }
 
-    public static int getNumberOfPages(String username, LocalDateTime from, LocalDateTime to, List<String> hashtags, ArrayList<String> groups) {
+    public static ArrayList<Post> getRecentPosts() {
+        /**
+        // TEMPORARY HARDCODING: waiting for PostDao and Post
+        ArrayList<Post> tempPosts = new ArrayList<>();
+        tempPosts.add(new Post(1, "username1", "title1", "message1", 1));
+        tempPosts.add(new Post(2, "username2", "title2", "message2", null));
+        tempPosts.add(new Post(3, "username3", "title3", "message3", 2));
+        ArrayList<Post> posts = tempPosts;
+
+//        ArrayList<Post> posts = (ArrayList<Post>) PostDAO.getRecentNPosts(NUMBER_OF_POSTS);
+        return posts;
+         */
+        ArrayList<Post> posts = PostDAO.getRecentPosts();
+        return posts;
+    }
+
+    public static int getNumberOfPages(String username, LocalDateTime from, LocalDateTime to, List<String> hashtags) {
         // Get the post ids
         ArrayList<Integer> postIDs = HashtagManager.getPostIDsByHashtags(hashtags);
-        if(hashtags != null && postIDs.isEmpty())
-            return 0;
 
-        int postCount = PostDAO.countPosts(username, from, to, formatListToString(postIDs), formatStringListToString(groups));
+        int postCount = PostDAO.countPosts(username, from, to, formatListToString(postIDs));
         int pages = (int) Math.ceil(((double) postCount) / NUMBER_OF_POSTS);
         return pages;
     }
@@ -106,13 +113,13 @@ public class PostManager {
         return success;
     }
 
-    public static boolean deletePost(int postId, String uname, String groupName) {
+    public static boolean deletePost(int postId, String uname, boolean isAdmin) {
         boolean deleted = false;
         /** Code modified by stefan */
 
         Post specificPost = PostManager.getPostById(postId);
 
-        if(groupName.equals("admins") || specificPost.getUsername().equals(uname))
+        if(isAdmin || specificPost.getUsername().equals(uname))
         {
             if (HashtagManager.existsInPostHashtag(postId))
                 deleted = HashtagManager.deletePostHashTag(postId);
@@ -136,6 +143,7 @@ public class PostManager {
         return deleted;
     }
 
+
     public static boolean updateAttachmentId(int postId, Integer attachmentId){
         return PostDAO.updateAttachmentId(postId, attachmentId);
     }
@@ -155,18 +163,5 @@ public class PostManager {
         postIDsStr = postIDsStr.substring(0, postIDsStr.length() - 2);
 
         return postIDsStr;
-    }
-
-    private static String formatStringListToString(ArrayList<String> strings) {
-        if(strings == null || strings.size() == 0)
-            return null;
-
-        String concatenatedString = "";
-        // Build a string of comma separated post ids
-        for (String s : strings)
-            concatenatedString += "\"" + s + "\", ";
-        concatenatedString = concatenatedString.substring(0, concatenatedString.length() - 2);
-
-        return concatenatedString;
     }
 }

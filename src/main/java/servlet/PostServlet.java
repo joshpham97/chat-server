@@ -60,13 +60,17 @@ public class PostServlet extends HttpServlet {
             boolean isSuccess;
             if(action.equals("delete"))
             {
+                boolean isAdmin = false;
                 /** MODIFIED BY STEFAN SO ONLY AUTHORIZED USERS CAN DELETE POSTS */
                 HttpSession session=request.getSession(false);
                 String uname = (String)session.getAttribute("username");
-                ArrayList<String> n = (ArrayList<String>)session.getAttribute("membership");
-                String groupName = n.get(0);
+                List<String> n = (ArrayList<String>)session.getAttribute("membership");
+                if(n.contains("admins"))
+                {
+                    isAdmin = true;
+                }
 
-                isSuccess = PostManager.deletePost(postID, uname, groupName);
+                isSuccess = PostManager.deletePost(postID, uname, isAdmin);
                 response.sendRedirect(String.format("index.jsp?postId=%d&success=%b", postID, isSuccess));
 
             }
@@ -90,11 +94,8 @@ public class PostServlet extends HttpServlet {
                 List<String> hashtags = (strHashtags == null || strHashtags.isEmpty()) ? null : Arrays.asList(strHashtags.split(" "));
                 int currentPage = (strCurrentPage == null || strCurrentPage.isEmpty()) ? 1 : Integer.parseInt(strCurrentPage);
 
-                HttpSession session = request.getSession();
-                ArrayList<String> groups = (ArrayList<String>) session.getAttribute("impliedMemberships");
-
-                PostList posts = PostManager.searchPostsWithPagination(username, from, to, hashtags, currentPage, groups);
-                int pages = PostManager.getNumberOfPages(username, from, to, hashtags, groups);
+                PostList posts = PostManager.searchPostsWithPagination(username, from, to, hashtags, currentPage);
+                int pages = PostManager.getNumberOfPages(username, from, to, hashtags);
 
                 String queryString = "";
                 for (Map.Entry<String, String[]> p: request.getParameterMap().entrySet()) {
