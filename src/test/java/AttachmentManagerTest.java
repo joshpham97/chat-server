@@ -133,7 +133,6 @@ public class AttachmentManagerTest {
     @Test
     public void getAttachment() throws InterruptedException, SQLException, IOException {
         //Arrange
-        /**
         Integer postId = PostManager.createPost("john", "Attachment Test", "This is a test for attachments", "public");
         boolean success = AttachmentManager.insertAttachment(orginalFile, postId);
         Post post = PostManager.getPostById(postId);
@@ -150,7 +149,6 @@ public class AttachmentManagerTest {
         assertEquals(500, attachment.getFilesize());
         assertEquals("text/plain", attachment.getMediaType());
         assertEquals("This is a file for testing.", fileContent);
-         */
     }
 
     @Test

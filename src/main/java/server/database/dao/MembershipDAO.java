@@ -6,6 +6,7 @@ import org.json.simple.parser.JSONParser;
 import server.database.model.Group;
 import server.database.model.Membership;
 
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -13,14 +14,24 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class MembershipDAO {
-    private static final String MEMBERSHIPS_FILE = "memberships.json";
+    private static final String DEFAULT_FILE = "memberships.json";
+    private String memberships_file;
+
+    public MembershipDAO(String filePath) {
+        memberships_file = filePath;
+        checkData();
+    }
+
+    public MembershipDAO() {
+        this(DEFAULT_FILE);
+    }
 
     static {
         checkData();
     }
 
     // Gets all memberships for a user
-    public static ArrayList<Membership> getUserMemberships(int userID) {
+    public ArrayList<Membership> getUserMemberships(int userID) {
         try {
             return readMembershipsFile()
                     .filter(m -> (m.getUserID() == userID))
@@ -34,7 +45,7 @@ public class MembershipDAO {
     }
 
     // Gets all memberships for a group
-    public static ArrayList<Membership> getGroupMemberships(int groupID) {
+    public ArrayList<Membership> getGroupMemberships(int groupID) {
         try {
             return readMembershipsFile()
                     .filter(m -> (m.getGroupID() == groupID))
@@ -48,8 +59,14 @@ public class MembershipDAO {
     }
 
     // Read groups file and return contents as a Stream of Groups
-    private static Stream<Membership> readMembershipsFile() throws Exception {
-        InputStream inputStream = MembershipDAO.class.getClassLoader().getResourceAsStream(MEMBERSHIPS_FILE); // Get resource
+    private Stream<Membership> readMembershipsFile() throws Exception {
+        InputStream inputStream;
+
+        if(memberships_file.equals(DEFAULT_FILE))
+            inputStream = GroupDAO.class.getClassLoader().getResourceAsStream(memberships_file); // Get resource
+        else
+            inputStream = new FileInputStream(memberships_file);
+
         Object obj = new JSONParser().parse(new InputStreamReader(inputStream)); // Read file
         JSONArray ja = (JSONArray) obj; // Parse object to JSONArray
 
@@ -61,7 +78,7 @@ public class MembershipDAO {
     }
 
     // Convert JSONObject to Membership
-    private static Membership jsonObjectToMembership(JSONObject jo) {
+    private Membership jsonObjectToMembership(JSONObject jo) {
         Membership membership = new Membership();
 
         try {
@@ -75,15 +92,16 @@ public class MembershipDAO {
     }
 
     // Checks for erroneous data
-    private static void checkData() {
+    private void checkData() {
         try {
             Stream<Membership> membs = readMembershipsFile();
+            GroupDAO groupDAO = new GroupDAO();
 
             membs.forEach(m -> {
                 if(UserDAO.getUser(m.getUserID()) == null)
-                    throw new Error("Erroneous Membership data: non-existent user");
-                else if(GroupDAO.getGroup(m.getGroupID()) == null)
-                    throw new Error("Erroneous Membership data: non-existent group");
+                    throw new Error("Erroneous Membership data: undefined user");
+                else if(groupDAO.getGroup(m.getGroupID()) == null)
+                    throw new Error("Erroneous Membership data: undefined group");
             });
 
         } catch(Exception e) {
@@ -92,7 +110,9 @@ public class MembershipDAO {
     }
 
 //    public static void main(String[] args) {
-//        System.out.println(MembershipDAO.getUserMemberships(1).toString());
-//        System.out.println(MembershipDAO.getGroupMemberships(1).toString());
+//        MembershipDAO membershipDAO = new MembershipDAO();
+//
+//        System.out.println(membershipDAO.getUserMemberships(1).toString());
+//        System.out.println(membershipDAO.getGroupMemberships(1).toString());
 //    }
 }
