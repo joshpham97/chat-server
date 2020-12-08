@@ -5,6 +5,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import server.database.model.Group;
 
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -14,13 +15,19 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class GroupDAO {
-    private static final String GROUPS_FILE = "groups.json";
+    private static final String DEFAULT_FILE = "groups.json";
+    private String groups_file;
 
-    static {
+    public GroupDAO(String filePath) {
+        groups_file = filePath;
         checkData();
     }
 
-    public static Group getGroup(int groupID) {
+    public GroupDAO() {
+        this(DEFAULT_FILE);
+    }
+
+    public Group getGroup(int groupID) {
         try {
             Optional<Group> result = readGroupsFile()
                     .filter(g -> (((Group) g).getGroupID() == groupID))
@@ -35,7 +42,7 @@ public class GroupDAO {
         return null;
     }
 
-    public static Group getGroupByName(String groupName) {
+    public Group getGroupByName(String groupName) {
         try {
             Optional<Group> result = readGroupsFile()
                     .filter(g -> (g.getGroupName().equals(groupName)))
@@ -50,7 +57,7 @@ public class GroupDAO {
         return null;
     }
 
-    public static ArrayList<Group> getChildGroups(List<String> groupNames) {
+    public ArrayList<Group> getChildGroups(List<String> groupNames) {
         try {
             ArrayList<Integer> parents = new ArrayList<>();
             for (String name : groupNames) {
@@ -76,8 +83,14 @@ public class GroupDAO {
     }
 
     // Read groups file and return contents as a Stream of Groups
-    private static Stream<Group> readGroupsFile() throws Exception {
-        InputStream inputStream = GroupDAO.class.getClassLoader().getResourceAsStream(GROUPS_FILE); // Get resource
+    private Stream<Group> readGroupsFile() throws Exception {
+        InputStream inputStream;
+
+        if(groups_file.equals(DEFAULT_FILE))
+            inputStream = GroupDAO.class.getClassLoader().getResourceAsStream(groups_file); // Get resource
+        else
+            inputStream = new FileInputStream(groups_file);
+
         Object obj = new JSONParser().parse(new InputStreamReader(inputStream)); // Read file
         JSONArray ja = (JSONArray) obj; // Parse object to JSONArray
 
@@ -89,7 +102,7 @@ public class GroupDAO {
     }
 
     // Convert JSONObject to Group
-    private static Group jsonObjectToGroup(JSONObject jo) {
+    private Group jsonObjectToGroup(JSONObject jo) {
         Group group = new Group();
 
         try {
@@ -110,7 +123,7 @@ public class GroupDAO {
     }
 
     // Checks for erroneous data
-    private static void checkData() {
+    private void checkData() {
         try {
             Stream<Group> groups = readGroupsFile();
 
@@ -121,7 +134,7 @@ public class GroupDAO {
                     Group parentGroup = getGroup(g.getParent());
 
                     if (parentGroup == null)
-                        throw new Error("Erroneous Group data: non-existent parent");
+                        throw new Error("Erroneous Group data: undefined parent");
                     else if (parent >= g.getGroupID()) // Prevents circular parent-child definitions
                         throw new Error("Erroneous Group data: invalid parent-child definition");
                     else if (g.getGroupName().isEmpty())

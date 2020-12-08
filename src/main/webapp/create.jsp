@@ -72,10 +72,15 @@
                     <textarea id="postContent" name="message" class="form-control" rows="2" placeholder="Type your post here..." required></textarea>
                 </div>
                 <select name="group">
-                    <option value="public" selected>Public</option>
-
                     <c:forEach items="${sessionScope.impliedMemberships}" var="membership">
-                        <option value="${membership}">${membership}</option>
+                        <c:choose>
+                            <c:when test="${membership.equals(\"public\")}">
+                                <option value="${membership}" selected>${membership}</option>
+                            </c:when>
+                            <c:otherwise>
+                                <option value="${membership}">${membership}</option>
+                            </c:otherwise>
+                        </c:choose>
                     </c:forEach>
                 </select>
                 <div class="col text-center">
