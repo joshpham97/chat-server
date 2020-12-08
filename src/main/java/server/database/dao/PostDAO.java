@@ -242,6 +242,27 @@ public class PostDAO {
         return post;
     }
 
+    public static Post selectPostByAttId(int attId) {
+        Post post = null;
+
+        try{
+            Connection conn = DBConnection.getConnection();
+            String sql = "SELECT * FROM post_info WHERE att_id = ?";
+            PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setInt(1, attId);
+            ResultSet rs = statement.executeQuery();
+
+            if (rs.next())
+                post = mapResultSetToPost(rs);
+        }catch (SQLException ex) {
+            ex.printStackTrace();
+        }finally {
+            DBConnection.closeConnection();
+        }
+
+        return post;
+    }
+
     public static boolean updateAttachmentId(int postId, Integer attachmentId){
         try{
             Connection conn = DBConnection.getConnection();

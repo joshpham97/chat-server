@@ -86,6 +86,8 @@ public class PostManager {
         return PostDAO.selectPostById(postId);
     }
 
+    public static Post getPostByAttId(int attID) { return PostDAO.selectPostByAttId(attID); }
+
     public static boolean updatePost(int postId, String title, String message, String group)
     {
         boolean success = false;
