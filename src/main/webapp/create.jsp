@@ -71,37 +71,13 @@
                     <label for="postContent">Message</label>
                     <textarea id="postContent" name="message" class="form-control" rows="2" placeholder="Type your post here..." required></textarea>
                 </div>
-                <c:choose>
-                    <c:when test="${sessionScope.membership[0].equals('admins') || sessionScope.membership[0].equals('concordia')}">
-                        <select name="group">
-                            <option value="public" selected = "selected">Public</option>
-                            <option value="concordia">Concordia</option>
-                            <option value="encs">ENCS</option>
-                            <option value="comp">COMP</option>
-                            <option value="soen">SOEN</option>
-                        </select>
-                    </c:when>
-                    <c:when test="${sessionScope.membership[0].equals('encs')}">
-                        <select name="group">
-                            <option value="public" selected = "selected">Public</option>
-                            <option value="encs">ENCS</option>
-                            <option value="comp">COMP</option>
-                            <option value="soen">SOEN</option>
-                        </select>
-                    </c:when>
-                    <c:when test="${sessionScope.membership[0].equals('comp')}">
-                        <select name="group">
-                            <option value="public" selected = "selected">Public</option>
-                            <option value="comp">COMP</option>
-                        </select>
-                    </c:when>
-                    <c:otherwise>
-                        <select name="group">
-                            <option value="public" selected = "selected">Public</option>
-                            <option value="soen">SOEN</option>
-                        </select>
-                    </c:otherwise>
-                </c:choose>
+                <select name="group">
+                    <option value="public" selected>Public</option>
+
+                    <c:forEach items="${sessionScope.impliedMemberships}" var="membership">
+                        <option value="${membership}">${membership}</option>
+                    </c:forEach>
+                </select>
                 <div class="col text-center">
                     <button type="submit" class="btn btn-primary mt-2 mi">Create Post</button>
                 </div>
