@@ -1,4 +1,3 @@
-
 import app.PostManager;
 import org.junit.Test;
 
@@ -129,6 +128,5 @@ public class PostManagerTest {
             assertTrue(p.getUsername().contains(username));
             assertTrue(group.contains(p.getPermissionGroup()));
         }
-
     }
 }
