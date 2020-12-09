@@ -107,30 +107,28 @@ public class PostManagerTest {
     }
 
     @Test
-    public void searchPost()
+    public void searchPost() throws InterruptedException
     {
         //Arrange
+        LocalDateTime from = LocalDateTime.now();
         String username = "john";
         String title = "post test";
-        String message = "test for post";
-        ArrayList<String> group = new ArrayList<String>();
+        String message = "test for #post";
+        ArrayList<String> group = new ArrayList<>();
         group.add("public");
         Integer postId = PostManager.createPost(username, title, message, group.get(0));
-        Post post = PostManager.getPostById(postId);
-        LocalDateTime from = LocalDateTime.now();
-        LocalDateTime to = LocalDateTime.now();
-        String[] hashtag1 = {"test","hello"};
-        List<String> hashtagList = Arrays.asList(hashtag1);
+        PostManager.getPostById(postId);
+        List<String> hashtagList = Arrays.asList("post");
 
         //Action
-        PostList pl = PostManager.searchPosts("john",from, to,hashtagList,group);
+        PostList pl = PostManager.searchPosts(username, from, null, hashtagList, group);
+        ArrayList<Post> postList = pl.getPosts();
 
         //Assertion
-        assertEquals(post.getPostID(), PostManager.getPostById(postId));
-        assertEquals(post.getUsername(), username);
-        assertEquals(post.getTitle(), title);
-        assertEquals(post.getMessage(), message);
-        assertEquals(post.getPermissionGroup(), group);
+        for (Post p: postList) {
+            assertTrue(p.getUsername().contains(username));
+            assertTrue(group.contains(p.getPermissionGroup()));
+        }
 
     }
 }
