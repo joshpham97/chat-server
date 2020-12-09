@@ -55,17 +55,14 @@ public class AttachmentServlet extends HttpServlet {
     }
 
     private void getAttachment(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String strAttachmentId = request.getParameter("attachmentId");
         HttpSession session = request.getSession();
         String username = (String) session.getAttribute("username");
 
-        Attachment att = AttachmentManager.getAttachment(Integer.parseInt(strAttachmentId));
-        Post post = PostManager.getPostByAttId(att.getAttachmentId());
-
-        if(username == null || !username.equals(post.getUsername())) {
+        if(username == null) {
             response.sendRedirect("index.jsp");
         }
         else {
+            String strAttachmentId = request.getParameter("attachmentId");
             OutputStream responseWriter = response.getOutputStream();
             if (strAttachmentId != null && !strAttachmentId.isEmpty()) {
                 int attachmentId = Integer.parseInt(strAttachmentId);
