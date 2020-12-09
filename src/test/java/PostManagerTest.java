@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class PostManagerTest {
 
     @Test
-    void createPost() {
+    public void createPost() {
         //Arrange
         String username = "john";
         String title = "post test";
@@ -29,7 +29,7 @@ public class PostManagerTest {
         Post post = PostManager.getPostById(postId);
 
         //Assertion
-        assertEquals(post.getPostID(), PostManager.getPostById(postId));
+        assertEquals(post.getPostID(), postId);
         assertEquals(post.getUsername(), username);
         assertEquals(post.getTitle(), title);
         assertEquals(post.getMessage(), message);
@@ -39,7 +39,7 @@ public class PostManagerTest {
 
 
     @Test
-    void getPostById() {
+    public void getPostById() {
         //Arrange
         String username = "john";
         String title = "post test";
@@ -60,7 +60,7 @@ public class PostManagerTest {
     }
 
     @Test
-    void updatePost() {
+    public void updatePost() {
         //Arrange
         String username = "john";
         String title = "test post title";
@@ -77,7 +77,6 @@ public class PostManagerTest {
 
         //Assertion
         assertTrue(success);
-        assertNull(updatePost);
         assertEquals(updatePost.getPostID(), postId);
         assertEquals(updatePost.getTitle(), titleUpdate);
         assertEquals(updatePost.getMessage(), messageUpdate);
@@ -87,7 +86,7 @@ public class PostManagerTest {
     }
 
     @Test
-    void deletePost() {
+    public void deletePost() {
         //Arrange
         String username = "john";
         String title = "test post title";
@@ -108,7 +107,7 @@ public class PostManagerTest {
     }
 
     @Test
-    void searchPost()
+    public void searchPost()
     {
         //Arrange
         String username = "john";
