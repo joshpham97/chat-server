@@ -1,13 +1,11 @@
+
 import app.PostManager;
-import org.junit.Before;
 import org.junit.Test;
 
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpSession;
-import javax.servlet.http.HttpSessionContext;
 
-import org.junit.BeforeClass;
 import server.database.model.Post;
+import server.database.model.PostList;
+
 import java.sql.SQLException;
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -18,103 +16,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class PostManagerTest {
 
-    private static PostManager postManager;
-    private static HttpSession session;
-
-    @BeforeClass
-    public static void init() {
-        session =  new HttpSession() {
-            private Map<String, Object> sessionList = new HashMap<>();
-
-            @Override
-            public long getCreationTime() {
-                return 0;
-            }
-
-            @Override
-            public String getId() {
-                return null;
-            }
-
-            @Override
-            public long getLastAccessedTime() {
-                return 0;
-            }
-
-            @Override
-            public ServletContext getServletContext() {
-                return null;
-            }
-
-            @Override
-            public void setMaxInactiveInterval(int interval) {
-
-            }
-
-            @Override
-            public int getMaxInactiveInterval() {
-                return 0;
-            }
-
-            @Override
-            public HttpSessionContext getSessionContext() {
-                return null;
-            }
-
-            @Override
-            public Object getAttribute(String name) {
-                return sessionList.get(name);
-            }
-
-            @Override
-            public Object getValue(String name) {
-                return null;
-            }
-
-            @Override
-            public Enumeration<String> getAttributeNames() {
-                return null;
-            }
-
-            @Override
-            public String[] getValueNames() {
-                return new String[0];
-            }
-
-            @Override
-            public void setAttribute(String name, Object value) {
-                sessionList.put(name, value);
-            }
-
-            @Override
-            public void putValue(String name, Object value) {
-
-            }
-
-            @Override
-            public void removeAttribute(String name) {
-                sessionList.remove(name);
-            }
-
-            @Override
-            public void removeValue(String name) {
-
-            }
-
-            @Override
-            public void invalidate() {
-
-            }
-
-            @Override
-            public boolean isNew() {
-                return false;
-            }
-        };
-    }
-
     @Test
-    void createPost() throws InterruptedException , SQLException, IOException{
+    void createPost() {
         //Arrange
         String username = "john";
         String title = "post test";
@@ -174,6 +77,7 @@ public class PostManagerTest {
 
         //Assertion
         assertTrue(success);
+        assertNull(updatePost);
         assertEquals(updatePost.getPostID(), postId);
         assertEquals(updatePost.getTitle(), titleUpdate);
         assertEquals(updatePost.getMessage(), messageUpdate);
@@ -188,18 +92,45 @@ public class PostManagerTest {
         String username = "john";
         String title = "test post title";
         String message = "post message test";
-        String titleUpdate = "post update test";
-        String messageUpdate = "update est for post";
         String group = "public";
+        boolean isAdmin = true;
 
         Integer postId = PostManager.createPost(username, title, message, group);
 
         //Action
-        boolean success = PostManager.deletePost(postId,session);
+        boolean success = PostManager.deletePost(postId,username,isAdmin);
         Post updatePost = PostManager.getPostById(postId);
 
         //Assertion
         assertTrue(success);
+        assertNull(updatePost);
+
+    }
+
+    @Test
+    void searchPost()
+    {
+        //Arrange
+
+        LocalDateTime from = LocalDateTime.now();
+        String username = "john";
+        String title = "post test";
+        String message = "test for #post";
+        ArrayList<String> group = new ArrayList<String>();
+        group.add("public");
+        Integer postId = PostManager.createPost(username, title, message, group.get(0));
+        Post post = PostManager.getPostById(postId);
+        LocalDateTime to = LocalDateTime.now();
+        String[] hashtag1 = {"post"};
+        List<String> hashtagList = Arrays.asList(hashtag1);
+
+        //Action
+        PostList pl = PostManager.searchPosts(username,from, to,hashtagList,group);
+        ArrayList<Post> postlist = pl.getPosts();
+        Integer plSize = postlist.size();
+
+        //Assertion
+        assertTrue(postlist.contains(post));
 
     }
 }
