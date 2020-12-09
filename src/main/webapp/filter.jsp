@@ -8,13 +8,10 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 
-<%
-    String username = (String) session.getAttribute("username");
-    if (null == username) {
-        session.setAttribute("errorMessage", "You have to be logged in to access the home page ");
-        response.sendRedirect("login.jsp");
-    }
-%>
+<c:if test="${sessionScope.username == null}">
+    <% session.setAttribute("errorMessage", "You have to be logged in to access the home page "); %>
+    <c:redirect url="login.jsp" />
+</c:if>
 
 <html>
 <head>

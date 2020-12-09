@@ -29,6 +29,7 @@ public class UserManagerImpl implements UserManager {
         if (user != null && generatedPassword.equals(pass)) {
             /** RETRIEVE USER MEMBERSHIP */
             ArrayList<String> member = GroupManager.getUserGroups(userID);
+
             session.setAttribute("membership" , member);
             session.setAttribute("impliedMemberships", GroupManager.getImpliedGroupNames(member));
             /** END */
@@ -50,7 +51,7 @@ public class UserManagerImpl implements UserManager {
         return result;
     }
 
-    private static String encryptPassword(String password)
+    public String encryptPassword(String password)
     {
         String generatedPassword = null;
         try {

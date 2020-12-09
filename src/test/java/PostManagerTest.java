@@ -1,4 +1,3 @@
-
 import app.PostManager;
 import org.junit.Test;
 
@@ -111,7 +110,6 @@ public class PostManagerTest {
     void searchPost()
     {
         //Arrange
-
         LocalDateTime from = LocalDateTime.now();
         String username = "john";
         String title = "post test";
@@ -131,6 +129,5 @@ public class PostManagerTest {
 
         //Assertion
         assertTrue(postlist.contains(post));
-
     }
 }

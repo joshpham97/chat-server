@@ -60,10 +60,17 @@ public class PostServlet extends HttpServlet {
             boolean isSuccess;
             if(action.equals("delete"))
             {
+                boolean isAdmin = false;
                 /** MODIFIED BY STEFAN SO ONLY AUTHORIZED USERS CAN DELETE POSTS */
                 HttpSession session=request.getSession(false);
+                String uname = (String)session.getAttribute("username");
+                List<String> n = (ArrayList<String>)session.getAttribute("membership");
+                if(n.contains("admins"))
+                {
+                    isAdmin = true;
+                }
 
-                isSuccess = PostManager.deletePost(postID, session);
+                isSuccess = PostManager.deletePost(postID, uname, isAdmin);
                 response.sendRedirect(String.format("index.jsp?postId=%d&success=%b", postID, isSuccess));
 
             }

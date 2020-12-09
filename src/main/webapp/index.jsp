@@ -13,13 +13,10 @@
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 
-<%
-    String username = (String) session.getAttribute("username");
-    if (null == username) {
-        session.setAttribute("errorMessage", "You have to be logged in to access the home page ");
-        response.sendRedirect("login.jsp");
-    }
-%>
+<c:if test="${sessionScope.username == null}">
+    <% session.setAttribute("errorMessage", "You have to be logged in to access the home page "); %>
+    <c:redirect url="login.jsp" />
+</c:if>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
@@ -101,7 +98,7 @@
                                             <c:if test="${post.getAttID() != null}">
                                                     <a href="AttachmentServlet?action=get&attachmentId=${post.getAttID()}"><i class="fas fa-paperclip mr-2" title="Download attachment"></i></a>
                                             </c:if>
-                                            <c:if test="${post.getUsername().equals(sessionScope.username) ||sessionScope.membership[0].equals('admins') }">
+                                            <c:if test="${post.getUsername().equals(sessionScope.username) ||sessionScope.membership.contains('admins') }">
                                                 <a href="PostEditServlet?postId=${post.getPostID()}"><i class="fas fa-edit mr-2"></i></a>
                                                 <a href="PostServlet?action=delete&postID=${post.getPostID()}"><i class="fas fa-trash mr-2"></i></a>
                                             </c:if>

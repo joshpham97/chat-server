@@ -7,13 +7,11 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
-<%
-    String username = (String) session.getAttribute("username");
-    if (null == username) {
-        session.setAttribute("errorMessage", "You have to be logged in to access the home page ");
-        response.sendRedirect("login.jsp");
-    }
-%>
+
+<c:if test="${sessionScope.username == null}">
+    <% session.setAttribute("errorMessage", "You have to be logged in to access the home page "); %>
+    <c:redirect url="login.jsp" />
+</c:if>
 
 <html>
 <head>
@@ -72,10 +70,15 @@
                     <textarea id="postContent" name="message" class="form-control" rows="2" placeholder="Type your post here..." required></textarea>
                 </div>
                 <select name="group">
-                    <option value="public" selected>Public</option>
-
                     <c:forEach items="${sessionScope.impliedMemberships}" var="membership">
-                        <option value="${membership}">${membership}</option>
+                        <c:choose>
+                            <c:when test="${membership.equals(\"public\")}">
+                                <option value="${membership}" selected>${membership}</option>
+                            </c:when>
+                            <c:otherwise>
+                                <option value="${membership}">${membership}</option>
+                            </c:otherwise>
+                        </c:choose>
                     </c:forEach>
                 </select>
                 <div class="col text-center">

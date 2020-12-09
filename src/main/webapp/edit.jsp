@@ -11,14 +11,17 @@
 <jsp:useBean id="post" scope="request" type="server.database.model.Post"/>
 <jsp:useBean id="attachment" scope="request" type="server.database.model.Attachment"/>
 
-<%
-    String username = (String) session.getAttribute("username");
-    if (null == username) {
-        session.setAttribute("errorMessage", "You have to be logged in to access the home page ");
-        response.sendRedirect("login.jsp");
-    }
-%>
-<c:if test="${post.getUsername().equals(sessionScope.username)||sessionScope.membership[0].equals('admins')}">
+
+<c:choose>
+    <c:when test="${sessionScope.username == null}">
+        <% session.setAttribute("errorMessage", "You have to be logged in to access the home page "); %>
+        <c:redirect url="login.jsp" />
+    </c:when>
+    <c:when test="${!post.getUsername().equals(sessionScope.username) && !sessionScope.membership.contains('admins')}">
+        <c:redirect url="index.jsp" />
+    </c:when>
+</c:choose>
+
 <html>
 <head>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous" />
@@ -84,15 +87,6 @@
                         <textarea id="postContent" name="message" class="form-control" rows="2" required><c:out value="${post.message}" /></textarea>
                     </div>
                     <select name="group">
-                        <c:choose>
-                            <c:when test="${post.permissionGroup.equals(\"public\")}">
-                                <option value="public" selected>Public</option>
-                            </c:when>
-                            <c:otherwise>
-                                <option value="public">Public</option>
-                            </c:otherwise>
-                        </c:choose>
-
                         <c:forEach items="${sessionScope.impliedMemberships}" var="membership">
                             <c:choose>
                                 <c:when test="${post.permissionGroup.equals(membership)}">
@@ -189,7 +183,3 @@
     </div>
 </body>
 </html>
-</c:if>
-<c:if test="${!post.getUsername().equals(sessionScope.username) && !sessionScope.membership[0].equals('admins')}">
-    YOU DON'T HAVE ACCESS!
-</c:if>
