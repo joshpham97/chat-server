@@ -26,36 +26,43 @@ public class DownloadPostServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String username = request.getParameter("username");
-        String strFrom = request.getParameter("from");
-        String strTo = request.getParameter("to");
-        String strHashtags = request.getParameter("hashtags");
-        String strCurrentPage = request.getParameter("page");
+        HttpSession session = request.getSession();
+        String currentUser = (String) session.getAttribute("username");
 
-        try {
-            // Parse request parameters
-            LocalDateTime from = (strFrom == null || strFrom.isEmpty()) ? null : LocalDate.parse(strFrom).atStartOfDay();
-            LocalDateTime to = (strTo == null || strTo.isEmpty()) ? null : LocalDate.parse(strTo).plusDays(1).atStartOfDay();
-            List<String> hashtags = (strHashtags == null || strHashtags.isEmpty()) ? null : Arrays.asList(strHashtags.split(" "));
-            HttpSession session = request.getSession();
-            ArrayList<String> groups = (ArrayList<String>) session.getAttribute("impliedMembership");
+        if(currentUser == null) {
+            response.sendRedirect("index.jsp");
+        }
+        else {
+            String username = request.getParameter("username");
+            String strFrom = request.getParameter("from");
+            String strTo = request.getParameter("to");
+            String strHashtags = request.getParameter("hashtags");
+            String strCurrentPage = request.getParameter("page");
+
+            try {
+                // Parse request parameters
+                LocalDateTime from = (strFrom == null || strFrom.isEmpty()) ? null : LocalDate.parse(strFrom).atStartOfDay();
+                LocalDateTime to = (strTo == null || strTo.isEmpty()) ? null : LocalDate.parse(strTo).plusDays(1).atStartOfDay();
+                List<String> hashtags = (strHashtags == null || strHashtags.isEmpty()) ? null : Arrays.asList(strHashtags.split(" "));
+                ArrayList<String> groups = (ArrayList<String>) session.getAttribute("impliedMembership");
 
 
-            PostList posts = PostManager.searchPosts(username, from, to, hashtags, groups);
-            String xmlPosts = PostTransformer.toXMLDocument(posts);
+                PostList posts = PostManager.searchPosts(username, from, to, hashtags, groups);
+                String xmlPosts = PostTransformer.toXMLDocument(posts);
 
-            PrintWriter responseWriter = response.getWriter();
-            System.out.println(xmlPosts);
-            responseWriter.append(xmlPosts);
+                PrintWriter responseWriter = response.getWriter();
+                System.out.println(xmlPosts);
+                responseWriter.append(xmlPosts);
 
-            response.setHeader("Content-Disposition", "attachment; filename=\"posts.xml\"");
-            response.setContentType("text/plain");
-            response.setDateHeader("Expires", 0);
+                response.setHeader("Content-Disposition", "attachment; filename=\"posts.xml\"");
+                response.setContentType("text/plain");
+                response.setDateHeader("Expires", 0);
 
-            responseWriter.close();
-        } catch(Exception e) {
-            e.printStackTrace();
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                responseWriter.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            }
         }
     }
 }

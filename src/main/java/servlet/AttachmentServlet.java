@@ -1,17 +1,18 @@
 package servlet;
 
 import app.AttachmentManager;
+import app.PostManager;
 import server.database.model.Attachment;
+import server.database.model.Post;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.Part;
+import javax.servlet.http.*;
 import java.io.*;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 @WebServlet(name = "servlet.AttachmentServlet")
 @MultipartConfig
@@ -54,26 +55,33 @@ public class AttachmentServlet extends HttpServlet {
     }
 
     private void getAttachment(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        OutputStream responseWriter = response.getOutputStream();
-        String strAttachmentId = request.getParameter("attachmentId");
+        HttpSession session = request.getSession();
+        String username = (String) session.getAttribute("username");
 
-        if (strAttachmentId != null && !strAttachmentId.isEmpty()) {
-            int attachmentId = Integer.parseInt(strAttachmentId);
+        if(username == null) {
+            response.sendRedirect("index.jsp");
+        }
+        else {
+            String strAttachmentId = request.getParameter("attachmentId");
+            OutputStream responseWriter = response.getOutputStream();
+            if (strAttachmentId != null && !strAttachmentId.isEmpty()) {
+                int attachmentId = Integer.parseInt(strAttachmentId);
 
-            try {
-                Attachment attachment = AttachmentManager.getAttachment(attachmentId);
-                InputStream fileInputStream = attachment.getFileBlob().getBinaryStream();
-                byte[] buffer = new byte[8192];
-                int count;
-                while ((count = fileInputStream.read(buffer)) > 0) {
-                    responseWriter.write(buffer, 0, count);
+                try {
+                    Attachment attachment = AttachmentManager.getAttachment(attachmentId);
+                    InputStream fileInputStream = attachment.getFileBlob().getBinaryStream();
+                    byte[] buffer = new byte[8192];
+                    int count;
+                    while ((count = fileInputStream.read(buffer)) > 0) {
+                        responseWriter.write(buffer, 0, count);
+                    }
+                    response.setHeader("Content-Disposition", String.format("attachment; filename=\"%s\"", attachment.getFilename()));
+                    response.setContentType(attachment.getMediaType());
+                    response.setDateHeader("Expires", 0);
+                    responseWriter.close();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
                 }
-                response.setHeader("Content-Disposition", String.format("attachment; filename=\"%s\"", attachment.getFilename()));
-                response.setContentType(attachment.getMediaType());
-                response.setDateHeader("Expires", 0);
-                responseWriter.close();
-            } catch (SQLException ex) {
-                ex.printStackTrace();
             }
         }
     }
